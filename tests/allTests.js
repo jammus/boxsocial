@@ -1,0 +1,1 @@
+require('./party-test.js');
