@@ -8,9 +8,10 @@ var lastfm = new LastFmNode({
   secret: ''
 });
 
-var stream = lastfm.createRecentTrackStream({user: 'jammus'});
-stream.stream();
+var stream = lastfm.stream('jammus', {autostart: true});
 var party = new Party("jammus", stream);
+stream.start();
+
 var server = http.createServer(function(req, res) {
     var thisUrl = url.parse(req.url, true);
     var path = thisUrl.pathname;
@@ -18,7 +19,7 @@ var server = http.createServer(function(req, res) {
     switch (path) {
         case '/callback':
             var token = params.token;
-            var session = lastfm.createNewSession();
+            var session = lastfm.session();
             session.addListener('error', function(error) {
                 console.log(error.message);
                 res.end();
