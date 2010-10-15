@@ -42,6 +42,12 @@ ntest.describe("A new party");
         assert.ok(this.party.guests.indexOf(guest) > -1);
     });
 
+    ntest.it("can't add host to guest list", function() { 
+        var guest = new PartyGuest("hostuser");
+        this.party.addGuest(guest);
+        assert.equal(0, this.party.guests.length);
+    });
+
 ntest.describe("A party in full swing");
     ntest.before(function() {
         this.lastfm = new LastFmNode();
