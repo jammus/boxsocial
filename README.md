@@ -1,2 +1,3 @@
 # boxsocial
-Copy a host's last.fm scrobbles to your own profile in realtime.
+Party mode for last.fm.
+Copy a host's scrobbles to your own profile in realtime.
