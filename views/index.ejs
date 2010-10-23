@@ -1,0 +1,30 @@
+<div data-role="page">
+    <div id="header" data-role="header">
+        <h1>boxsocial.fm</h1>
+    </div>
+    <div data-role="content">
+        <div id="into">
+            <p>boxsocial is a party mode for Last.fm.</p>
+            <p>Whether you're at a party, a bar or just hanging out with friends you can scrobble your host's plays to your own timeline as they happen.</p>
+        </div>
+        <%
+        if (!party) {
+            %>
+            <div id="get_started">
+                <a href="/join" data-role="button" data-icon="add">Join a Party</a>
+            </div>
+            <%
+        }
+        else {
+            %>
+            <div id="current_party">
+                You are at <a href="/party/<%= party.host %>"><%= party.host %>'s party</a>.
+            </div>
+            <%
+        }
+        %>
+    </div>
+    <div data-role="footer">
+        Powered by <img src="/img/lastfm_black_small.gif" />
+    </div>
+</div>

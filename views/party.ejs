@@ -1,0 +1,64 @@
+<div data-role="page">
+    <div id="header" data-role="header">
+        <h1>boxsocial.fm</h1>
+        <a href="#" class="ui-btn-right" data-icon="refresh" onclick="location.reload()">Refresh</a>
+    </div>
+    <div data-role="content">
+        <h2><%= party.host %>'s party.</h2>
+        <div class="host">
+            <div class="nowPlaying">
+            <%
+            if (party.nowPlaying) {
+                %>
+                    <%
+                    if (party.nowPlaying.image[1]) {
+                        %>
+                        <img src="<%= party.nowPlaying.image[1]["#text"] %>" />
+                        <%
+                    }
+                    %>
+                    Now playing: <%= party.nowPlaying.name %> by <%= party.nowPlaying.artist["#text"] %>
+                    <%
+            }
+            else {
+                %>
+                Now playing: Nothing
+                <%
+            }
+            %>
+            </div>
+            <div class="toolbar">
+                <%
+                if (fmsession && party.hasGuest(fmsession)) {
+                    %>
+                    <a href="/leave" data-role="button" data-icon="delete">Leave Party</a>
+                    <%
+                }
+                else {
+                    %>
+                    <a href="/join/<%= party.host %>" data-role="button" data-icon="add">Join Party</a>
+                    <%
+                }
+                %>
+            </div>
+        </div>
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">Guests</li>
+            <%
+            if (party.guests.length == 0) {
+                %>
+                <li>No one</li>
+                <%
+            }
+            for (guestIndex in party.guests) {
+                %>
+                <li><a href="http://www.last.fm/user/<%=party.guests[guestIndex].user%>"><%= party.guests[guestIndex].user %></a></li>
+                <%
+            }
+            %>
+        </ul>
+    </div>
+    <div data-role="footer">
+        Powered by <img src="/img/lastfm_black_small.gif" />
+    </div>
+</div>

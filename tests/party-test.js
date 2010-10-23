@@ -4,31 +4,13 @@ var ntest = require('ntest');
 var Party = require('../lib/party').Party;
 var LastFmNode = require('lastfm').LastFmNode;
 var FakeTracks = require('./TestData').FakeTracks;
-var PartyGuest = require('../lib/partyguest').PartyGuest;
-
-var MockGuest = function(name) {
-    this.nowPlaying = null;
-    this.nowPlayingCalls = 0;
-
-    this.lastScrobbled = null;
-    this.scrobbleCalls = 0;
-};
-MockGuest.prototype = Object.create(PartyGuest.prototype); 
-MockGuest.prototype.updateNowPlaying = function(track) {
-    this.nowPlaying = track;
-    this.nowPlayingCalls++;
-};
-
-MockGuest.prototype.scrobble = function(track) {
-    this.lastScrobbled = track;
-    this.scrobbleCalls++;
-};
+var LastFmMocks = require('./Mocks');
 
 ntest.describe("A new party");
     ntest.before(function() {
-        var lastfm = new LastFmNode();
-        var stream = new RecentTracksStream(lastfm, {user: 'hostuser' });
-        this.party = new Party("hostuser", stream);
+        this.mockLastFm = new LastFmMocks.MockLastFm();
+        this.stream = new RecentTracksStream(this.mockLastFm, "hostuser");
+        this.party = new Party(this.stream);
     });
 
     ntest.it("has no guests", function() {
@@ -36,26 +18,33 @@ ntest.describe("A new party");
     });
 
     ntest.it("can add guests", function() {
-        var guest = new PartyGuest("guestuser1");
+        var guest = new LastFmSession(this.mockLastFm, "guestuser1");
         this.party.addGuest(guest);
         assert.equal(1, this.party.guests.length);
         assert.ok(this.party.guests.indexOf(guest) > -1);
     });
 
+    ntest.it("can't add a guest twice", function() {
+        var guest = new LastFmSession(this.mockLastFm, "guestuser1");
+        this.party.addGuest(guest);
+        this.party.addGuest(guest);
+        assert.equal(1, this.party.guests.length);
+    });
+
     ntest.it("can't add host to guest list", function() { 
-        var guest = new PartyGuest("hostuser");
+        var guest = new LastFmSession(this.mockLastFm, "hostuser");
         this.party.addGuest(guest);
         assert.equal(0, this.party.guests.length);
     });
 
 ntest.describe("A party in full swing");
     ntest.before(function() {
-        this.lastfm = new LastFmNode();
-        this.stream = new RecentTracksStream(this.lastfm, {user: 'hostuser' });
-        this.party = new Party("hostuser", this.stream);
-        this.guestOne = new MockGuest("guestuser1");
-        this.guestTwo = new MockGuest("guestuser2");
-        this.guestThree = new MockGuest("guestthree");
+        this.mockLastFm = new LastFmMocks.MockLastFm();
+        this.stream = new RecentTracksStream(this.mockLastFm, "hostuser");
+        this.party = new Party(this.stream);
+        this.guestOne = new LastFmMocks.MockLastFmSession(this.mockLastFm, "guestuser1", "authed1");
+        this.guestTwo = new LastFmMocks.MockLastFmSession(this.mockLastFm, "guestuser2", "authed2");
+        this.guestThree = new LastFmMocks.MockLastFmSession(this.mockLastFm, "guestthree" ,"authed3");
         this.party.addGuest(this.guestOne);
         this.party.addGuest(this.guestTwo);
     });
@@ -82,18 +71,24 @@ ntest.describe("A party in full swing");
         assert.equal("Run To Your Grave", this.guestTwo.lastScrobbled.name);
     });
 
-    ntest.it("shares stoppedPlaying with guests", function() {
-        this.stream.emit('stoppedPlaying', FakeTracks.RunToYourGrave);
-        assert.equal(1, this.guestOne.nowPlayingCalls);
-        assert.equal(null, this.guestOne.nowPlaying);
-        assert.equal(1, this.guestTwo.nowPlayingCalls);
-        assert.equal(null, this.guestTwo.nowPlaying);
-    });
-
     ntest.it("new guest doesnt receive now playing after stopped playing", function() {
         this.stream.emit('nowPlaying', FakeTracks.RunToYourGrave);
         this.stream.emit('stoppedPlaying', FakeTracks.RunToYourGrave);
         this.party.addGuest(this.guestThree);
         assert.equal(0, this.guestThree.nowPlayingCalls);
         assert.equal(null, this.guestThree.nowPlaying);
+    });
+
+    ntest.it("returns false when checked for unknown guest", function() {
+        var guest = new LastFmSession(this.mockLastFm, "unknown", "huh");
+        assert.ok(!this.party.hasGuest(guest));     
+    });
+
+    ntest.it("returns true when checked for present guest", function() {
+        assert.ok(this.party.hasGuest(this.guestOne));
+    });
+
+    ntest.it("removeGuest takes guest off guest list", function() {
+        this.party.removeGuest(this.guestOne);
+        assert.ok(!this.party.hasGuest(this.guestOne));
     });

@@ -1,0 +1,17 @@
+<div data-role="page">
+    <div id="header" data-role="header">
+        <h1>boxsocial.fm</h1>
+    </div>
+    <div data-role="content">
+        Are you sure you want to join <b><%= host %>'s</b> party?
+        <form action="/join/<%= host %>" method="post">
+            <fieldset>
+                <input type="submit" value="Yes"i data-icon="check" />
+                <a href="/join" data-role="button" data-icon="delete">No</a>
+            </fieldset>
+        </form>
+    </div>
+    <div data-role="footer">
+        Powered by <img src="/img/lastfm_black_small.gif" />
+    </div>
+</div>

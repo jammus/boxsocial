@@ -1,37 +1,115 @@
-var http = require('http');
-var url = require('url');
-var LastFmNode = require('lastfm').LastFmNode;
-var Party = require('./lib/party').Party;
+var http = require("http");
+var url = require("url");
+var querystring = require("querystring");
+var BoxSocial = require("./lib/boxsocial").BoxSocial;
+var LastFmNode = require("lastfm").LastFmNode;
+var Party = require("./lib/party").Party;
+var express = require("express");
 
 var lastfm = new LastFmNode({
-  api_key: '',
-  secret: ''
+  api_key: "",
+  secret: ""
 });
 
-var stream = lastfm.stream('jammus', {autostart: true});
-var party = new Party("jammus", stream);
-stream.start();
+var app = express.createServer();
+app.use(express.cookieDecoder());
+app.use(express.session());
+app.use(express.staticProvider(__dirname + "/public"));
+app.use(express.bodyDecoder());
+app.set("views", __dirname + "/views");
+app.get("root", __dirname);
+app.set("view engine", "ejs");
 
-var server = http.createServer(function(req, res) {
-    var thisUrl = url.parse(req.url, true);
-    var path = thisUrl.pathname;
-    var params = thisUrl.query;
-    switch (path) {
-        case '/callback':
-            var token = params.token;
-            var session = lastfm.session();
-            session.addListener('error', function(error) {
-                console.log(error.message);
-                res.end();
-            });
-            session.addListener('authorised', function(session) {
-                party.addGuest(session);
-                console.log(session.user + ' added to jammus\'s party');
-                res.end();
-            });
-            session.authorise(token);
-            break;
-    } 
+var boxsocial = new BoxSocial(lastfm);
+
+var parties = [];
+
+app.get("/", function(req, res) {
+    var fmsession = req.session.fmsession;
+    var party = null;
+    if (fmsession) {
+        party = boxsocial.findParty({guest: fmsession});
+    }
+
+    res.render("index", {
+        locals: {
+            partyCount: parties.length,
+            fmsession: req.session.fmsession,
+            party: party
+        }
+    });
 });
 
-server.listen(8088);
+app.get("/callback/:action/:id", function(req, res) {
+    var token = req.param("token");
+    var fmsession = lastfm.session();
+    fmsession.addListener("error", function(error) {
+        res.send("Error authorising - " + error.message);
+    });
+    fmsession.addListener("authorised", function(session) {
+        req.session.fmsession = fmsession;
+        res.redirect("/" + req.params.action + "/" + req.params.id);
+    });
+    fmsession.authorise(token);
+});
+
+app.get("/login/:action/:id", function(req, res) {
+    var reqParams = { 
+        api_key: lastfm.params.api_key,
+        cb: "http://127.0.0.1:8088/callback/" + req.params.action + "/" + req.params.id
+    };
+    var reqUrl = "http://m.last.fm/api/auth?" + querystring.stringify(reqParams);
+    res.redirect(reqUrl);
+});
+
+app.get("/join", function(req, res) {
+    res.render("join");        
+});
+
+app.post("/join", function(req, res) {
+    var host = req.param("host");
+    res.redirect("/join/" + host);
+});
+
+app.get("/join/:host", function(req, res) {
+    var host = req.params.host;
+    var fmsession = req.session.fmsession;
+    if (!fmsession) {
+        req.session.joinattempt = host;
+        res.redirect("/login/join/" + host);
+    }
+    res.render("join_confirm", { locals: { host: host } } );
+});
+
+app.post("/join/:host", function(req, res) {
+    var host = req.params.host;
+    var fmsession = req.session.fmsession;
+    if (!fmsession) {
+        res.redirect("/login/join%3F" + host);
+    }
+    boxsocial.attend(host, fmsession);
+    res.redirect("/party/" + host);
+});
+
+app.get("/party/:host", function(req, res) {
+    var host = req.params.host;
+    if (host) {
+        var party = boxsocial.findParty({host: host});    
+    }
+    res.render("party", { locals: { fmsession: req.session.fmsession, party: party } } );
+});
+
+app.get("/leave", function(req, res) {
+    var fmsession = req.session.fmsession;
+    if (fmsession) {
+        boxsocial.leave(fmsession);
+    }
+    res.redirect("/");
+});
+
+app.get("/parties", function(req, res) {
+    var parties = boxsocial.parties;
+    res.render("parties", { locals: { parties: parties } } );
+});
+
+app.listen(8088);

@@ -1,0 +1,14 @@
+.toolbar {
+    clear:both;
+}
+
+.nowPlaying {
+    margin-bottom:10px;
+    height:70px;
+}
+
+.nowPlaying img {
+    width:64px;
+    float:right;
+    padding-right:5px;
+}
