@@ -3,9 +3,17 @@
         <h1>boxsocial.fm</h1>
     </div>
     <div data-role="content">
+        <% 
+        if (fmsession) {
+            %>
+            <p>Hello <b><%= fmsession.user %></b>.</p>
+            <%
+        }
+        %>
+        <p>To join a party please enter your <a href="/glossary#host">host</a>'s Last.fm username.</p>
         <form action="/join" method="post">
             <fieldset>
-                <label for="host">Please enter your host's last.fm username:</label>
+                <label for="host">Host's username:</label>
                 <input type="text" name="host" id="host" />
                 <input type="submit" value="Join" />
             </fieldset>

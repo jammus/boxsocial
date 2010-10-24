@@ -41,63 +41,63 @@ app.get("/", function(req, res) {
     });
 });
 
-app.get("/callback/:action?/:id?", function(req, res) {
+app.get("/callback", function(req, res) {
     var token = req.param("token");
     var fmsession = lastfm.session();
+
     fmsession.addListener("error", function(error) {
         res.send("Error authorising - " + error.message);
     });
+
     fmsession.addListener("authorised", function(session) {
         req.session.fmsession = fmsession;
-        if (req.params.action && req.params.id) {
-            res.redirect("/" + req.params.action + "/" + req.params.id);
-        }
-        if (req.session.joinattempt) {
-            var host = req.session.joinattempt;
-            req.session.joinattempt = null;
-            res.redirect("/join/" + host);
-        }
-        res.redirect("/");
-
+        var redirectUrl = req.session.redirectUrl ? req.session.redirectUrl : "/";
+        req.session.redirectUrl = null;
+        res.redirect(redirectUrl);
     });
+
     fmsession.authorise(token);
 });
 
-app.get("/login/:action/:id", function(req, res) {
-    var appAddress = "http://" + config.host + (config.port != "80" ? ":" + config.port : "");
-    var reqParams = { 
+app.get("/login", function(req, res) {
+    var callbackUrl = "http://" + config.host + (config.port != "80" ? ":" + config.port : "") + "/callback";
+    var params = { 
         api_key: lastfm.params.api_key,
-        cb: appAddress + "/callback/" + req.params.action + "/" + req.params.id
+        cb: callbackUrl
     };
-    var reqUrl = "http://last.fm/api/auth?" + querystring.stringify(reqParams);
-    res.redirect(reqUrl);
+    var lastfmLogin = "http://last.fm/api/auth?" + querystring.stringify(params);
+    res.redirect(lastfmLogin);
 });
 
+function checkLoggedIn(req, res, redirectUrl) {
+    var fmsession = req.session.fmsession;
+    if (!fmsession) {
+        req.session.redirectUrl = redirectUrl;
+        res.redirect("/login");
+    }
+}
+
 app.get("/join", function(req, res) {
-    res.render("join");        
+    checkLoggedIn(req, res, "/join");
+    res.render("join", { locals: { fmsession: req.session.fmsession } });        
 });
 
 app.post("/join", function(req, res) {
     var host = req.param("host");
+    checkLoggedIn(req, res, "/join/" + host);
     res.redirect("/join/" + host);
 });
 
 app.get("/join/:host", function(req, res) {
     var host = req.params.host;
-    var fmsession = req.session.fmsession;
-    if (!fmsession) {
-        req.session.joinattempt = host;
-        res.redirect("/login/join/" + host);
-    }
+    checkLoggedIn(req, res, "/join/" + host);
     res.render("join_confirm", { locals: { host: host } } );
 });
 
 app.post("/join/:host", function(req, res) {
     var host = req.params.host;
+    checkLoggedIn(req, res, "/join/" + host);
     var fmsession = req.session.fmsession;
-    if (!fmsession) {
-        res.redirect("/login/join%3F" + host);
-    }
     boxsocial.attend(host, fmsession);
     sys.puts(fmsession.user + " has joined " + host + "'s party");
     res.redirect("/party/" + host);
@@ -125,6 +125,10 @@ app.get("/leave", function(req, res) {
 app.get("/parties", function(req, res) {
     var parties = boxsocial.parties;
     res.render("parties", { locals: { parties: parties } } );
+});
+
+app.get("/glossary", function(req, res) {
+    res.render("glossary");
 });
 
 module.exports = app;
