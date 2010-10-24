@@ -3,6 +3,7 @@ var querystring = require("querystring");
 var BoxSocial = require("./lib/boxsocial").BoxSocial;
 var LastFmNode = require("lastfm").LastFmNode;
 var express = require("express");
+var sys = require("sys");
 
 var config = require("./config");
 
@@ -89,21 +90,25 @@ app.post("/join/:host", function(req, res) {
         res.redirect("/login/join%3F" + host);
     }
     boxsocial.attend(host, fmsession);
+    sys.puts(fmsession.user + " has joined " + host + "'s party");
     res.redirect("/party/" + host);
 });
 
 app.get("/party/:host", function(req, res) {
     var host = req.params.host;
-    if (host) {
-        var party = boxsocial.findParty({host: host});    
+    var party = boxsocial.findParty({host: host});    
+
+    if (party) {
+        res.render("party", { locals: { fmsession: req.session.fmsession, party: party } } );
     }
-    res.render("party", { locals: { fmsession: req.session.fmsession, party: party } } );
+    res.render("noparty", { locals: { host: host } });
 });
 
 app.get("/leave", function(req, res) {
     var fmsession = req.session.fmsession;
     if (fmsession) {
         boxsocial.leave(fmsession);
+        sys.puts(fmsession.user + " has left the party.");
     }
     res.redirect("/");
 });
