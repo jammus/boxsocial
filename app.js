@@ -1,14 +1,14 @@
 var http = require("http");
-var url = require("url");
 var querystring = require("querystring");
 var BoxSocial = require("./lib/boxsocial").BoxSocial;
 var LastFmNode = require("lastfm").LastFmNode;
-var Party = require("./lib/party").Party;
 var express = require("express");
 
+var config = require("./config");
+
 var lastfm = new LastFmNode({
-  api_key: "",
-  secret: ""
+  api_key: config.api_key,
+  secret: config.secret
 });
 
 var app = express.createServer();
@@ -54,11 +54,12 @@ app.get("/callback/:action/:id", function(req, res) {
 });
 
 app.get("/login/:action/:id", function(req, res) {
+    var appAddress = "http://" + config.host + (config.port != "80" ? ":" + config.port : "");
     var reqParams = { 
         api_key: lastfm.params.api_key,
-        cb: "http://127.0.0.1:8088/callback/" + req.params.action + "/" + req.params.id
+        cb: appAddress + "/callback/" + req.params.action + "/" + req.params.id
     };
-    var reqUrl = "http://m.last.fm/api/auth?" + querystring.stringify(reqParams);
+    var reqUrl = "http://last.fm/api/auth?" + querystring.stringify(reqParams);
     res.redirect(reqUrl);
 });
 
@@ -112,4 +113,4 @@ app.get("/parties", function(req, res) {
     res.render("parties", { locals: { parties: parties } } );
 });
 
-app.listen(8088);
+module.exports = app;
