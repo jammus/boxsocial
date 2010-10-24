@@ -131,4 +131,8 @@ app.get("/glossary", function(req, res) {
     res.render("glossary");
 });
 
+app.get("/:page", function(req, res) {
+    res.render(req.params.page);
+});
+
 module.exports = app;
