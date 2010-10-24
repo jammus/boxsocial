@@ -41,7 +41,7 @@ app.get("/", function(req, res) {
     });
 });
 
-app.get("/callback/:action/:id", function(req, res) {
+app.get("/callback/:action?/:id?", function(req, res) {
     var token = req.param("token");
     var fmsession = lastfm.session();
     fmsession.addListener("error", function(error) {
@@ -49,7 +49,16 @@ app.get("/callback/:action/:id", function(req, res) {
     });
     fmsession.addListener("authorised", function(session) {
         req.session.fmsession = fmsession;
-        res.redirect("/" + req.params.action + "/" + req.params.id);
+        if (req.params.action && req.params.id) {
+            res.redirect("/" + req.params.action + "/" + req.params.id);
+        }
+        if (req.session.joinattempt) {
+            var host = req.session.joinattempt;
+            req.session.joinattempt = null;
+            res.redirect("/join/" + host);
+        }
+        res.redirect("/");
+
     });
     fmsession.authorise(token);
 });
