@@ -13,6 +13,10 @@ ntest.describe("A new party");
         this.party = new Party(this.stream);
     });
 
+    ntest.after(function() {
+        if (this.stream.isStreaming) this.stream.stop();
+    });
+
     ntest.it("has no guests", function() {
         assert.equal(0, this.party.guests.length);
     });
@@ -36,6 +40,14 @@ ntest.describe("A new party");
         this.party.addGuest(guest);
         assert.equal(0, this.party.guests.length);
     });
+    
+    ntest.it("doesn't start streaming until guests arrive", function() {
+        assert.ok(!this.stream.isStreaming);
+        var guest = new LastFmSession(this.mockLastFm, "guestuser1");
+        this.party.addGuest(guest);
+        assert.ok(this.stream.isStreaming);
+    });
+
 
 ntest.describe("A party in full swing");
     ntest.before(function() {
@@ -47,6 +59,10 @@ ntest.describe("A party in full swing");
         this.guestThree = new LastFmMocks.MockLastFmSession(this.mockLastFm, "guestthree" ,"authed3");
         this.party.addGuest(this.guestOne);
         this.party.addGuest(this.guestTwo);
+    });
+
+    ntest.after(function() {
+        if (this.stream.isStreaming) this.stream.stop();
     });
 
     ntest.it("shares now playing events with guests", function() {
@@ -91,4 +107,10 @@ ntest.describe("A party in full swing");
     ntest.it("removeGuest takes guest off guest list", function() {
         this.party.removeGuest(this.guestOne);
         assert.ok(!this.party.hasGuest(this.guestOne));
+    });
+
+    ntest.it("stops streaming when last guest leaves", function() {
+        this.party.removeGuest(this.guestOne);
+        this.party.removeGuest(this.guestTwo);
+        assert.ok(!this.stream.isStreaming);
     });

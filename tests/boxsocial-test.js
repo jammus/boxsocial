@@ -4,10 +4,24 @@ var BoxSocial = require('../lib/boxsocial.js').BoxSocial;
 var LastFmNode = require('lastfm').LastFmNode;
 var Mocks = require('./Mocks');
 
+function cleanup(boxsocial) {
+    for(var partyIndex in boxsocial.parties) {
+        var party = boxsocial.parties[partyIndex];
+        for(var guestIndex in party.guests) {
+            var guest = party.guests[guestIndex];
+            party.removeGuest(guest);
+        }
+    }
+}
+
 ntest.describe("a new boxsocial")
 ntest.before(function() {
     this.lastfm = new Mocks.MockLastFm();
     this.boxsocial = new BoxSocial(this.lastfm);
+});
+
+ntest.after(function() {
+    cleanup(this.boxsocial);
 });
 
 ntest.it("has no parties", function() {
@@ -34,6 +48,10 @@ ntest.before(function() {
     this.boxsocial = new BoxSocial(this.lastfm);
     this.guestOne = new LastFmSession(this.lastfm, "guestOne", "sk1");
     this.boxsocial.attend("host", this.guestOne);
+});
+
+ntest.after(function() {
+    cleanup(this.boxsocial);
 });
 
 ntest.it("returns nothing when searched for unknown host", function() {

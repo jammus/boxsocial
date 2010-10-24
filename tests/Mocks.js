@@ -1,9 +1,11 @@
 var LastFmNode = require('lastfm').LastFmNode;
 
-var MockLastFm = function(){};
+var MockLastFm = function(){
+    this.readRequests = 0;
+};
 
 MockLastFm.prototype.writeRequest = function(){};
-MockLastFm.prototype.readRequest = function(){};
+MockLastFm.prototype.readRequest = function(){ this.readRequests++; };
 
 MockLastFm.prototype.stream = function(host) {
     return new RecentTracksStream(this, host);
