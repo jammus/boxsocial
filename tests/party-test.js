@@ -109,8 +109,21 @@ ntest.describe("A party in full swing");
         assert.ok(!this.party.hasGuest(this.guestOne));
     });
 
+    ntest.it("removeGuest leaves other guests at party", function() {
+        this.party.removeGuest(this.guestOne);
+        assert.notEqual(0, this.party.guests.length);
+        assert.ok(this.party.hasGuest(this.guestTwo));
+    });
+
     ntest.it("stops streaming when last guest leaves", function() {
         this.party.removeGuest(this.guestOne);
         this.party.removeGuest(this.guestTwo);
         assert.ok(!this.stream.isStreaming);
+    });
+
+    ntest.it("removes all guests when over", function() {
+        this.party.finish();
+        assert.ok(!this.party.hasGuest(this.guestOne));
+        assert.ok(!this.party.hasGuest(this.guestTwo));
+        assert.equal(0, this.party.guests.length);
     });

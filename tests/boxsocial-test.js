@@ -7,10 +7,7 @@ var Mocks = require('./Mocks');
 function cleanup(boxsocial) {
     for(var partyIndex in boxsocial.parties) {
         var party = boxsocial.parties[partyIndex];
-        for(var guestIndex in party.guests) {
-            var guest = party.guests[guestIndex];
-            party.removeGuest(guest);
-        }
+        party.finish();
     }
 }
 
