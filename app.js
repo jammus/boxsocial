@@ -99,8 +99,9 @@ app.post("/join/:host", function(req, res) {
     checkLoggedIn(req, res, "/join/" + host);
     var fmsession = req.session.fmsession;
     boxsocial.attend(host, fmsession);
-    sys.puts(fmsession.user + " has joined " + host + "'s party");
-    res.redirect("/party/" + host);
+    var party = boxsocial.findParty({guest: fmsession});
+    sys.puts(fmsession.user + " has joined " + party.host + "'s party");
+    res.redirect("/party/" + party.host);
 });
 
 app.get("/party/:host", function(req, res) {
