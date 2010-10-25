@@ -12,3 +12,16 @@
     float:right;
     padding-right:5px;
 }
+
+.footer {
+    height: 30px;
+    vertical-align: middle;
+    padding-top:2px;
+    font-weight:normal;
+    font-size: 90%;
+}
+
+.footer img.lastfm {
+    position: relative;
+    top: 3px;
+}

@@ -1,7 +1,5 @@
 <div data-role="page">
-    <div id="header" data-role="header">
-        <h1>boxsocial.fm</h1>
-    </div>
+    <%- partial("header") %>
     <div data-role="content">
         <% 
         if (fmsession) {
@@ -19,7 +17,5 @@
             </fieldset>
         </form>
     </div>
-    <div data-role="footer">
-        Powered by <img src="/img/lastfm_black_small.gif" />
-    </div>
+    <%- partial("footer") %>
 </div>

@@ -1,8 +1,5 @@
 <div data-role="page">
-    <div id="header" data-role="header">
-        <h1>boxsocial.fm</h1>
-        <a href="#" class="ui-btn-right" data-icon="refresh" onclick="location.reload()">Refresh</a>
-    </div>
+    <%- partial("header-refresh") %>
     <div data-role="content">
         <h2><%= party.host %>'s party.</h2>
         <div class="host">
@@ -58,7 +55,5 @@
             %>
         </ul>
     </div>
-    <div data-role="footer">
-        Powered by <img src="/img/lastfm_black_small.gif" />
-    </div>
+    <%- partial("footer") %>
 </div>
