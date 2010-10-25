@@ -42,6 +42,12 @@ ntest.it("attending an existing party does not increase party count", function()
     assert.equal(1, this.boxsocial.partyCount());
 });
 
+ntest.it("a user joining their own party does not create party", function() {
+    var host = new LastFmSession(this.lastfm, "host", "skhost");
+    this.boxsocial.attend("host", host);
+    assert.equal(0, this.boxsocial.partyCount());
+});
+
 ntest.describe("a boxsocial with one party")
 ntest.before(function() {
     this.lastfm = new Mocks.MockLastFm();
@@ -111,6 +117,13 @@ ntest.it("trying to join a guest's party instead joins the original host's", fun
 ntest.it("hosts can't be guests", function() {
     var host = new LastFmSession(this.lastfm, "host", "skhost");
     this.boxsocial.attend("newhost", host); 
+    var party = this.boxsocial.findParty({ guest: host });
+    assert.ok(!party);
+});
+
+ntest.it("users can't join their own party", function() {
+    var host = new LastFmSession(this.lastfm, "host", "skhost");
+    this.boxsocial.attend("host", host); 
     var party = this.boxsocial.findParty({ guest: host });
     assert.ok(!party);
 });

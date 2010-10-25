@@ -100,8 +100,11 @@ app.post("/join/:host", function(req, res) {
     var fmsession = req.session.fmsession;
     boxsocial.attend(host, fmsession);
     var party = boxsocial.findParty({guest: fmsession});
-    sys.puts(fmsession.user + " has joined " + party.host + "'s party");
-    res.redirect("/party/" + party.host);
+    if (party) {
+        host = party.host;
+        sys.puts(fmsession.user + " has joined " + party.host + "'s party");
+    }
+    res.redirect("/party/" + host);
 });
 
 app.get("/party/:host", function(req, res) {
@@ -111,7 +114,7 @@ app.get("/party/:host", function(req, res) {
     if (party) {
         res.render("party", { locals: { fmsession: req.session.fmsession, party: party } } );
     }
-    res.render("noparty", { locals: { host: host } });
+    res.render("noparty", { locals: { fmsession: req.session.fmsession, host: host } });
 });
 
 app.get("/leave", function(req, res) {

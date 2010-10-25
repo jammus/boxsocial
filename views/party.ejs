@@ -31,7 +31,7 @@
                     <a href="/leave" data-role="button" data-icon="delete">Leave Party</a>
                     <%
                 }
-                else {
+                else if (fmsession && fmsession.user != party.host) {
                     %>
                     <a href="/join/<%= party.host %>" data-role="button" data-icon="add">Join Party</a>
                     <%
