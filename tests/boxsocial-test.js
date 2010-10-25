@@ -82,3 +82,35 @@ ntest.it("leaving removes guest from their party", function() {
     var party = this.boxsocial.findParty({ guest: this.guestOne });
     assert.ok(!party);
 });
+
+ntest.describe("To prevent circular references")
+ntest.before(function() {
+    this.lastfm = new Mocks.MockLastFm();
+    this.boxsocial = new BoxSocial(this.lastfm);
+    this.guestOne = new LastFmSession(this.lastfm, "guestOne", "sk1");
+    this.guestTwo = new LastFmSession(this.lastfm, "guestTwo", "sk2");
+    this.boxsocial.attend("host", this.guestOne);
+});
+
+ntest.after(function() {
+    cleanup(this.boxsocial);
+});
+
+ntest.it("guests can't be hosts", function() {
+    this.boxsocial.attend(this.guestOne.user, this.guestTwo);
+    var party = this.boxsocial.findParty({host: this.guestOne.user});
+    assert.ok(!party);
+});
+
+ntest.it("trying to join a guest's party instead joins the original host's", function() {
+    this.boxsocial.attend(this.guestOne.user, this.guestTwo);
+    var party = this.boxsocial.findParty({host: "host"});
+    assert.ok(party.hasGuest(this.guestTwo));
+});
+
+ntest.it("hosts can't be guests", function() {
+    var host = new LastFmSession(this.lastfm, "host", "skhost");
+    this.boxsocial.attend("newhost", host); 
+    var party = this.boxsocial.findParty({ guest: host });
+    assert.ok(!party);
+});
