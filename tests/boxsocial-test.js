@@ -45,6 +45,23 @@ ntest.it("a user joining their own party does not create party", function() {
     assert.equal(0, this.boxsocial.partyCount());
 });
 
+ntest.it("removes party from list when it finished", function() {
+    var guestOne = new LastFmSession(this.lastfm, "guestOne", "sk1");
+    var guestTwo = new LastFmSession(this.lastfm, "guestTwo", "sk2");
+    var guestThree = new LastFmSession(this.lastfm, "guestThree", "sk3");
+
+    this.boxsocial.attend("hostOne", guestOne);
+    this.boxsocial.attend("hostTwo", guestTwo);
+    this.boxsocial.attend("hostThree", guestThree);
+
+    var party = this.boxsocial.findParty({ host: "hostOne" });
+    party.finish();
+
+    assert.equal(2, this.boxsocial.parties.length);
+    party = this.boxsocial.findParty({ host: "hostOne" });
+    assert.ok(!party);
+});
+
 ntest.describe("a boxsocial with one party")
 ntest.before(function() {
     this.lastfm = new Mocks.MockLastFm();

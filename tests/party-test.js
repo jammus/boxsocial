@@ -127,3 +127,29 @@ ntest.describe("A party in full swing");
         assert.ok(!this.party.hasGuest(this.guestTwo));
         assert.equal(0, this.party.guests.length);
     });
+
+    ntest.it("emits finished event when all guests leave", function() {
+        var finished = false;
+        var finishedParty = null;
+        this.party.addListener("finished", function(party) {
+            finished = true;
+            finishedParty = party;
+        }); 
+        this.party.removeGuest(this.guestOne);
+        assert.ok(!finished);
+        this.party.removeGuest(this.guestTwo);
+        assert.ok(finished);
+        assert.equal(this.party, finishedParty);
+    });
+
+    ntest.it("emits finished event when finished", function() {
+        var finished = false;
+        var finishedParty = null;
+        this.party.addListener("finished", function(party) {
+            finished = true;
+            finishedParty = party;
+        }); 
+        this.party.finish();
+        assert.ok(finished);
+        assert.equal(this.party, finishedParty);
+    });
