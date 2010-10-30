@@ -103,7 +103,7 @@ ntest.it("leaving removes guest from their party", function() {
     assert.ok(!party);
 });
 
-ntest.describe("To prevent circular references")
+ntest.describe("Party rules")
 ntest.before(function() {
     this.lastfm = new Mocks.MockLastFm();
     this.boxsocial = new BoxSocial(this.lastfm);
@@ -140,4 +140,14 @@ ntest.it("users can't join their own party", function() {
     this.boxsocial.attend("host", host); 
     var party = this.boxsocial.findParty({ guest: host });
     assert.ok(!party);
+});
+
+ntest.it("guest is removed from first party when they join a second", function() {
+    this.boxsocial.attend("host", this.guestTwo);
+    this.boxsocial.attend("hostTwo", this.guestOne);
+
+    var partyOne = this.boxsocial.findParty({host: "host"});
+    var partyTwo = this.boxsocial.findParty({host: "hostTwo"});
+    
+    assert.ok(!partyOne.hasGuest(this.guestOne));
 });
