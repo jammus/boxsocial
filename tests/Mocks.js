@@ -1,4 +1,5 @@
 var LastFmNode = require('lastfm').LastFmNode;
+var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStream;
 
 var MockLastFm = function(){
     this.readRequests = 0;

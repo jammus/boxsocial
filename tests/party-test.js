@@ -3,13 +3,17 @@ var sys = require('sys');
 var ntest = require('ntest');
 var Party = require('../lib/party').Party;
 var LastFmNode = require('lastfm').LastFmNode;
+var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStream;
+var LastFmSession = require('lastfm/lastfm-session').LastFmSession;
 var FakeTracks = require('./TestData').FakeTracks;
 var LastFmMocks = require('./Mocks');
+var Gently = require('gently');
 
 ntest.describe("A new party");
     ntest.before(function() {
         this.mockLastFm = new LastFmMocks.MockLastFm();
         this.stream = new RecentTracksStream(this.mockLastFm, "hostuser");
+        this.stream.start = function() {}; // stub start to prevent tests hanging
         this.party = new Party(this.stream);
     });
 
@@ -43,9 +47,10 @@ ntest.describe("A new party");
     
     ntest.it("doesn't start streaming until guests arrive", function() {
         assert.ok(!this.stream.isStreaming);
+        var gently = new Gently();
+        gently.expect(this.stream, "start");
         var guest = new LastFmSession(this.mockLastFm, "guestuser1");
         this.party.addGuest(guest);
-        assert.ok(this.stream.isStreaming);
     });
 
 
@@ -53,6 +58,7 @@ ntest.describe("A party in full swing");
     ntest.before(function() {
         this.mockLastFm = new LastFmMocks.MockLastFm();
         this.stream = new RecentTracksStream(this.mockLastFm, "hostuser");
+        this.stream.start = function() {}; // stub start to prevent tests hanging
         this.party = new Party(this.stream);
         this.guestOne = new LastFmMocks.MockLastFmSession(this.mockLastFm, "guestuser1", "authed1");
         this.guestTwo = new LastFmMocks.MockLastFmSession(this.mockLastFm, "guestuser2", "authed2");
