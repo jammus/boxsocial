@@ -7,8 +7,8 @@ var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStrea
 var Mocks = require('./Mocks');
 
 function cleanup(boxsocial) {
-    for(var partyIndex in boxsocial.parties) {
-        var party = boxsocial.parties[partyIndex];
+    while(boxsocial.parties.length > 0) {
+        var party = boxsocial.parties[0];
         party.finish();
     }
 }
