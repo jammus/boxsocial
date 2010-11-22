@@ -15,6 +15,7 @@ ntest.describe("A new party");
         this.stream = new RecentTracksStream(this.lastfm, "hostuser");
         this.stream.start = function() {}; // stub start to prevent tests hanging
         this.party = new Party(this.lastfm, this.stream);
+        this.gently = new Gently();
     });
 
     ntest.after(function() {
@@ -53,10 +54,12 @@ ntest.describe("A new party");
         this.party.addGuest(guest);
     });
 
-
 ntest.describe("A party in full swing");
     ntest.before(function() {
         this.lastfm = new LastFmNode();
+        this.lastfm.info = function(type, options) {
+            options.success(options.track);
+        };
         this.stream = new RecentTracksStream(this.lastfm, "hostuser");
         this.stream.start = function() {}; // stub start to prevent tests hanging
         this.party = new Party(this.lastfm, this.stream);
@@ -176,4 +179,33 @@ ntest.describe("A party in full swing");
         this.party.finish();
         assert.ok(finished);
         assert.equal(this.party, finishedParty);
+    });
+
+ntest.describe("Party using extended track info");
+    ntest.before(function() {
+        this.lastfm = new LastFmNode();
+        this.stream = new RecentTracksStream(this.lastfm, "hostuser");
+        this.stream.start = function() {}; // stub start to prevent tests hanging
+        this.party = new Party(this.lastfm, this.stream);
+        this.gently = new Gently();
+    });
+
+    ntest.it("gets full track info when nowPlaying changes", function() {
+        this.gently.expect(this.lastfm, "info", function(type, options) {
+            assert.equal("track", type);
+            assert.equal(FakeTracks.RunToYourGrave, options.track);
+        });
+        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+    });
+
+    ntest.it("includes duration in nowPlaying updates", function() {
+        this.gently.expect(this.lastfm, "info", function(type, options) {
+            options.success({ name: "Run To Your Grave", duration: 232000 });
+        });
+        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+            assert.equal(232000, options.duration);
+        });
+        var guestOne = new LastFmSession(this.lastfm, "guestuser1", "authed1");
+        this.party.addGuest(guestOne);
+        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
