@@ -1,10 +1,6 @@
-var ntest = require('ntest');
-var assert = require('assert');
-var BoxSocial = require('../lib/boxsocial.js').BoxSocial;
-var LastFmNode = require('lastfm').LastFmNode;
-var LastFmSession = require('lastfm/lastfm-session').LastFmSession;
-var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStream;
-var Mocks = require('./Mocks');
+require("./common.js");
+var BoxSocial = require("../lib/boxsocial.js").BoxSocial;
+var Mocks = require("./Mocks");
 
 function cleanup(boxsocial) {
     while(boxsocial.parties.length > 0) {

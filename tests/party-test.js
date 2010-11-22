@@ -1,13 +1,8 @@
-var assert = require('assert');
-var sys = require('sys');
-var ntest = require('ntest');
+require("./common.js");
 var Party = require('../lib/party').Party;
-var LastFmNode = require('lastfm').LastFmNode;
 var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStream;
 var LastFmSession = require('lastfm/lastfm-session').LastFmSession;
 var FakeTracks = require('./TestData').FakeTracks;
-var LastFmMocks = require('./Mocks');
-var Gently = require('gently');
 
 ntest.describe("A new party");
     ntest.before(function() {
