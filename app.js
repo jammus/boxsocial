@@ -2,6 +2,7 @@ var http = require("http");
 var querystring = require("querystring");
 var BoxSocial = require("./lib/boxsocial").BoxSocial;
 var LastFmNode = require("lastfm").LastFmNode;
+var Guest = require("./lib/guest").Guest;
 var express = require("express");
 var sys = require("sys");
 
@@ -26,16 +27,16 @@ var boxsocial = new BoxSocial(lastfm);
 var parties = [];
 
 app.get("/", function(req, res) {
-    var fmsession = req.session.fmsession;
+    var guest = req.session.guest;
     var party = null;
-    if (fmsession) {
-        party = boxsocial.findParty({guest: fmsession});
+    if (guest) {
+        party = boxsocial.findParty({guest: guest});
     }
 
     res.render("index", {
         locals: {
             partyCount: parties.length,
-            fmsession: req.session.fmsession,
+            guest: req.session.guest,
             party: party
         }
     });
@@ -50,7 +51,8 @@ app.get("/callback", function(req, res) {
     });
 
     fmsession.addListener("authorised", function(session) {
-        req.session.fmsession = fmsession;
+        var guest = new Guest(lastfm, session);
+        req.session.guest = guest;
         var redirectUrl = req.session.redirectUrl ? req.session.redirectUrl : "/";
         req.session.redirectUrl = null;
         res.redirect(redirectUrl);
@@ -70,8 +72,8 @@ app.get("/login", function(req, res) {
 });
 
 function checkLoggedIn(req, res, redirectUrl) {
-    var fmsession = req.session.fmsession;
-    if (!fmsession) {
+    var guest = req.session.guest;
+    if (!guest) {
         req.session.redirectUrl = redirectUrl;
         res.redirect("/login");
     }
@@ -79,7 +81,7 @@ function checkLoggedIn(req, res, redirectUrl) {
 
 app.get("/join", function(req, res) {
     checkLoggedIn(req, res, "/join");
-    res.render("join", { locals: { fmsession: req.session.fmsession } });        
+    res.render("join", { locals: { guest: req.session.guest } });        
 });
 
 app.post("/join", function(req, res) {
@@ -97,12 +99,12 @@ app.get("/join/:host", function(req, res) {
 app.post("/join/:host", function(req, res) {
     var host = req.params.host;
     checkLoggedIn(req, res, "/join/" + host);
-    var fmsession = req.session.fmsession;
-    boxsocial.attend(host, fmsession);
-    var party = boxsocial.findParty({guest: fmsession});
+    var guest = req.session.guest;
+    boxsocial.attend(host, guest);
+    var party = boxsocial.findParty({guest: guest});
     if (party) {
         host = party.host;
-        sys.puts(fmsession.user + " has joined " + party.host + "'s party");
+        sys.puts(guest.session.user + " has joined " + party.host + "'s party");
     }
     res.redirect("/party/" + host);
 });
@@ -112,16 +114,16 @@ app.get("/party/:host", function(req, res) {
     var party = boxsocial.findParty({host: host});    
 
     if (party) {
-        res.render("party", { locals: { fmsession: req.session.fmsession, party: party } } );
+        res.render("party", { locals: { guest: req.session.guest, party: party } } );
     }
-    res.render("noparty", { locals: { fmsession: req.session.fmsession, host: host } });
+    res.render("noparty", { locals: { guest: req.session.guest, host: host } });
 });
 
 app.get("/leave", function(req, res) {
-    var fmsession = req.session.fmsession;
-    if (fmsession) {
-        boxsocial.leave(fmsession);
-        sys.puts(fmsession.user + " has left the party.");
+    var guest = req.session.guest;
+    if (guest) {
+        boxsocial.leave(guest);
+        sys.puts(guest.session.user + " has left the party.");
     }
     res.redirect("/");
 });

@@ -46,3 +46,26 @@ describe("A guest created with an authorised session")
         assert.equal("username", guest.user.name);
         assert.equal("User Name", guest.user.realname);
     });
+
+describe("A guest created with an unauthorised session")
+    before(function() {
+        this.lastfm = new LastFmNode();
+        this.session = new LastFmSession(this.lastfm);
+        this.gently = new Gently();
+    });
+
+    it("does not get extended info", function() {
+        this.gently.expect(this.lastfm, "info", 0);
+        new Guest(this.lastfm, this.session);
+    });
+
+    it("waits until authorised before getting extended user info", function() {
+        this.gently.expect(this.lastfm, "info", function(type, options) {
+            options.success({ name: "username", realname: "User Name" });
+        });
+        var guest = new Guest(this.lastfm, this.session);
+        this.session.emit("authorised", new LastFmSession(this.lastfm, "username", "sessionkey"));
+        assert.ok(guest.user.name);
+        assert.equal("username", guest.user.name);
+        assert.equal("User Name", guest.user.realname);
+    });

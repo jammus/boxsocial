@@ -2,9 +2,9 @@
     <%- partial("header") %>
     <div data-role="content">
         <% 
-        if (fmsession) {
+        if (guest) {
             %>
-            <p>Hello <b><%= fmsession.user %></b>.</p>
+            <p>Hello <b><%= guest.session.user %></b>.</p>
             <%
         }
         %>

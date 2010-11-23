@@ -12,6 +12,9 @@ MockLastFm.prototype.stream = function(host) {
     return new RecentTracksStream(this, host);
 };
 
+MockLastFm.prototype.info = function() {};
+
+
 exports.MockLastFm = MockLastFm;
 
 var MockLastFmSession = function(lastfm, user, key){

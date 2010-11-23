@@ -4,11 +4,11 @@
 
 .nowPlaying {
     margin-bottom:10px;
-    height:70px;
+    height:100px;
 }
 
 .nowPlaying img {
-    width:64px;
+    width:90px;
     float:right;
     padding-right:5px;
 }

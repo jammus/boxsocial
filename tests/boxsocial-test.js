@@ -1,6 +1,7 @@
 require("./common.js");
-var BoxSocial = require("../lib/boxsocial.js").BoxSocial;
+var BoxSocial = require("../lib/boxsocial").BoxSocial;
 var Mocks = require("./Mocks");
+var Guest = require("../lib/guest").Guest;
 
 function cleanup(boxsocial) {
     while(boxsocial.parties.length > 0) {
@@ -9,44 +10,48 @@ function cleanup(boxsocial) {
     }
 }
 
-ntest.describe("a new boxsocial")
-ntest.before(function() {
+function createGuest(lastfm, user, key) {
+    return new Guest(lastfm, new LastFmSession(lastfm, user, key));
+}
+
+describe("a new boxsocial")
+before(function() {
     this.lastfm = new Mocks.MockLastFm();
     this.boxsocial = new BoxSocial(this.lastfm);
 });
 
-ntest.after(function() {
+after(function() {
     cleanup(this.boxsocial);
 });
 
-ntest.it("has no parties", function() {
+it("has no parties", function() {
     assert.equal(0, this.boxsocial.partyCount());    
 });
 
-ntest.it("attending a new party increases party count", function() {
-    var guest = new LastFmSession(this.lastfm, "guest", "sk");
+it("attending a new party increases party count", function() {
+    var guest = createGuest(this.lastfm, "guest");
     this.boxsocial.attend("hostuser", guest);
     assert.equal(1, this.boxsocial.partyCount());    
 });
 
-ntest.it("attending an existing party does not increase party count", function() {
-    var guestOne = new LastFmSession(this.lastfm, "guestOne", "sk1");
-    var guestTwo = new LastFmSession(this.lastfm, "guestTwo", "sk2");
+it("attending an existing party does not increase party count", function() {
+    var guestOne = createGuest(this.lastfm, "guestOne", "one");
+    var guestTwo = createGuest(this.lastfm, "guestTwo", "two");
     this.boxsocial.attend("hostuser", guestOne);
     this.boxsocial.attend("hostuser", guestTwo);
     assert.equal(1, this.boxsocial.partyCount());
 });
 
-ntest.it("a user joining their own party does not create party", function() {
-    var host = new LastFmSession(this.lastfm, "host", "skhost");
+it("a user joining their own party does not create party", function() {
+    var host = createGuest(this.lastfm, "host", "skhost");
     this.boxsocial.attend("host", host);
     assert.equal(0, this.boxsocial.partyCount());
 });
 
-ntest.it("removes party from list when it finished", function() {
-    var guestOne = new LastFmSession(this.lastfm, "guestOne", "sk1");
-    var guestTwo = new LastFmSession(this.lastfm, "guestTwo", "sk2");
-    var guestThree = new LastFmSession(this.lastfm, "guestThree", "sk3");
+it("removes party from list when it finished", function() {
+    var guestOne = createGuest(this.lastfm, "guestOne", "sk1");
+    var guestTwo = createGuest(this.lastfm, "guestTwo", "sk2");
+    var guestThree = createGuest(this.lastfm, "guestThree", "sk3");
 
     this.boxsocial.attend("hostOne", guestOne);
     this.boxsocial.attend("hostTwo", guestTwo);
@@ -60,87 +65,87 @@ ntest.it("removes party from list when it finished", function() {
     assert.ok(!party);
 });
 
-ntest.describe("a boxsocial with one party")
-ntest.before(function() {
+describe("a boxsocial with one party")
+before(function() {
     this.lastfm = new Mocks.MockLastFm();
     this.boxsocial = new BoxSocial(this.lastfm);
-    this.guestOne = new LastFmSession(this.lastfm, "guestOne", "sk1");
+    this.guestOne = createGuest(this.lastfm, "guestOne", "sk1");
     this.boxsocial.attend("host", this.guestOne);
 });
 
-ntest.after(function() {
+after(function() {
     cleanup(this.boxsocial);
 });
 
-ntest.it("returns nothing when searched for unknown host", function() {
+it("returns nothing when searched for unknown host", function() {
     var party = this.boxsocial.findParty({ host: "unknownhost" });
     assert.ok(!party);
 });
 
-ntest.it("returns party when searched by host", function() {
+it("returns party when searched by host", function() {
     var party = this.boxsocial.findParty({ host: "host" });
     assert.ok(party);
     assert.equal("host", party.host);
 });
 
-ntest.it("returns nothing when searching for unknown guest", function() {
-    var unknown = new LastFmSession(this.lastfm, "unknownguest", "huh");
+it("returns nothing when searching for unknown guest", function() {
+    var unknown = createGuest(this.lastfm, "unknownguest", "huh");
     var party = this.boxsocial.findParty({ guest: unknown});
     assert.ok(!party);
 });
 
-ntest.it("returns party when searching for known guest", function() {
+it("returns party when searching for known guest", function() {
     var party = this.boxsocial.findParty({ guest: this.guestOne });
     assert.ok(party);
     assert.equal("host", party.host);
 });
 
-ntest.it("leaving removes guest from their party", function() {
+it("leaving removes guest from their party", function() {
     this.boxsocial.leave(this.guestOne);
     var party = this.boxsocial.findParty({ guest: this.guestOne });
     assert.ok(!party);
 });
 
-ntest.describe("Party rules")
-ntest.before(function() {
+describe("Party rules")
+before(function() {
     this.lastfm = new Mocks.MockLastFm();
     this.boxsocial = new BoxSocial(this.lastfm);
-    this.guestOne = new LastFmSession(this.lastfm, "guestOne", "sk1");
-    this.guestTwo = new LastFmSession(this.lastfm, "guestTwo", "sk2");
+    this.guestOne = createGuest(this.lastfm, "guestOne", "auth1");
+    this.guestTwo = createGuest(this.lastfm, "guestTwo", "auth2");
     this.boxsocial.attend("host", this.guestOne);
 });
 
-ntest.after(function() {
+after(function() {
     cleanup(this.boxsocial);
 });
 
-ntest.it("guests can't be hosts", function() {
-    this.boxsocial.attend(this.guestOne.user, this.guestTwo);
-    var party = this.boxsocial.findParty({host: this.guestOne.user});
+it("guests can't be hosts", function() {
+    this.boxsocial.attend(this.guestOne.session.user, this.guestTwo);
+    var party = this.boxsocial.findParty({host: this.guestOne.session.user});
     assert.ok(!party);
 });
 
-ntest.it("trying to join a guest's party instead joins the original host's", function() {
-    this.boxsocial.attend(this.guestOne.user, this.guestTwo);
+it("trying to join a guest's party instead joins the original host's", function() {
+    this.boxsocial.attend(this.guestOne.session.user, this.guestTwo);
     var party = this.boxsocial.findParty({host: "host"});
     assert.ok(party.hasGuest(this.guestTwo));
 });
 
-ntest.it("hosts can't be guests", function() {
-    var host = new LastFmSession(this.lastfm, "host", "skhost");
+it("hosts can't be guests", function() {
+    var host = createGuest(this.lastfm, "host", "skhost");
     this.boxsocial.attend("newhost", host); 
     var party = this.boxsocial.findParty({ guest: host });
     assert.ok(!party);
 });
 
-ntest.it("users can't join their own party", function() {
-    var host = new LastFmSession(this.lastfm, "host", "skhost");
+it("users can't join their own party", function() {
+    var host = createGuest(this.lastfm, "host", "skhost");
     this.boxsocial.attend("host", host); 
     var party = this.boxsocial.findParty({ guest: host });
     assert.ok(!party);
 });
 
-ntest.it("guest is removed from first party when they join a second", function() {
+it("guest is removed from first party when they join a second", function() {
     this.boxsocial.attend("host", this.guestTwo);
     this.boxsocial.attend("hostTwo", this.guestOne);
 

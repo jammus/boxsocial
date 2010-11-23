@@ -8,9 +8,9 @@
             if (party.nowPlaying) {
                 %>
                     <%
-                    if (party.nowPlaying.image[1]) {
+                    if (party.nowPlaying.image[2]["#text"]) {
                         %>
-                        <img src="<%= party.nowPlaying.image[1]["#text"] %>" />
+                        <img src="<%= party.nowPlaying.image[2]["#text"] %>" />
                         <%
                     }
                     %>
@@ -26,12 +26,12 @@
             </div>
             <div class="toolbar">
                 <%
-                if (fmsession && party.hasGuest(fmsession)) {
+                if (guest && party.hasGuest(guest)) {
                     %>
                     <a href="/leave" data-role="button" data-icon="delete">Leave Party</a>
                     <%
                 }
-                else if (fmsession && fmsession.user != party.host) {
+                else if (guest && guest.session.user != party.host) {
                     %>
                     <a href="/join/<%= party.host %>" data-role="button" data-icon="add">Join Party</a>
                     <%
@@ -49,7 +49,16 @@
             }
             for (guestIndex in party.guests) {
                 %>
-                <li><a href="http://www.last.fm/user/<%=party.guests[guestIndex].user%>"><%= party.guests[guestIndex].user %></a></li>
+                <li>
+                    <%
+                    if (party.guests[guestIndex].user.image[2]["#text"]) {
+                        %>
+                        <img src="http://getthumbsup.com/88b65e?url=<%= party.guests[guestIndex].user.image[2]["#text"].replace("http://", "")%>&amp;h=80&amp;w=80" />
+                        <%
+                    }
+                    %>
+                    <a href="http://www.last.fm/user/<%=party.guests[guestIndex].session.user%>"><%= party.guests[guestIndex].session.user %></a>
+                </li>
                 <%
             }
             %>

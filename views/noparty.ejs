@@ -2,7 +2,7 @@
     <%- partial("header-refresh") %>
     <div data-role="content">
         <%
-        if (fmsession && fmsession.user == host) {
+        if (guest && guest.session.user == host) {
             %>
             <h2>Waiting for guests to arrive.</h2>
             <p>This is your party. Once guests arrive they'll appear here.</p>
