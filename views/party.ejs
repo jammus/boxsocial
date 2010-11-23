@@ -31,9 +31,9 @@
                     <a href="/leave" data-role="button" data-icon="delete">Leave Party</a>
                     <%
                 }
-                else if (guest && guest.session.user != party.host) {
+                else if (!guest || (guest && guest.session.user != host)) {
                     %>
-                    <a href="/join/<%= party.host %>" data-role="button" data-icon="add">Join Party</a>
+                    <a href="/join/<%= host %>" rel="external" data-role="button" data-icon="add">Join Party</a>
                     <%
                 }
                 %>
