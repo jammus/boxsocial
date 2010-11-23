@@ -114,7 +114,7 @@ app.get("/party/:host", function(req, res) {
     var party = boxsocial.findParty({host: host});    
 
     if (party) {
-        res.render("party", { locals: { guest: req.session.guest, party: party } } );
+        res.render("party", { locals: { guest: req.session.guest, party: party, host: host } } );
     }
     res.render("noparty", { locals: { guest: req.session.guest, host: host } });
 });
