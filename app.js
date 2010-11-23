@@ -24,8 +24,6 @@ app.set("view engine", "ejs");
 
 var boxsocial = new BoxSocial(lastfm);
 
-var parties = [];
-
 app.get("/", function(req, res) {
     var guest = req.session.guest;
     var party = null;
@@ -35,7 +33,6 @@ app.get("/", function(req, res) {
 
     res.render("index", {
         locals: {
-            partyCount: parties.length,
             guest: req.session.guest,
             party: party
         }
@@ -46,11 +43,11 @@ app.get("/callback", function(req, res) {
     var token = req.param("token");
     var fmsession = lastfm.session();
 
-    fmsession.addListener("error", function(error) {
+    fmsession.on("error", function(error) {
         res.send("Error authorising - " + error.message);
     });
 
-    fmsession.addListener("authorised", function(session) {
+    fmsession.on("authorised", function(session) {
         var guest = new Guest(lastfm, session);
         req.session.guest = guest;
         var redirectUrl = req.session.redirectUrl ? req.session.redirectUrl : "/";

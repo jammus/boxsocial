@@ -90,7 +90,7 @@ describe("A party in full swing");
     });
 
     it("shares now playing with new guests", function() {
-        this.lastfm.update = function() {};
+        this.gently.expect(this.lastfm, "update", 2);
         this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
         this.gently.expect(this.lastfm, "update", function(method, session, options) {
           assert.equal("nowplaying", method);
@@ -111,6 +111,18 @@ describe("A party in full swing");
           assert.equal("guestuser2", session.user);
           assert.equal("Run To Your Grave", options.track.name);
         });
+        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+    });
+
+    it("doesn't share nowPlaying updates with guests after they leave", function() {
+        this.gently.expect(this.lastfm, "update", 1);
+        this.party.removeGuest(this.guestTwo);
+        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+    });
+
+    it("doesn't share scrobble updates with guests after they leave", function() {
+        this.gently.expect(this.lastfm, "update", 1);
+        this.party.removeGuest(this.guestTwo);
         this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
     });
 
