@@ -155,8 +155,8 @@ it("guest is removed from first party when they join a second", function() {
     assert.ok(!partyOne.hasGuest(this.guestOne));
 });
 
-describe("a bug")
-    it("stops updating a guest once they have left", function() {
+describe("boxsocial parties")
+    it("stop updating a guest once they have left", function() {
         var lastfm = new Mocks.MockLastFm();
         var boxsocial = new BoxSocial(lastfm);
         var guestOne = createGuest(lastfm, "guestOne", "auth1");
@@ -170,4 +170,3 @@ describe("a bug")
         party.stream.emit("scrobbled", { name: "track name" });
         cleanup(boxsocial);
     });
-
