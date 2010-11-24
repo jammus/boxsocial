@@ -2,6 +2,7 @@ require("./common.js");
 var BoxSocial = require("../lib/boxsocial").BoxSocial;
 var Mocks = require("./Mocks");
 var Guest = require("../lib/guest").Guest;
+var FakeTracks = require('./TestData').FakeTracks;
 
 function cleanup(boxsocial) {
     while(boxsocial.parties.length > 0) {
@@ -32,6 +33,12 @@ it("attending a new party increases party count", function() {
     var guest = createGuest(this.lastfm, "guest");
     this.boxsocial.attend("hostuser", guest);
     assert.equal(1, this.boxsocial.partyCount());    
+});
+
+it("attending a party returns party", function() {
+    var guest = createGuest(this.lastfm, "guest");
+    var party = this.boxsocial.attend("host", guest);
+    assert.equal("host", party.host);
 });
 
 it("attending an existing party does not increase party count", function() {
@@ -169,4 +176,36 @@ describe("boxsocial parties")
         gently.expect(lastfm, "update", 1);
         party.stream.emit("scrobbled", { name: "track name" });
         cleanup(boxsocial);
+    });
+
+describe("boxsocial events")
+    before(function() {
+        var lastfm = new Mocks.MockLastFm();
+        this.boxsocial = new BoxSocial(lastfm);
+        this.guestOne = createGuest(lastfm, "guestOne", "auth");
+        this.gently = new Gently();
+    });
+
+    after(function() {
+        cleanup(this.boxsocial);
+    });
+
+    it("bubbles up trackUpdated events", function() {
+        var party = this.boxsocial.attend("host", this.guestOne);
+        this.gently.expect(this.boxsocial, "emit", function(event, party, track) {
+            assert.equal("trackUpdated", event);
+            assert.equal("host", party.host);
+            assert.equal("Run To Your Grave", track.name);
+        });
+        party.emit("trackUpdated", FakeTracks.RunToYourGrave)
+    });
+
+    it("bubbles up guestsUpdated events", function() {
+        var party = this.boxsocial.attend("host", this.guestOne);
+        this.gently.expect(this.boxsocial, "emit", function(event, party, guests) {
+            assert.equal("guestsUpdated", event);
+            assert.equal("host", party.host);
+            assert.equal("guestOne", guests[0].session.user);
+        });
+        party.emit("guestsUpdated", party.guests)
     });
