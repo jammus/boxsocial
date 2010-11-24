@@ -210,6 +210,7 @@ describe("Party using extended track info");
         this.stream = new RecentTracksStream(this.lastfm, "hostuser");
         this.stream.start = function() {}; // stub start to prevent tests hanging
         this.party = new Party(this.lastfm, this.stream);
+
         this.gently = new Gently();
     });
 
@@ -231,4 +232,56 @@ describe("Party using extended track info");
         var guestOne = createGuest(this.lastfm, "guestuser1");
         this.party.addGuest(guestOne);
         this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+    });
+
+describe("Party events")
+    before(function() {
+        this.lastfm = new LastFmNode();
+        this.stream = new RecentTracksStream(this.lastfm, "hostuser");
+        this.stream.start = function() {}; // stub start to prevent tests hanging
+        this.party = new Party(this.lastfm, this.stream);
+        this.firstGuest = createGuest(this.lastfm, "alice");
+        this.party.addGuest(this.firstGuest);
+        this.gently = new Gently();
+    });
+
+    it("emits guestsUpdated when guest arrives", function() {
+        this.gently.expect(this.party, "emit", function(event, guests) {
+            assert.equal("guestsUpdated", event);
+            assert.equal(2, guests.length);
+            assert.equal("alice", guests[0].session.user);
+            assert.equal("steven", guests[1].session.user);
+        });
+        var guest = createGuest(this.lastfm, "steven");
+        this.party.addGuest(guest);
+    });
+
+    it("emits guestsUpdated when guest leaves", function() {
+        var that = this;
+        this.gently.expect(this.party, "emit", function(event, guests) {
+            assert.equal("guestsUpdated", event);
+            assert.equal(0, guests.length);
+            that.gently.restore(this, "emit");
+        });
+        this.party.removeGuest(this.firstGuest);
+    });
+
+    it("emits trackUpdated when stream's nowPlaying updates", function() {
+        this.lastfm.info = function() {};
+        this.lastfm.update = function() {};
+        this.gently.expect(this.party, "emit", function(event, track) {
+            assert.equal("trackUpdated", event);
+            assert.equal("Run To Your Grave", track.name);
+        });
+        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+    });
+
+    it("emits trackUpdated when stream stops playing", function() {
+        this.lastfm.info = function() {};
+        this.lastfm.update = function() {};
+        this.gently.expect(this.party, "emit", function(event, track) {
+            assert.equal("trackUpdated", event);
+            assert.ok(!track);
+        });
+        this.stream.emit("stoppedPlaying");
     });
