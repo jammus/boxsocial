@@ -1,10 +1,11 @@
 var querystring = require("querystring");
+var Guest = require("../lib/guest").Guest;
 
 module.exports = function(lastfm, boxsocial, config) {
     return {
         index: {
             get: function(req, res) {
-                var callbackUrl = "http://" + (config.port != "80" ? ":" + config.port : "") + "/callback";
+                var callbackUrl = "http://" + config.host + (config.port != "80" ? ":" + config.port : "") + "/callback";
 
                 var params = { 
                     api_key: lastfm.params.api_key,
