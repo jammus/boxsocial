@@ -193,17 +193,6 @@ describe("A party in full swing");
         assert.equal(this.party, finishedParty);
     });
 
-    it("removes stream listeners when party is finished", function() {
-        var that = this;
-        this.gently.expect(this.party, "emit", function(event) {
-            assert.equal("finished", event);
-            assert.equal(0, that.stream.listeners("scrobbled").length);
-            assert.equal(0, that.stream.listeners("nowPlaying").length);
-            assert.equal(0, that.stream.listeners("stoppedPlaying").length);
-        });
-        this.party.finish();
-    });
-
 describe("Party using extended track info");
     before(function() {
         this.lastfm = new LastFmNode();
@@ -284,4 +273,15 @@ describe("Party events")
             assert.ok(!track);
         });
         this.stream.emit("stoppedPlaying");
+    });
+
+    it("removes stream listeners when party is finished", function() {
+        var that = this;
+        this.gently.expect(this.party, "emit", function(event) {
+            assert.equal("finished", event);
+            assert.equal(0, that.stream.listeners("scrobbled").length);
+            assert.equal(0, that.stream.listeners("nowPlaying").length);
+            assert.equal(0, that.stream.listeners("stoppedPlaying").length);
+        });
+        this.party.finish();
     });
