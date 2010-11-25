@@ -1,5 +1,6 @@
 var LastFmNode = require('lastfm').LastFmNode;
 var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStream;
+var EventEmitter = require("events").EventEmitter;
 
 var MockLastFm = function(){
     this.readRequests = 0;
@@ -38,3 +39,15 @@ MockLastFmSession.prototype.update = function(method, track) {
 }
 
 exports.MockLastFmSession = MockLastFmSession;
+
+var MockClient = function(options) {
+    var that = this;
+    EventEmitter.call(this);
+    Object.keys(options).forEach(function(key) {
+        that[key] = options[key];
+    });
+}
+
+MockClient.prototype = Object.create(EventEmitter.prototype);
+
+exports.MockClient = MockClient;
