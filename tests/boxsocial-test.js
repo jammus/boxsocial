@@ -209,3 +209,13 @@ describe("boxsocial events")
         });
         party.emit("guestsUpdated", party.guests)
     });
+
+    it("bubbles up error events", function() {
+        var party = this.boxsocial.attend("host", this.guestOne);
+        var message = "Party error message";
+        this.gently.expect(this.boxsocial, "emit", function(event, error) {
+            assert.equal("error", event);
+            assert.equal(message, error.message);
+        });
+        party.emit("error", new Error(message));
+    });

@@ -90,12 +90,13 @@ describe("A party in full swing");
     });
 
     it("shares now playing with new guests", function() {
-        this.gently.expect(this.lastfm, "update", 2);
-        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        this.party.nowPlaying = FakeTracks.RunToYourGrave;
+        this.party.nowPlayingInfo = FakeTracks.RunToYourGrave;
         this.gently.expect(this.lastfm, "update", function(method, session, options) {
           assert.equal("nowplaying", method);
           assert.equal("guestthree", session.user);
           assert.equal("Run To Your Grave", options.track.name);
+          assert.equal(232, options.duration);
         });
         this.party.addGuest(this.guestThree);
     });
@@ -211,6 +212,20 @@ describe("Party using extended track info");
         this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 
+    it("handles track info errors", function() {
+        this.lastfm.info = function() {};
+        var guestOne = createGuest(this.lastfm, "guestuser1", "auth1");
+        this.party.addGuest(guestOne);
+        this.gently.expect(this.lastfm, "info", function(type, options) {
+            options.error();
+        });
+        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+            assert.equal("nowplaying", method);
+            assert.equal(null, options.duration);
+        });
+        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+    });
+
     it("includes duration (in seconds) in nowPlaying updates", function() {
         this.gently.expect(this.lastfm, "info", function(type, options) {
             options.success({ name: "Run To Your Grave", duration: 232000 });
@@ -284,4 +299,20 @@ describe("Party events")
             assert.equal(0, that.stream.listeners("stoppedPlaying").length);
         });
         this.party.finish();
+    });
+
+describe("error handling")
+    it("bubbles update errors", function() {
+        var lastfm = new LastFmNode();
+        var stream = lastfm.stream("someuser");
+        var party = new Party(lastfm, stream);
+        var gently = new Gently();
+        gently.expect(lastfm, "update", function(method, session, options) {
+            options.error();
+        });
+        gently.expect(party, "emit", function(event, error) {
+            assert.equal("error", event);
+            assert.equal("Error updating nowplaying for username", error.message);
+        });
+        party._updateGuest("nowplaying", { session: { user: "username" } }, {});
     });

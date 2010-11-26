@@ -22,6 +22,9 @@ var lastfm = new LastFmNode({
 });
 
 var boxsocial = new BoxSocial(lastfm);
+boxsocial.on("error", function(error) {
+    console.log("Error: " + error.message);
+});
 
 var homecontroller = require("./controllers/homecontroller")(lastfm, boxsocial, config);
 var logincontroller = require("./controllers/logincontroller")(lastfm, boxsocial, config);
