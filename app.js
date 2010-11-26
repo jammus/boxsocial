@@ -25,6 +25,7 @@ var boxsocial = new BoxSocial(lastfm);
 var homecontroller = require("./controllers/homecontroller")(lastfm, boxsocial, config);
 var logincontroller = require("./controllers/logincontroller")(lastfm, boxsocial, config);
 var partycontroller = require("./controllers/partycontroller")(lastfm, boxsocial, config);
+var errorcontroller = require("./controllers/errorcontroller")();
 
 app.get("/", homecontroller.index.get);
 app.get("/callback", logincontroller.callback.get);
@@ -37,6 +38,7 @@ app.post("/join/:host", partycontroller.join.post);
 app.get("/party/:host", partycontroller.view.get);
 app.get("/leave", partycontroller.leave.get);
 app.get("/:page", homecontroller.content.get);
+app.error(errorcontroller.error);
 
 var channels = new Channels(boxsocial);
 var socket = io.listen(app);
