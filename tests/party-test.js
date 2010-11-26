@@ -211,12 +211,12 @@ describe("Party using extended track info");
         this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 
-    it("includes duration in nowPlaying updates", function() {
+    it("includes duration (in seconds) in nowPlaying updates", function() {
         this.gently.expect(this.lastfm, "info", function(type, options) {
             options.success({ name: "Run To Your Grave", duration: 232000 });
         });
         this.gently.expect(this.lastfm, "update", function(method, session, options) {
-            assert.equal(232000, options.duration);
+            assert.equal(232, options.duration);
         });
         var guestOne = createGuest(this.lastfm, "guestuser1");
         this.party.addGuest(guestOne);
