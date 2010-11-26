@@ -5,6 +5,7 @@ var config = require("./config");
 var BoxSocial = require("./lib/boxsocial").BoxSocial;
 var LastFmNode = require("lastfm").LastFmNode;
 var Channels = require("./lib/channels").Channels;
+var ejs = require("ejs");
 
 var app = express.createServer();
 app.use(express.cookieDecoder());
