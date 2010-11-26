@@ -1,8 +1,10 @@
 var http = require("http");
 var express = require("express");
+var io = require("socket.io");
 var config = require("./config");
 var BoxSocial = require("./lib/boxsocial").BoxSocial;
 var LastFmNode = require("lastfm").LastFmNode;
+var Channels = require("./lib/channels").Channels;
 
 var app = express.createServer();
 app.use(express.cookieDecoder());
@@ -35,5 +37,13 @@ app.post("/join/:host", partycontroller.join.post);
 app.get("/party/:host", partycontroller.view.get);
 app.get("/leave", partycontroller.leave.get);
 app.get("/:page", homecontroller.content.get);
+
+var channels = new Channels(boxsocial);
+var socket = io.listen(app);
+socket.on("clientMessage", function(message, client) {
+    if (message.subscribe) {
+        channels.subscribe(message.subscribe, client);
+    }
+});
 
 module.exports = app;

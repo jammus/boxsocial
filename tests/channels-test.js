@@ -61,7 +61,16 @@ describe("boxsocial event")
 
     it("trackUpdated sends track to channel", function() {
         this.gently.expect(this.channel, "publish", function(message) {
-            assert.equal(message.track, FakeTracks.RunToYourGrave);
+            assert.ok(message.nowPlaying);
+            assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
         });
         this.boxsocial.emit("trackUpdated", this.party, FakeTracks.RunToYourGrave);
+    });
+
+    it("trackUpdated can send null track to channel", function() {
+        this.gently.expect(this.channel, "publish", function(message) {
+            assert.ok(message.nowPlaying);
+            assert.ok(!message.nowPlaying.track);
+        });
+        this.boxsocial.emit("trackUpdated", this.party);
     });
