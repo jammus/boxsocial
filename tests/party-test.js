@@ -302,6 +302,7 @@ describe("Party events")
             assert.equal(0, that.stream.listeners("scrobbled").length);
             assert.equal(0, that.stream.listeners("nowPlaying").length);
             assert.equal(0, that.stream.listeners("stoppedPlaying").length);
+            assert.equal(0, that.stream.listeners("error").length);
         });
         this.party.finish();
     });
@@ -320,4 +321,17 @@ describe("error handling")
             assert.equal("Error updating nowplaying for username", error.message);
         });
         party._updateGuest("nowplaying", { session: { user: "username" } }, {});
+    });
+
+    it("bubbles stream errors", function() {
+        var lastfm = new LastFmNode();
+        var stream = lastfm.stream("someuser");
+        var party = new Party(lastfm, stream);
+        var gently = new Gently();
+        var message = "Error message";
+        gently.expect(party, "emit", function(event, error) {
+            assert.equal("error", event);
+            assert.equal(message, error.message);
+        });
+        stream.emit("error", new Error(message));
     });
