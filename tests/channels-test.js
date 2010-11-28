@@ -31,6 +31,12 @@ describe("a new channels instance")
         assert.equal(1, this.channels.count());
     });
 
+    it("channel names are case insensitive", function() {
+        this.channels.subscribe("hostnAme", this.clientOne);
+        this.channels.subscribe("hoSTName", this.clientTwo);
+        assert.equal(1, this.channels.count());
+    });
+
     it("subscribe returns the created channel", function() {
         var channel = this.channels.subscribe("hostname", this.clientOne);
         assert.equal("hostname", channel.name);

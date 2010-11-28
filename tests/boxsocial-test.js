@@ -49,6 +49,14 @@ describe("a new boxsocial")
         assert.equal(1, this.boxsocial.partyCount());
     });
 
+    it("party hosts are case insensitive", function() {
+        var guestOne = createGuest(this.lastfm, "guestOne", "one");
+        var guestTwo = createGuest(this.lastfm, "guestTwo", "two");
+        this.boxsocial.attend("hostuser", guestOne);
+        this.boxsocial.attend("hosTuSEr", guestTwo);
+        assert.equal(1, this.boxsocial.partyCount());
+    });
+
     it("a user joining their own party does not create party", function() {
         var host = createGuest(this.lastfm, "host", "skhost");
         this.boxsocial.attend("host", host);
@@ -92,6 +100,11 @@ describe("a boxsocial with one party")
     it("returns party when searched by host", function() {
         var party = this.boxsocial.findParty({ host: "host" });
         assert.ok(party);
+        assert.equal("host", party.host);
+    });
+
+    it("host search is case insensitive", function() {
+        var party = this.boxsocial.findParty({ host: "hOSt" });
         assert.equal("host", party.host);
     });
 

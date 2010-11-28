@@ -144,6 +144,11 @@ describe("A party in full swing");
         assert.ok(this.party.hasGuest(this.guestOne));
     });
 
+    it("hasGuest is case insensitive", function() {
+        var guEStonE = createGuest(this.lastfm, "guEStuSer1", "autH1");
+        assert.ok(this.party.hasGuest(guEStonE));
+    });
+
     it("removeGuest takes guest off guest list", function() {
         this.party.removeGuest(this.guestOne);
         assert.ok(!this.party.hasGuest(this.guestOne));
