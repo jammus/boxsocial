@@ -1,4 +1,3 @@
-var http = require("http");
 var express = require("express");
 var io = require("socket.io");
 var config = require("./config");
@@ -31,18 +30,19 @@ var logincontroller = require("./controllers/logincontroller")(lastfm, boxsocial
 var partycontroller = require("./controllers/partycontroller")(lastfm, boxsocial, config);
 var errorcontroller = require("./controllers/errorcontroller")();
 
-app.get("/", homecontroller.index.get);
-app.get("/callback", logincontroller.callback.get);
-app.get("/login", logincontroller.index.get);
-app.get("/parties", partycontroller.index.get);
-app.get("/join", partycontroller.chose.get);
-app.post("/join", partycontroller.chose.post);
-app.get("/join/:host", partycontroller.join.get);
-app.post("/join/:host", partycontroller.join.post);
-app.get("/party/:host", partycontroller.view.get);
-app.get("/leave", partycontroller.leave.get);
-app.get("/:page", homecontroller.content.get);
-app.error(errorcontroller.error);
+var routes = require("./routes");
+routes.register(app, [
+    ["/", homecontroller.index],
+    ["/login", logincontroller.index]
+    ["/callback", logincontroller.callback],
+    ["/parties", partycontroller.index],
+    ["/join", partycontroller.chose],
+    ["/join/:host", partycontroller.join],
+    ["/party/:host", partycontroller.view],
+    ["/leave", partycontroller.leave],
+    ["/:page", homecontroller.content],
+    ["", errorcontroller]
+]);
 
 var channels = new Channels(boxsocial);
 var socket = io.listen(app);
