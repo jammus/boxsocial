@@ -33,7 +33,7 @@ var errorcontroller = require("./controllers/errorcontroller")();
 var routes = require("./routes");
 routes.register(app, [
     ["/", homecontroller.index],
-    ["/login", logincontroller.index]
+    ["/login", logincontroller.index],
     ["/callback", logincontroller.callback],
     ["/parties", partycontroller.index],
     ["/join", partycontroller.chose],
