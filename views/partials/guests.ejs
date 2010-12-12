@@ -1,24 +1,21 @@
-<ul id="guestlist" data-role="listview" data-inset="true">
-    <li class="header" data-role="list-divider">Guests</li>
-    <%
-    if (guests.length == 0) {
-        %>
-        <li>No one</li>
-        <%
-    }
-    for (guestIndex in guests) {
-        %>
-        <li>
-            <%
-            if (guests[guestIndex].user && guests[guestIndex].user.image[2]["#text"]) {
-                %>
-                <img src="http://getthumbsup.com/88b65e?url=<%= guests[guestIndex].user.image[2]["#text"].replace("http://", "")%>&amp;h=80&amp;w=80" />
-                <%
-            }
-            %>
-            <a href="http://www.last.fm/user/<%=guests[guestIndex].session.user%>"><%= guests[guestIndex].session.user %></a>
-        </li>
-        <%
-    }
+<%
+if (guests.length == 0) {
     %>
-</ul>
+    <li>No one</li>
+    <%
+}
+for (guestIndex in guests) {
+    %>
+    <li>
+        <%
+        if (guests[guestIndex].user && guests[guestIndex].user.image[2]["#text"]) {
+            %>
+            <img src="http://getthumbsup.com/88b65e?url=<%= guests[guestIndex].user.image[2]["#text"].replace("http://", "")%>&amp;h=80&amp;w=80" />
+            <%
+        }
+        %>
+        <a href="http://www.last.fm/user/<%=guests[guestIndex].session.user%>"><%= guests[guestIndex].session.user %></a>
+    </li>
+    <%
+}
+%>

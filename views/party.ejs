@@ -19,7 +19,10 @@
                 %>
             </div>
         </div>
-       <%- partial("guests") %> 
+        <ul id="guestlist" data-role="listview" data-inset="true">
+            <li class="header" data-role="list-divider">Guests</li>
+            <%- partial("guests") %> 
+        </ul>
     </div>
     <%- partial("footer") %>
     <script type="text/javascript" src="/js/party.js"></script>
