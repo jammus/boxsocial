@@ -10,7 +10,7 @@ for (guestIndex in guests) {
         <%
         if (guests[guestIndex].user && guests[guestIndex].user.image[2]["#text"]) {
             %>
-            <img src="http://getthumbsup.com/88b65e?url=<%= guests[guestIndex].user.image[2]["#text"].replace("http://", "")%>&amp;h=80&amp;w=80" />
+            <img src="<%= guests[guestIndex].user.image[2]["#text"] %>" />
             <%
         }
         %>
