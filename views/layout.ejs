@@ -4,13 +4,28 @@
         <title>boxsocial: Party mode for Last.fm</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.css" />
         <script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.js"></script>
         <script src="/js/ejs.js"></script>
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-        <link rel="stylesheet" href="/css/mobile.css" />
+        <!-- The 1140px Grid --> 
+            <link rel="stylesheet" href="/css/grid/1140.css" type="text/css" media="screen" /> 
+        <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen" />
+        <![endif]--> 
+        <!-- Type and image presets - NOT ESSENTIAL --> 
+        <link rel="stylesheet" href="/css/grid/typeimg.css" type="text/css" media="screen" /> 
+        <!-- Make minor type adjustments for 1024 monitors --> 
+        <link rel="stylesheet" href="/css/grid/smallerscreen.css" media="only screen and (max-width: 1023px)" /> 
+        <!-- Resets grid for mobile --> 
+        <link rel="stylesheet" href="/css/grid/mobile.css" media="handheld, only screen and (max-width: 767px)" /> 
+        <!-- Put your layout here --> 
+        <link rel="stylesheet" href="/css/layout.css" type="text/css" media="screen" /> 
     </head>
     <body>
+        <%- partial("header") %>
+        <div id="main" class="container">
         <%- body %> 
+        </div> 
+        <%- partial("footer") %> 
         <script type="text/javascript">
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-552171-3']);

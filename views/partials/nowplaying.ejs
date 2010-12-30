@@ -1,4 +1,4 @@
-<div id="nowPlaying" class="nowPlaying">
+<div id="nowPlaying" class="trackDetails nowPlaying">
     <%
     if (party.nowPlaying) {
         if (party.nowPlaying.image[2]["#text"]) {
@@ -7,12 +7,19 @@
             <%
         }
         %>
-        Now playing: <%= party.nowPlaying.name %> by <%= party.nowPlaying.artist["#text"] %>
+        <div class="name">
+            <%= party.nowPlaying.name %>
+        </div>
+        <div class="artist">
+            <%= party.nowPlaying.artist["#text"] %>
+        </div>
         <%
     }
     else {
         %>
-        Now playing: Nothing
+        <div class="nothing">
+            Nothing
+        </div>
         <%
     }
     %>

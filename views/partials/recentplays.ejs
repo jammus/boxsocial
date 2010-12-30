@@ -1,0 +1,33 @@
+<%
+if (recentPlays.length == 0) {
+    %>
+    <li>No one</li>
+    <%
+}
+for (trackIndex in recentPlays) {
+    %>
+    <li class="trackDetails">
+        <%
+        if (recentPlays[trackIndex].image[1]["#text"]) {
+            %>
+            <img src="<%= recentPlays[trackIndex].image[1]["#text"] %>" />
+            <%
+        }
+        %>
+        <div class="name">
+           <%= recentPlays[trackIndex].name %> 
+        </div>
+        <div class="artist">
+            <%= recentPlays[trackIndex].artist["#text"] %>
+        </div>
+        <%
+        if (recentPlays[trackIndex].user && recentPlays[trackIndex].user.image[2]["#text"]) {
+            %>
+            <img src="<%= recentPlays[trackIndex].user.image[2]["#text"] %>" />
+            <%
+        }
+        %>
+    </li>
+    <%
+}
+%>
