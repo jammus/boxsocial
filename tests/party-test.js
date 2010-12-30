@@ -308,32 +308,40 @@ describe("Party events")
     });
 
 describe("error handling")
+    before(function() {
+        this.gently = new Gently();
+        this.lastfm = new LastFmNode();
+        this.stream = this.lastfm.stream("someuser");
+        this.party = new Party(this.lastfm, this.stream);
+    });
+
     it("bubbles update errors", function() {
-        var lastfm = new LastFmNode();
-        var stream = lastfm.stream("someuser");
-        var party = new Party(lastfm, stream);
-        var gently = new Gently();
-        gently.expect(lastfm, "update", function(method, session, options) {
+        var that = this;
+        this.gently.expect(this.stream, "start");
+
+        var guest = createGuest(this.lastfm, "username");
+        this.party.addGuest(guest);
+        this.gently.expect(this.lastfm, "info", function(type, options) {
             options.error();
         });
-        gently.expect(party, "emit", function(event, error) {
+        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+            options.error();
+        });
+        this.gently.expect(this.party, "emit", function(event, error) {
             assert.equal("error", event);
             assert.equal("Error updating nowplaying for username", error.message);
+            that.gently.restore(this, "emit");
         });
-        party._updateGuest("nowplaying", { session: { user: "username" } }, {});
+        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 
     it("bubbles stream errors", function() {
-        var lastfm = new LastFmNode();
-        var stream = lastfm.stream("someuser");
-        var party = new Party(lastfm, stream);
-        var gently = new Gently();
         var message = "Error message";
-        gently.expect(party, "emit", function(event, error) {
+        this.gently.expect(this.party, "emit", function(event, error) {
             assert.equal("error", event);
             assert.equal(message, error.message);
         });
-        stream.emit("error", new Error(message));
+        this.stream.emit("error", new Error(message));
     });
 
 describe("recent plays")
