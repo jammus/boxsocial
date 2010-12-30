@@ -175,22 +175,6 @@ describe("Party rules")
         assert.ok(!partyOne.hasGuest(this.guestOne));
     });
 
-describe("boxsocial parties")
-    it("stop updating a guest once they have left", function() {
-        var lastfm = new Mocks.MockLastFm();
-        var boxsocial = new BoxSocial(lastfm);
-        var guestOne = createGuest(lastfm, "guestOne", "auth1");
-        var guestTwo = createGuest(lastfm, "guestTwo", "auth2");
-        boxsocial.attend("host", guestOne);
-        boxsocial.attend("host", guestTwo);
-        boxsocial.leave(guestOne);
-        var party = boxsocial.findParty({ host: "host" });
-        var gently = new Gently();
-        gently.expect(lastfm, "update", 1);
-        party.stream.emit("scrobbled", { name: "track name" });
-        cleanup(boxsocial);
-    });
-
 describe("boxsocial events")
     before(function() {
         var lastfm = new Mocks.MockLastFm();
