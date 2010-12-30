@@ -1,9 +1,12 @@
 require("./common.js");
 
+(function() {
 describe("a route")
+    var app, gently;
+
     before(function() {
-        this.app = function() {};
-        this.gently = new Gently();
+        app = function() {};
+        gently = new Gently();
     });
 
     it("can register all http verb handlers", function() {
@@ -19,24 +22,24 @@ describe("a route")
                 }
             }
         };
-        this.gently.expect(this.app, "get", function(url, handler) {
+        gently.expect(app, "get", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.get, handler);
         });
-        this.gently.expect(this.app, "post", function(url, handler) {
+        gently.expect(app, "post", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.post, handler);
         });
-        this.gently.expect(this.app, "put", function(url, handler) {
+        gently.expect(app, "put", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.put, handler);
         });
-        this.gently.expect(this.app, "delete", function(url, handler) {
+        gently.expect(app, "delete", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.delete, handler);
         });
         var route = ["/", controller.index];
-        require("../routes").register(this.app, route);
+        require("../routes").register(app, route);
     });
 
     it("can register an error handler", function() {
@@ -44,11 +47,11 @@ describe("a route")
             error: function(req, res) {
             }
         };
-        this.gently.expect(this.app, "error", function(handler) {
+        gently.expect(app, "error", function(handler) {
             assert.equal(controller.error, handler);
         });
         var route = ["", controller];
-        require("../routes").register(this.app, route);
+        require("../routes").register(app, route);
     });
 
     it("can register multiple routes", function() {
@@ -60,14 +63,15 @@ describe("a route")
                 get: function() {}
             } 
         };
-        this.gently.expect(this.app, "get", function(url, handler) {
+        gently.expect(app, "get", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.get, handler);
         });
-        this.gently.expect(this.app, "get", function(url, handler) {
+        gently.expect(app, "get", function(url, handler) {
             assert.equal("/view", url);
             assert.equal(controller.view.get, handler);
         });
         var routes = [["/", controller.index], ["/view", controller.view]];
-        require("../routes").register(this.app, routes);
+        require("../routes").register(app, routes);
     });
+})();

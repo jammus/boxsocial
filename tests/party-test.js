@@ -9,371 +9,395 @@ function createGuest(lastfm, user, key) {
     return new Guest(lastfm, new LastFmSession(lastfm, user, key));
 }
 
+(function() {
 describe("A new party");
+    var lastfm, stream, party, gently;
+
     before(function() {
-        this.lastfm = new LastFmNode();
-        this.stream = new RecentTracksStream(this.lastfm, "hostuser");
-        this.stream.start = function() {}; // stub start to prevent tests hanging
-        this.party = new Party(this.lastfm, this.stream);
-        this.gently = new Gently();
+        lastfm = new LastFmNode();
+        stream = new RecentTracksStream(lastfm, "hostuser");
+        stream.start = function() {}; // stub start to prevent tests hanging
+        party = new Party(lastfm, stream);
+        gently = new Gently();
     });
 
     after(function() {
-        if (this.stream.isStreaming) this.stream.stop();
+        if (stream.isStreaming) stream.stop();
     });
 
     it("has no guests", function() {
-        assert.equal(0, this.party.guests.length);
+        assert.equal(0, party.guests.length);
     });
 
     it("can add guests", function() {
-        var guest = createGuest(this.lastfm, "guestuser1");
-        this.party.addGuest(guest);
-        assert.equal(1, this.party.guests.length);
-        assert.ok(this.party.guests.indexOf(guest) > -1);
+        var guest = createGuest(lastfm, "guestuser1");
+        party.addGuest(guest);
+        assert.equal(1, party.guests.length);
+        assert.ok(party.guests.indexOf(guest) > -1);
     });
 
     it("can't add a guest twice", function() {
-        var guest = createGuest(this.lastfm, "guestuser1");
-        this.party.addGuest(guest);
-        this.party.addGuest(guest);
-        assert.equal(1, this.party.guests.length);
+        var guest = createGuest(lastfm, "guestuser1");
+        party.addGuest(guest);
+        party.addGuest(guest);
+        assert.equal(1, party.guests.length);
     });
 
     it("can't add host to guest list", function() { 
-        var guest = createGuest(this.lastfm, "hostuser");
-        this.party.addGuest(guest);
-        assert.equal(0, this.party.guests.length);
+        var guest = createGuest(lastfm, "hostuser");
+        party.addGuest(guest);
+        assert.equal(0, party.guests.length);
     });
     
     it("doesn't start streaming until guests arrive", function() {
-        assert.ok(!this.stream.isStreaming);
+        assert.ok(!stream.isStreaming);
         var gently = new Gently();
-        gently.expect(this.stream, "start");
-        var guest = createGuest(this.lastfm, "guestuser1");
-        this.party.addGuest(guest);
+        gently.expect(stream, "start");
+        var guest = createGuest(lastfm, "guestuser1");
+        party.addGuest(guest);
     });
+})();
 
+(function() {
 describe("A party in full swing");
+    var lastfm, stream, party, guestOne, guestTwo,
+        guestThree, gently;
+
     before(function() {
-        this.lastfm = new LastFmNode();
-        this.lastfm.info = function(type, options) {
+        lastfm = new LastFmNode();
+        lastfm.info = function(type, options) {
             if (type == "track") options.success(options.track);
         };
-        this.stream = new RecentTracksStream(this.lastfm, "hostuser");
-        this.stream.start = function() {}; // stub start to prevent tests hanging
-        this.party = new Party(this.lastfm, this.stream);
-        this.guestOne = createGuest(this.lastfm, "guestuser1", "auth1");
-        this.guestTwo = createGuest(this.lastfm, "guestuser2", "auth2");
-        this.guestThree = createGuest(this.lastfm, "guestthree", "auth3");
-        this.party.addGuest(this.guestOne);
-        this.party.addGuest(this.guestTwo);
-        this.gently = new Gently();
+        stream = new RecentTracksStream(lastfm, "hostuser");
+        stream.start = function() {}; // stub start to prevent tests hanging
+        party = new Party(lastfm, stream);
+        guestOne = createGuest(lastfm, "guestuser1", "auth1");
+        guestTwo = createGuest(lastfm, "guestuser2", "auth2");
+        guestThree = createGuest(lastfm, "guestthree", "auth3");
+        party.addGuest(guestOne);
+        party.addGuest(guestTwo);
+        gently = new Gently();
     });
 
     after(function() {
-        if (this.stream.isStreaming) this.stream.stop();
+        if (stream.isStreaming) stream.stop();
     });
 
     it("shares now playing events with guests", function() {
-        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+        gently.expect(lastfm, "update", function(method, session, options) {
           assert.equal("nowplaying", method);
           assert.equal("guestuser1", session.user);
           assert.equal("Run To Your Grave", options.track.name);
         });
-        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+        gently.expect(lastfm, "update", function(method, session, options) {
           assert.equal("nowplaying", method);
           assert.equal("guestuser2", session.user);
           assert.equal("Run To Your Grave", options.track.name);
         });
-        this.stream.emit('nowPlaying', FakeTracks.RunToYourGrave);
+        stream.emit('nowPlaying', FakeTracks.RunToYourGrave);
     });
 
     it("shares now playing with new guests", function() {
-        this.party.nowPlaying = FakeTracks.RunToYourGrave;
-        this.party.nowPlayingInfo = FakeTracks.RunToYourGrave;
-        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+        party.nowPlaying = FakeTracks.RunToYourGrave;
+        party.nowPlayingInfo = FakeTracks.RunToYourGrave;
+        gently.expect(lastfm, "update", function(method, session, options) {
           assert.equal("nowplaying", method);
           assert.equal("guestthree", session.user);
           assert.equal("Run To Your Grave", options.track.name);
           assert.equal(232, options.duration);
         });
-        this.party.addGuest(this.guestThree);
+        party.addGuest(guestThree);
     });
 
     it("shares scrobbles with guests", function() {
-        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+        gently.expect(lastfm, "update", function(method, session, options) {
           assert.equal("scrobble", method);
           assert.equal("guestuser1", session.user);
           assert.equal("Run To Your Grave", options.track.name);
         });
-        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+        gently.expect(lastfm, "update", function(method, session, options) {
           assert.equal("scrobble", method);
           assert.equal("guestuser2", session.user);
           assert.equal("Run To Your Grave", options.track.name);
         });
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
     });
 
     it("doesn't share nowPlaying updates with guests after they leave", function() {
-        this.gently.expect(this.lastfm, "update", 1);
-        this.party.removeGuest(this.guestTwo);
-        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        gently.expect(lastfm, "update", 1);
+        party.removeGuest(guestTwo);
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 
     it("doesn't share scrobble updates with guests after they leave", function() {
-        this.gently.expect(this.lastfm, "update", 1);
-        this.party.removeGuest(this.guestTwo);
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        gently.expect(lastfm, "update", 1);
+        party.removeGuest(guestTwo);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
     });
 
     it("new guest doesnt receive now playing after stopped playing", function() {
-        this.gently.expect(this.lastfm, "update", 2, function() {});
-        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
-        this.stream.emit("stoppedPlaying", FakeTracks.RunToYourGrave);
-        this.party.addGuest(this.guestThree);
-        assert.equal(null, this.guestThree.nowPlaying);
+        gently.expect(lastfm, "update", 2, function() {});
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        stream.emit("stoppedPlaying", FakeTracks.RunToYourGrave);
+        party.addGuest(guestThree);
+        assert.equal(null, guestThree.nowPlaying);
     });
 
     it("returns false when checked for unknown guest", function() {
-        var guest = createGuest(this.lastfm, "unknown", "huh");
-        assert.ok(!this.party.hasGuest(guest));     
+        var guest = createGuest(lastfm, "unknown", "huh");
+        assert.ok(!party.hasGuest(guest));     
     });
 
     it("returns true when checked for present guest", function() {
-        assert.ok(this.party.hasGuest(this.guestOne));
+        assert.ok(party.hasGuest(guestOne));
     });
 
     it("hasGuest is case insensitive", function() {
-        var guEStonE = createGuest(this.lastfm, "guEStuSer1", "autH1");
-        assert.ok(this.party.hasGuest(guEStonE));
+        var guEStonE = createGuest(lastfm, "guEStuSer1", "autH1");
+        assert.ok(party.hasGuest(guEStonE));
     });
 
     it("removeGuest takes guest off guest list", function() {
-        this.party.removeGuest(this.guestOne);
-        assert.ok(!this.party.hasGuest(this.guestOne));
+        party.removeGuest(guestOne);
+        assert.ok(!party.hasGuest(guestOne));
     });
 
     it("removeGuest leaves other guests at party", function() {
-        this.party.removeGuest(this.guestOne);
-        assert.notEqual(0, this.party.guests.length);
-        assert.ok(this.party.hasGuest(this.guestTwo));
+        party.removeGuest(guestOne);
+        assert.notEqual(0, party.guests.length);
+        assert.ok(party.hasGuest(guestTwo));
     });
 
     it("stops streaming when last guest leaves", function() {
-        this.party.removeGuest(this.guestOne);
-        this.party.removeGuest(this.guestTwo);
-        assert.ok(!this.stream.isStreaming);
+        party.removeGuest(guestOne);
+        party.removeGuest(guestTwo);
+        assert.ok(!stream.isStreaming);
     });
 
     it("removes all guests when over", function() {
-        this.party.finish();
-        assert.ok(!this.party.hasGuest(this.guestOne));
-        assert.ok(!this.party.hasGuest(this.guestTwo));
-        assert.equal(0, this.party.guests.length);
+        party.finish();
+        assert.ok(!party.hasGuest(guestOne));
+        assert.ok(!party.hasGuest(guestTwo));
+        assert.equal(0, party.guests.length);
     });
 
     it("emits finished event when all guests leave", function() {
         var finished = false;
         var finishedParty = null;
-        this.party.addListener("finished", function(party) {
+        party.addListener("finished", function(party) {
             finished = true;
             finishedParty = party;
         }); 
-        this.party.removeGuest(this.guestOne);
+        party.removeGuest(guestOne);
         assert.ok(!finished);
-        this.party.removeGuest(this.guestTwo);
+        party.removeGuest(guestTwo);
         assert.ok(finished);
-        assert.equal(this.party, finishedParty);
+        assert.equal(party, finishedParty);
     });
 
     it("emits finished event when finished", function() {
         var finished = false;
         var finishedParty = null;
-        this.party.addListener("finished", function(party) {
+        party.addListener("finished", function(party) {
             finished = true;
             finishedParty = party;
         }); 
-        this.party.finish();
+        party.finish();
         assert.ok(finished);
-        assert.equal(this.party, finishedParty);
+        assert.equal(party, finishedParty);
     });
+})();
 
+(function() {
 describe("Party using extended track info");
-    before(function() {
-        this.lastfm = new LastFmNode();
-        this.stream = new RecentTracksStream(this.lastfm, "hostuser");
-        this.stream.start = function() {}; // stub start to prevent tests hanging
-        this.party = new Party(this.lastfm, this.stream);
+    var lastfm, stream, party, gently;
 
-        this.gently = new Gently();
+    before(function() {
+        lastfm = new LastFmNode();
+        stream = new RecentTracksStream(lastfm, "hostuser");
+        stream.start = function() {}; // stub start to prevent tests hanging
+        party = new Party(lastfm, stream);
+
+        gently = new Gently();
     });
 
     it("gets full track info when nowPlaying changes", function() {
-        this.gently.expect(this.lastfm, "info", function(type, options) {
+        gently.expect(lastfm, "info", function(type, options) {
             assert.equal("track", type);
             assert.equal(FakeTracks.RunToYourGrave, options.track);
         });
-        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 
     it("handles track info errors", function() {
-        this.lastfm.info = function() {};
-        var guestOne = createGuest(this.lastfm, "guestuser1", "auth1");
-        this.party.addGuest(guestOne);
-        this.gently.expect(this.lastfm, "info", function(type, options) {
+        lastfm.info = function() {};
+        var guestOne = createGuest(lastfm, "guestuser1", "auth1");
+        party.addGuest(guestOne);
+        gently.expect(lastfm, "info", function(type, options) {
             options.error();
         });
-        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+        gently.expect(lastfm, "update", function(method, session, options) {
             assert.equal("nowplaying", method);
             assert.equal(null, options.duration);
         });
-        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 
     it("includes duration (in seconds) in nowPlaying updates", function() {
-        this.gently.expect(this.lastfm, "info", function(type, options) {
+        gently.expect(lastfm, "info", function(type, options) {
             options.success({ name: "Run To Your Grave", duration: 232000 });
         });
-        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+        gently.expect(lastfm, "update", function(method, session, options) {
             assert.equal(232, options.duration);
         });
-        var guestOne = createGuest(this.lastfm, "guestuser1");
-        this.party.addGuest(guestOne);
-        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        var guestOne = createGuest(lastfm, "guestuser1");
+        party.addGuest(guestOne);
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
+})();
 
+(function() {
 describe("Party events")
+    var lastfm, stream, party, firstGuest, gently;
+
     before(function() {
-        this.lastfm = new LastFmNode();
-        this.stream = new RecentTracksStream(this.lastfm, "hostuser");
-        this.stream.start = function() {}; // stub start to prevent tests hanging
-        this.party = new Party(this.lastfm, this.stream);
-        this.firstGuest = createGuest(this.lastfm, "alice");
-        this.party.addGuest(this.firstGuest);
-        this.gently = new Gently();
+        lastfm = new LastFmNode();
+        stream = new RecentTracksStream(lastfm, "hostuser");
+        stream.start = function() {}; // stub start to prevent tests hanging
+        party = new Party(lastfm, stream);
+        firstGuest = createGuest(lastfm, "alice");
+        party.addGuest(firstGuest);
+        gently = new Gently();
     });
 
     it("emits guestsUpdated when guest arrives", function() {
-        this.gently.expect(this.party, "emit", function(event, guests) {
+        gently.expect(party, "emit", function(event, guests) {
             assert.equal("guestsUpdated", event);
             assert.equal(2, guests.length);
             assert.equal("alice", guests[0].session.user);
             assert.equal("steven", guests[1].session.user);
         });
-        var guest = createGuest(this.lastfm, "steven");
-        this.party.addGuest(guest);
+        var guest = createGuest(lastfm, "steven");
+        party.addGuest(guest);
     });
 
     it("emits guestsUpdated when guest leaves", function() {
-        var that = this;
-        this.gently.expect(this.party, "emit", function(event, guests) {
+        gently.expect(party, "emit", function(event, guests) {
             assert.equal("guestsUpdated", event);
             assert.equal(0, guests.length);
-            that.gently.restore(this, "emit");
+            gently.restore(this, "emit");
         });
-        this.party.removeGuest(this.firstGuest);
+        party.removeGuest(firstGuest);
     });
 
     it("emits trackUpdated when stream's nowPlaying updates", function() {
-        this.lastfm.info = function() {};
-        this.lastfm.update = function() {};
-        this.gently.expect(this.party, "emit", function(event, track) {
+        lastfm.info = function() {};
+        lastfm.update = function() {};
+        gently.expect(party, "emit", function(event, track) {
             assert.equal("trackUpdated", event);
             assert.equal("Run To Your Grave", track.name);
         });
-        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 
     it("emits trackUpdated when stream stops playing", function() {
-        this.lastfm.info = function() {};
-        this.lastfm.update = function() {};
-        this.gently.expect(this.party, "emit", function(event, track) {
+        lastfm.info = function() {};
+        lastfm.update = function() {};
+        gently.expect(party, "emit", function(event, track) {
             assert.equal("trackUpdated", event);
             assert.ok(!track);
         });
-        this.stream.emit("stoppedPlaying");
+        stream.emit("stoppedPlaying");
     });
 
     it("removes stream listeners when party is finished", function() {
-        var that = this;
-        this.gently.expect(this.party, "emit", function(event) {
+        gently.expect(party, "emit", function(event) {
             assert.equal("finished", event);
-            assert.equal(0, that.stream.listeners("scrobbled").length);
-            assert.equal(0, that.stream.listeners("nowPlaying").length);
-            assert.equal(0, that.stream.listeners("stoppedPlaying").length);
-            assert.equal(0, that.stream.listeners("error").length);
+            assert.equal(0, stream.listeners("scrobbled").length);
+            assert.equal(0, stream.listeners("nowPlaying").length);
+            assert.equal(0, stream.listeners("stoppedPlaying").length);
+            assert.equal(0, stream.listeners("error").length);
         });
-        this.party.finish();
+        party.finish();
     });
+})();
 
+(function() {
 describe("error handling")
+    var gently, lastfm, stream, party;
+
     before(function() {
-        this.gently = new Gently();
-        this.lastfm = new LastFmNode();
-        this.stream = this.lastfm.stream("someuser");
-        this.party = new Party(this.lastfm, this.stream);
+        gently = new Gently();
+        lastfm = new LastFmNode();
+        stream = lastfm.stream("someuser");
+        party = new Party(lastfm, stream);
     });
 
     it("bubbles update errors", function() {
-        var that = this;
-        this.gently.expect(this.stream, "start");
+        gently.expect(stream, "start");
 
-        var guest = createGuest(this.lastfm, "username");
-        this.party.addGuest(guest);
-        this.gently.expect(this.lastfm, "info", function(type, options) {
+        var guest = createGuest(lastfm, "username");
+        party.addGuest(guest);
+        gently.expect(lastfm, "info", function(type, options) {
             options.error();
         });
-        this.gently.expect(this.lastfm, "update", function(method, session, options) {
+        gently.expect(lastfm, "update", function(method, session, options) {
             options.error();
         });
-        this.gently.expect(this.party, "emit", function(event, error) {
+        gently.expect(party, "emit", function(event, error) {
             assert.equal("error", event);
             assert.equal("Error updating nowplaying for username", error.message);
-            that.gently.restore(this, "emit");
+            gently.restore(this, "emit");
         });
-        this.stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 
     it("bubbles stream errors", function() {
         var message = "Error message";
-        this.gently.expect(this.party, "emit", function(event, error) {
+        gently.expect(party, "emit", function(event, error) {
             assert.equal("error", event);
             assert.equal(message, error.message);
         });
-        this.stream.emit("error", new Error(message));
+        stream.emit("error", new Error(message));
+    });
+})();
+
+(function() {
+describe("recent plays")
+    var lastfm, stream, party;
+
+    before(function() {
+        lastfm = new LastFmNode();
+        stream = lastfm.stream("someuser");
+        party = new Party(lastfm, stream);
     });
 
-describe("recent plays")
-    before(function() {
-        this.lastfm = new LastFmNode();
-        this.stream = this.lastfm.stream("someuser");
-        this.party = new Party(this.lastfm, this.stream);
-    });
     it("a new party has no recent plays", function() {
-        assert.equal(0, this.party.recentPlays.length);
+        assert.equal(0, party.recentPlays.length);
     });
 
     it("adds scrobbled tracks to the recent plays list", function() {
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        assert.equal(1, this.party.recentPlays.length);
-        assert.equal(FakeTracks.RunToYourGrave, this.party.recentPlays[0]);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        assert.equal(1, party.recentPlays.length);
+        assert.equal(FakeTracks.RunToYourGrave, party.recentPlays[0]);
     });
 
     it("keeps a maximum of 5 recent plays", function() {
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        assert.equal(5, this.party.recentPlays.length);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        assert.equal(5, party.recentPlays.length);
     });
 
     it("stores recent plays in reverse order", function() {
-        this.stream.emit("scrobbled", 1);
-        this.stream.emit("scrobbled", 2);
-        this.stream.emit("scrobbled", 3);
-        assert.equal(3, this.party.recentPlays[0]);
-        assert.equal(2, this.party.recentPlays[1]);
+        stream.emit("scrobbled", 1);
+        stream.emit("scrobbled", 2);
+        stream.emit("scrobbled", 3);
+        assert.equal(3, party.recentPlays[0]);
+        assert.equal(2, party.recentPlays[1]);
+        assert.equal(1, party.recentPlays[2]);
     });
+})();

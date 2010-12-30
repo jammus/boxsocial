@@ -4,79 +4,87 @@ var Channels = require("../lib/channels").Channels;
 var FakeTracks = require("./TestData").FakeTracks;
 var Mocks = require("./Mocks");
 
+(function() {
 describe("a new channels instance")
+    var boxsocial, channels, clientOne, clientTwo;
+
     before(function() {
-        this.boxsocial = new BoxSocial();
-        this.channels = new Channels(this.boxsocial);
-        this.clientOne = new Mocks.MockClient({sessionId: "1234"});
-        this.clientTwo = new Mocks.MockClient({sessionId: "5678"});
+        boxsocial = new BoxSocial();
+        channels = new Channels(boxsocial);
+        clientOne = new Mocks.MockClient({sessionId: "1234"});
+        clientTwo = new Mocks.MockClient({sessionId: "5678"});
     });
 
     it("has no channels", function() {
-        assert.equal(0, this.channels.count());
+        assert.equal(0, channels.count());
     });
 
     it("configures boxsocial", function() {
-        assert.equal(this.boxsocial, this.channels.boxsocial);
+        assert.equal(boxsocial, channels.boxsocial);
     });
 
     it("new subscription increases channel count", function() {
-        this.channels.subscribe("hostname", this.clientOne);
-        assert.equal(1, this.channels.count());
+        channels.subscribe("hostname", clientOne);
+        assert.equal(1, channels.count());
     });
 
     it("a subscription to same channel does not increase channel count", function() {
-        this.channels.subscribe("hostname", this.clientOne);
-        this.channels.subscribe("hostname", this.clientTwo);
-        assert.equal(1, this.channels.count());
+        channels.subscribe("hostname", clientOne);
+        channels.subscribe("hostname", clientTwo);
+        assert.equal(1, channels.count());
     });
 
     it("channel names are case insensitive", function() {
-        this.channels.subscribe("hostnAme", this.clientOne);
-        this.channels.subscribe("hoSTName", this.clientTwo);
-        assert.equal(1, this.channels.count());
+        channels.subscribe("hostnAme", clientOne);
+        channels.subscribe("hoSTName", clientTwo);
+        assert.equal(1, channels.count());
     });
 
     it("subscribe returns the created channel", function() {
-        var channel = this.channels.subscribe("hostname", this.clientOne);
+        var channel = channels.subscribe("hostname", clientOne);
         assert.equal("hostname", channel.name);
     });
 
     it("a subscription adds client to channel", function() {
-        var channel = this.channels.subscribe("hostname", this.clientOne);
+        var channel = channels.subscribe("hostname", clientOne);
         assert.equal(1, channel.clients.length);
     });
+})();
 
+(function() {
 describe("boxsocial event")
+    var boxsocial, channels, clientOne, channel, gently, party;
+
     before(function() {
-        this.boxsocial = new BoxSocial();
-        this.channels = new Channels(this.boxsocial);
-        this.clientOne = new Mocks.MockClient({sessionId: "1234"});
-        this.channel = this.channels.subscribe("hostname", this.clientOne);
-        this.gently = new Gently();
-        this.party = { host: "hostname" };
+        boxsocial = new BoxSocial();
+        channels = new Channels(boxsocial);
+        clientOne = new Mocks.MockClient({sessionId: "1234"});
+        channel = channels.subscribe("hostname", clientOne);
+        gently = new Gently();
+        party = { host: "hostname" };
     });
 
     it("guestsUpdated sends guestlist to channel", function() {
-        this.gently.expect(this.channel, "publish", function(message) {
+        gently.expect(channel, "publish", function(message) {
             assert.ok(message.guestlist);
             assert.equal(2, message.guestlist.length);
         });
-        this.boxsocial.emit("guestsUpdated", this.party, [{name: "guestone"}, {name: "guesttwo" }]);
+        boxsocial.emit("guestsUpdated", party, [{name: "guestone"}, {name: "guesttwo" }]);
     });
 
     it("trackUpdated sends track to channel", function() {
-        this.gently.expect(this.channel, "publish", function(message) {
+        gently.expect(channel, "publish", function(message) {
             assert.ok(message.nowPlaying);
             assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
         });
-        this.boxsocial.emit("trackUpdated", this.party, FakeTracks.RunToYourGrave);
+        boxsocial.emit("trackUpdated", party, FakeTracks.RunToYourGrave);
     });
 
     it("trackUpdated can send null track to channel", function() {
-        this.gently.expect(this.channel, "publish", function(message) {
+        gently.expect(channel, "publish", function(message) {
             assert.ok(message.nowPlaying);
             assert.ok(!message.nowPlaying.track);
         });
-        this.boxsocial.emit("trackUpdated", this.party);
+        boxsocial.emit("trackUpdated", party);
     });
+})();
