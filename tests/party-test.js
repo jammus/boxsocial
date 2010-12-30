@@ -335,3 +335,37 @@ describe("error handling")
         });
         stream.emit("error", new Error(message));
     });
+
+describe("recent plays")
+    before(function() {
+        this.lastfm = new LastFmNode();
+        this.stream = this.lastfm.stream("someuser");
+        this.party = new Party(this.lastfm, this.stream);
+    });
+    it("a new party has no recent plays", function() {
+        assert.equal(0, this.party.recentPlays.length);
+    });
+
+    it("adds scrobbled tracks to the recent plays list", function() {
+        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        assert.equal(1, this.party.recentPlays.length);
+        assert.equal(FakeTracks.RunToYourGrave, this.party.recentPlays[0]);
+    });
+
+    it("keeps a maximum of 5 recent plays", function() {
+        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        this.stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        assert.equal(5, this.party.recentPlays.length);
+    });
+
+    it("stores recent plays in reverse order", function() {
+        this.stream.emit("scrobbled", 1);
+        this.stream.emit("scrobbled", 2);
+        this.stream.emit("scrobbled", 3);
+        assert.equal(3, this.party.recentPlays[0]);
+        assert.equal(2, this.party.recentPlays[1]);
+    });
