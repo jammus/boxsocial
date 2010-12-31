@@ -6,15 +6,17 @@ if (guests.length == 0) {
 }
 for (guestIndex in guests) {
     %>
-    <li>
+    <li class="guest">
         <%
-        if (guests[guestIndex].user && guests[guestIndex].user.image[2]["#text"]) {
+        if (guests[guestIndex].user && guests[guestIndex].user.image[1]["#text"]) {
             %>
-            <img src="<%= guests[guestIndex].user.image[2]["#text"] %>" />
+            <img src="<%= guests[guestIndex].user.image[1]["#text"] %>" />
             <%
         }
         %>
-        <a href="http://www.last.fm/user/<%=guests[guestIndex].session.user%>"><%= guests[guestIndex].session.user %></a>
+        <div class="name">
+            <a href="http://www.last.fm/user/<%=guests[guestIndex].session.user%>"><%= guests[guestIndex].session.user %></a>
+        </div>
     </li>
     <%
 }

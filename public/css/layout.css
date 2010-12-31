@@ -55,6 +55,9 @@ h3 {
 
 .trackDetails img {
     float:right;
+    border:1px solid #ddd;
+    background:#fff;
+    padding:1px;
 }
 
 .recentplays .name {
@@ -82,6 +85,7 @@ h3 {
     font-size:24px;
 }
 
+li.guest .name a,
 .trackDetails .nothing,
 .trackDetails .artist {
     color:#d5534e;
@@ -93,6 +97,26 @@ h3 {
 
 .controls {
     margin:20px 0px;
+}
+
+.guests {
+    clear:both;
+}
+
+li.guest {
+    clear:both;
+    height:50px;
+}
+
+li.guest img {
+    float:left;
+    margin-right:15px;
+}
+
+li.guest .name a {
+    font-weight:lighter;
+    font-size:24px;
+    margin-bottom:5px;
 }
 
 a.button,
@@ -117,8 +141,6 @@ button {
 }
 
 #footer {
-    bottom:0px;
-    width:100%;
     color:#000;
 }
 
