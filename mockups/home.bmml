@@ -1,0 +1,350 @@
+<mockup version="1.0" skin="sketch" measuredW="1172" measuredH="633" mockupW="1161" mockupH="633">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::iPhone" x="11" y="0" w="360" h="633" measuredW="282" measuredH="510" zOrder="0" locked="true" isInGroup="-1"/>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="141" y="155" w="192" h="28" measuredW="158" measuredH="23" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>-%20party%20mode%20for%20Last.fm</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Button" x="63" y="294" w="256" h="28" measuredW="98" measuredH="28" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Join%20a%20Party</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="372" y="2" w="800" h="621" measuredW="450" measuredH="400" zOrder="5" locked="true" isInGroup="-1">
+      <controlProperties>
+        <text>jammus%27s%20party%20-%20boxsocial.fm%0Ahttp%3A//boxsocial.fm/party/jammus</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Label" x="396" y="125" w="-1" h="-1" measuredW="520" measuredH="46" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>32</size>
+        <text>boxsocial%20-%20party%20mode%20for%20Last.fm</text>
+      </controlProperties>
+    </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Canvas" x="49" y="119" w="283" h="25" measuredW="100" measuredH="70" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <borderColor>13576743</borderColor>
+        <color>13576743</color>
+      </controlProperties>
+    </control>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Label" x="396" y="79" w="-1" h="-1" measuredW="103" measuredH="37" zOrder="9" locked="true" isInGroup="-1">
+      <controlProperties>
+        <size>24</size>
+        <text>boxsocial</text>
+      </controlProperties>
+    </control>
+    <control controlID="47" controlTypeID="com.balsamiq.mockups::LinkBar" x="861" y="86" w="-1" h="-1" measuredW="297" measuredH="23" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Home%2C%20About%2C%20Join%20Party%2C%20Logout%2C%20Help</text>
+      </controlProperties>
+    </control>
+    <control controlID="71" controlTypeID="com.balsamiq.mockups::Canvas" x="375" y="70" w="797" h="529" measuredW="100" measuredH="70" zOrder="7" locked="true" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>0.25</backgroundAlpha>
+        <borderColor>0</borderColor>
+        <color>16767334</color>
+      </controlProperties>
+    </control>
+    <control controlID="72" controlTypeID="com.balsamiq.mockups::Canvas" x="377" y="68" w="795" h="57" measuredW="100" measuredH="70" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <borderColor>13576743</borderColor>
+        <color>13576743</color>
+      </controlProperties>
+    </control>
+    <control controlID="73" controlTypeID="com.balsamiq.mockups::Label" x="59" y="119" w="-1" h="-1" measuredW="63" measuredH="24" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>14</size>
+        <text>boxsocial</text>
+      </controlProperties>
+    </control>
+    <control controlID="74" controlTypeID="com.balsamiq.mockups::Canvas" x="49" y="96" w="283" h="433" measuredW="100" measuredH="70" zOrder="2" locked="true" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>0.25</backgroundAlpha>
+        <borderColor>0</borderColor>
+        <color>16767334</color>
+      </controlProperties>
+    </control>
+    <control controlID="75" controlTypeID="com.balsamiq.mockups::Paragraph" x="59" y="185" w="258" h="83" measuredW="200" measuredH="140" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Whether%20you%27re%20at%20a%20party%2C%20a%20bar%20or%20hanging%20out%20with%20friends%20you%20can%20scrobble%20your%20host%27s%20plays%20to%20your%20own%20profile%20in%20real-time.</text>
+      </controlProperties>
+    </control>
+    <control controlID="76" controlTypeID="com.balsamiq.mockups::Link" x="61" y="266" w="-1" h="-1" measuredW="112" measuredH="23" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>How%20does%20it%20work%3F</text>
+      </controlProperties>
+    </control>
+    <control controlID="77" controlTypeID="com.balsamiq.mockups::Paragraph" x="396" y="177" w="520" h="58" measuredW="200" measuredH="140" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Whether%20you%27re%20at%20a%20party%2C%20a%20bar%20or%20hanging%20out%20with%20friends%20you%20can%20scrobble%20your%20host%27s%20plays%20to%20your%20own%20profile%20in%20real-time.</text>
+      </controlProperties>
+    </control>
+    <control controlID="78" controlTypeID="com.balsamiq.mockups::Label" x="59" y="151" w="-1" h="-1" measuredW="80" measuredH="29" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>18</size>
+        <text>boxsocial</text>
+      </controlProperties>
+    </control>
+    <control controlID="79" controlTypeID="com.balsamiq.mockups::Label" x="931" y="170" w="-1" h="-1" measuredW="101" measuredH="27" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>16</size>
+        <text>Partying%20now</text>
+      </controlProperties>
+    </control>
+    <control controlID="80" controlTypeID="com.balsamiq.mockups::Label" x="931" y="193" w="-1" h="-1" measuredW="93" measuredH="29" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>18</size>
+        <text>firebugbar</text>
+      </controlProperties>
+    </control>
+    <control controlID="81" controlTypeID="com.balsamiq.mockups::Label" x="933" y="297" w="134" h="25" measuredW="74" measuredH="21" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>14706278</color>
+        <size>12</size>
+        <text>The%20Mae%20Shi</text>
+      </controlProperties>
+    </control>
+    <control controlID="82" controlTypeID="com.balsamiq.mockups::Label" x="933" y="277" w="-1" h="-1" measuredW="120" measuredH="24" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>14</size>
+        <text>Lamb%20and%20the%20Lion</text>
+      </controlProperties>
+    </control>
+    <control controlID="85" controlTypeID="com.balsamiq.mockups::Label" x="933" y="262" w="-1" h="-1" measuredW="60" measuredH="19" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>10</size>
+        <text>Now%20playing</text>
+      </controlProperties>
+    </control>
+    <control controlID="86" controlTypeID="com.balsamiq.mockups::Button" x="396" y="259" w="256" h="46" measuredW="139" measuredH="34" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>Join%20a%20Party</text>
+      </controlProperties>
+    </control>
+    <control controlID="88" controlTypeID="com.balsamiq.mockups::Label" x="931" y="234" w="-1" h="-1" measuredW="63" measuredH="24" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>14</size>
+        <text>rankXgirl</text>
+      </controlProperties>
+    </control>
+    <control controlID="89" controlTypeID="com.balsamiq.mockups::Label" x="931" y="219" w="-1" h="-1" measuredW="28" measuredH="19" zOrder="23" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>10</size>
+        <text>With</text>
+      </controlProperties>
+    </control>
+    <control controlID="90" controlTypeID="com.balsamiq.mockups::Image" x="1119" y="234" w="23" h="24" measuredW="77" measuredH="79" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="91" controlTypeID="com.balsamiq.mockups::Button" x="933" y="320" w="105" h="28" measuredW="113" measuredH="28" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Join%20this%20Party</text>
+      </controlProperties>
+    </control>
+    <control controlID="92" controlTypeID="com.balsamiq.mockups::Image" x="1119" y="277" w="23" h="24" measuredW="77" measuredH="79" zOrder="26" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="93" controlTypeID="com.balsamiq.mockups::Label" x="931" y="359" w="-1" h="-1" measuredW="69" measuredH="29" zOrder="27" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>18</size>
+        <text>jammus</text>
+      </controlProperties>
+    </control>
+    <control controlID="95" controlTypeID="com.balsamiq.mockups::Label" x="933" y="473" w="-1" h="-1" measuredW="54" measuredH="24" zOrder="28" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>14</size>
+        <text>Nothing</text>
+      </controlProperties>
+    </control>
+    <control controlID="96" controlTypeID="com.balsamiq.mockups::Label" x="933" y="458" w="-1" h="-1" measuredW="60" measuredH="19" zOrder="29" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>10</size>
+        <text>Now%20playing</text>
+      </controlProperties>
+    </control>
+    <control controlID="97" controlTypeID="com.balsamiq.mockups::Label" x="931" y="400" w="-1" h="-1" measuredW="83" measuredH="24" zOrder="30" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>14</size>
+        <text>mellowdoubt</text>
+      </controlProperties>
+    </control>
+    <control controlID="98" controlTypeID="com.balsamiq.mockups::Label" x="931" y="385" w="-1" h="-1" measuredW="28" measuredH="19" zOrder="31" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>10</size>
+        <text>With</text>
+      </controlProperties>
+    </control>
+    <control controlID="99" controlTypeID="com.balsamiq.mockups::Image" x="1119" y="400" w="23" h="24" measuredW="77" measuredH="79" zOrder="32" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="100" controlTypeID="com.balsamiq.mockups::Button" x="933" y="502" w="105" h="28" measuredW="113" measuredH="28" zOrder="33" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Join%20this%20Party</text>
+      </controlProperties>
+    </control>
+    <control controlID="102" controlTypeID="com.balsamiq.mockups::Label" x="931" y="428" w="-1" h="-1" measuredW="62" measuredH="24" zOrder="34" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>14</size>
+        <text>tristophe</text>
+      </controlProperties>
+    </control>
+    <control controlID="103" controlTypeID="com.balsamiq.mockups::Image" x="1119" y="430" w="23" h="24" measuredW="77" measuredH="79" zOrder="35" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="104" controlTypeID="com.balsamiq.mockups::Label" x="64" y="344" w="-1" h="-1" measuredW="101" measuredH="27" zOrder="36" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>16</size>
+        <text>Partying%20now</text>
+      </controlProperties>
+    </control>
+    <control controlID="105" controlTypeID="com.balsamiq.mockups::Label" x="64" y="367" w="-1" h="-1" measuredW="93" measuredH="29" zOrder="37" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>18</size>
+        <text>firebugbar</text>
+      </controlProperties>
+    </control>
+    <control controlID="106" controlTypeID="com.balsamiq.mockups::Label" x="66" y="471" w="134" h="25" measuredW="74" measuredH="21" zOrder="38" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>14706278</color>
+        <size>12</size>
+        <text>The%20Mae%20Shi</text>
+      </controlProperties>
+    </control>
+    <control controlID="107" controlTypeID="com.balsamiq.mockups::Label" x="66" y="451" w="-1" h="-1" measuredW="120" measuredH="24" zOrder="39" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>14</size>
+        <text>Lamb%20and%20the%20Lion</text>
+      </controlProperties>
+    </control>
+    <control controlID="108" controlTypeID="com.balsamiq.mockups::Label" x="66" y="436" w="-1" h="-1" measuredW="60" measuredH="19" zOrder="40" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>10</size>
+        <text>Now%20playing</text>
+      </controlProperties>
+    </control>
+    <control controlID="109" controlTypeID="com.balsamiq.mockups::Label" x="64" y="408" w="-1" h="-1" measuredW="63" measuredH="24" zOrder="41" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13369344</color>
+        <size>14</size>
+        <text>rankXgirl</text>
+      </controlProperties>
+    </control>
+    <control controlID="110" controlTypeID="com.balsamiq.mockups::Label" x="64" y="393" w="-1" h="-1" measuredW="28" measuredH="19" zOrder="42" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>10</size>
+        <text>With</text>
+      </controlProperties>
+    </control>
+    <control controlID="111" controlTypeID="com.balsamiq.mockups::Image" x="252" y="408" w="23" h="24" measuredW="77" measuredH="79" zOrder="43" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="112" controlTypeID="com.balsamiq.mockups::Button" x="66" y="494" w="105" h="28" measuredW="113" measuredH="28" zOrder="44" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Join%20this%20Party</text>
+      </controlProperties>
+    </control>
+    <control controlID="113" controlTypeID="com.balsamiq.mockups::Image" x="252" y="451" w="23" h="24" measuredW="77" measuredH="79" zOrder="45" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="114" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="346" w="-1" h="-1" measuredW="34" measuredH="40" zOrder="46" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>1</text>
+      </controlProperties>
+    </control>
+    <control controlID="115" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="447" w="-1" h="-1" measuredW="37" measuredH="40" zOrder="47" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>2</text>
+      </controlProperties>
+    </control>
+    <control controlID="116" controlTypeID="com.balsamiq.mockups::Link" x="711" y="263" w="-1" h="-1" measuredW="150" measuredH="27" zOrder="48" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Log%20in%20using%20Last.fm</text>
+      </controlProperties>
+    </control>
+    <control controlID="117" controlTypeID="com.balsamiq.mockups::Label" x="673" y="265" w="-1" h="-1" measuredW="17" measuredH="23" zOrder="49" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>or</text>
+      </controlProperties>
+    </control>
+    <control controlID="118" controlTypeID="com.balsamiq.mockups::Label" x="396" y="317" w="-1" h="-1" measuredW="100" measuredH="27" zOrder="50" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>13421772</color>
+        <size>16</size>
+        <text>How%20it%20works</text>
+      </controlProperties>
+    </control>
+    <control controlID="119" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="347" w="-1" h="-1" measuredW="221" measuredH="37" zOrder="51" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Log%20in%20using%20Last.fm</text>
+      </controlProperties>
+    </control>
+    <control controlID="120" controlTypeID="com.balsamiq.mockups::Paragraph" x="442" y="383" w="316" h="60" measuredW="200" measuredH="140" zOrder="52" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>You%20might%20be%20asked%20your%20username%20and%20password.%20We%20never%20see%20this%20so%20your%20details%20are%20kept%20safe.</text>
+      </controlProperties>
+    </control>
+    <control controlID="121" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="448" w="-1" h="-1" measuredW="393" measuredH="37" zOrder="53" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enter%20your%20host%27s%20Last.fm%20username</text>
+      </controlProperties>
+    </control>
+    <control controlID="122" controlTypeID="com.balsamiq.mockups::Image" x="773" y="377" w="132" h="74" measuredW="77" measuredH="79" zOrder="54" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="123" controlTypeID="com.balsamiq.mockups::Paragraph" x="442" y="493" w="316" h="60" measuredW="200" measuredH="140" zOrder="55" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Check%20that%20the%20host%20is%20scrobbling%20their%20plays%20and%20find%20out%20their%20username.%20Enter%20their%20username%20to%20join%20or%20create%20a%20new%20party.</text>
+      </controlProperties>
+    </control>
+    <control controlID="124" controlTypeID="com.balsamiq.mockups::Image" x="773" y="487" w="132" h="74" measuredW="77" measuredH="79" zOrder="56" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="125" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="561" w="-1" h="-1" measuredW="36" measuredH="45" zOrder="57" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>3</text>
+      </controlProperties>
+    </control>
+    <control controlID="126" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="562" w="-1" h="-1" measuredW="64" measuredH="37" zOrder="58" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enjoy</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
