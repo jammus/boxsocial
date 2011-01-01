@@ -1,3 +1,5 @@
+require("underscore");
+
 module.exports = function(lastfm, boxsocial, config) {
     return {
         index: {
@@ -11,7 +13,8 @@ module.exports = function(lastfm, boxsocial, config) {
                 res.render("index", {
                     locals: {
                         guest: req.session.guest,
-                        party: party
+                        party: party,
+                        parties: _.first(boxsocial.parties, 5)
                     }
                 });
             }

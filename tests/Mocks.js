@@ -1,6 +1,7 @@
 var LastFmNode = require('lastfm').LastFmNode;
 var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStream;
 var EventEmitter = require("events").EventEmitter;
+var Guest = require("../lib/guest").Guest;
 
 var MockLastFm = function(){
     this.readRequests = 0;
@@ -51,3 +52,7 @@ var MockClient = function(options) {
 MockClient.prototype = Object.create(EventEmitter.prototype);
 
 exports.MockClient = MockClient;
+
+exports.createGuest = function(lastfm, user, key) {
+    return new Guest(lastfm, new LastFmSession(lastfm, user, key));
+}
