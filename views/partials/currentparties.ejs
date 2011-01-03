@@ -10,16 +10,8 @@ if (parties.length == 0) {
 }
 else {
     %>
-    <li class="partyDetails">
-        <div class="host">
-            <%= parties[0].host %>
-        </div>
-        <h4>Now Playing</h4>
-        <%- partial("nowplaying", parties[0].nowPlaying) %>
-        <h4>Guests</h4>
-        <ul class="guests">
-            <%- partial("guest", parties[0].guests) %> 
-        </ul>
+    <li class="party">
+        <%- partial("party", parties) %>
     </li>
     <%
 }

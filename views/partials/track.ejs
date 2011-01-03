@@ -1,0 +1,24 @@
+<%
+if (typeof(track) != "undefined" && track) {
+    if (track.image[2]["#text"]) {
+        %>
+        <img src="<%= track.image[2]["#text"] %>" />
+        <%
+    }
+    %>
+    <div class="name">
+        <%= track.name %>
+    </div>
+    <div class="artist">
+        <%= track.artist["#text"] %>
+    </div>
+    <%
+}
+else {
+    %>
+    <div class="nothing">
+        Nothing
+    </div>
+    <%
+}
+%>

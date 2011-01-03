@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var host = $("div.host").data("host");
     var guestsTpl = new EJS({ url:"/ejs/guest.ejs" });
-    var nowplayingTpl = new EJS({ url:"/ejs/nowplaying.ejs" });
+    var trackTpl = new EJS({ url:"/ejs/track.ejs" });
 
     var handleGuestlist = function(guests) {
         if (guests.length == 0) {
@@ -18,7 +18,7 @@ $(document).ready(function() {
     }
 
     var handleNowPlaying = function(track) {
-        var html = nowplayingTpl.render({nowplaying: track });
+        var html = trackTpl.render({track: track });
         $("#nowPlaying").html(html);
     };
 

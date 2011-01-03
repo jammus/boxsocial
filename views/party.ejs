@@ -6,7 +6,9 @@
 <div class="row">
     <div class="eightcol">
         <h3>Now Playing</h3>
-        <%- partial("nowplaying", party.nowPlaying) %>
+        <div id="nowPlaying" class="track nowPlaying">
+            <%- partial("track", party.nowPlaying) %>
+        </div>
         <div class="controls">
             <%
             if (guest && party.hasGuest(guest)) {
@@ -24,13 +26,6 @@
         <div class="guests">
             <h3>Guests</h3>
             <ul id="guestlist">
-                <%
-                if (guests.length == 0) {
-                    %>
-                    <li>No one</li>
-                    <%
-                }
-                %>
                 <%- partial("guest", guests) %>
             </ul>
         </div>

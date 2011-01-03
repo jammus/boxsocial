@@ -49,9 +49,11 @@ h2 {
     font-size:28px;
 }
 
-h3 {
+h3,
+.currentparties h4 {
     color:#aaa;
     margin-bottom:0px;
+    font-weight:lighter;
 }
 
 h2,
@@ -60,14 +62,14 @@ h4 {
     text-shadow: 0 1px 1px #fff;
 }
 
-.trackDetails img {
+.track img {
     float:right;
     border:1px solid #ddd;
     background:#fff;
     padding:1px;
 }
 
-.trackDetails .name {
+.track .name {
     color:#d51007;
 }
 
@@ -103,8 +105,8 @@ h4 {
 }
 
 li.guest .name a,
-.trackDetails .nothing,
-.trackDetails .artist {
+.track .nothing,
+.track .artist {
     color:#d5534e;
 }
 
@@ -136,6 +138,10 @@ li.guest .name a {
     font-weight:lighter;
     font-size:24px;
     margin-bottom:5px;
+}
+
+.currentparties .track img {
+    height:50px;
 }
 
 a.button,
