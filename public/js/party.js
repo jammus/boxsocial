@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var host = $("div.host").data("host");
-    var guestsTpl = new EJS({ url:"/ejs/guests.ejs" });
+    var guestsTpl = new EJS({ url:"/ejs/guest.ejs" });
     var nowplayingTpl = new EJS({ url:"/ejs/nowplaying.ejs" });
 
     var handleGuestlist = function(guests) {
@@ -8,15 +8,17 @@ $(document).ready(function() {
             location.href = "/party/" + host;
             return;
         }
-        var html = guestsTpl.render({guests: guests});
+        var html = "";
+        for (var guestIndex in guests) {
+            html += guestsTpl.render({guest: guests[guestIndex]});
+        }
         var list = $("#guestlist");
-        list.find("li").not(".header").remove();
+        list.find("li").remove();
         list.append(html);
-        list.listview("refresh");
     }
 
     var handleNowPlaying = function(track) {
-        var html = nowplayingTpl.render({party: {nowPlaying: track }});
+        var html = nowplayingTpl.render({nowplaying: track });
         $("#nowPlaying").html(html);
     };
 

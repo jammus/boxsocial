@@ -6,6 +6,7 @@ body {
     line-height: 24px;		/* Changing this will break the baseline grid. */
     -webkit-text-size-adjust: none;		/* Stops the iPhone scalling type up */
     background-color:#e3ddc4;
+    color:#333;
 }
 
 ul {
@@ -27,7 +28,8 @@ h1 a {
     font-weight:lighter;
 }
 
-h1 span.subheader {
+h1 span.subheader,
+h2 span.subheader {
     font-size:50%;
 }
 
@@ -45,12 +47,17 @@ h1 span.subheader {
 h2 {
     margin:10px 0px;
     font-size:28px;
-    text-shadow: 0 1px 0px #fff;
 }
 
 h3 {
     color:#aaa;
     margin-bottom:0px;
+}
+
+h2,
+h3,
+h4 {
+    text-shadow: 0 1px 1px #fff;
 }
 
 .trackDetails img {
@@ -67,11 +74,13 @@ h3 {
 .recentplays .name {
     line-height:20px;
     font-size:18px;
+    padding-right:70px;
 }
 
 .recentplays li {
     clear:both;
     margin-bottom:5px;
+    height:70px;
 }
 
 .recentplays img {
@@ -101,6 +110,7 @@ li.guest .name a,
 
 #main {
     background-color:#fff8dc;
+    padding-bottom:15px;
 }
 
 .controls {
@@ -150,6 +160,7 @@ button {
 }
 
 #footer {
+    margin-top:5px;
     color:#000;
 }
 

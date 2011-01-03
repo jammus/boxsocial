@@ -6,7 +6,7 @@
 <div class="row">
     <div class="eightcol">
         <h3>Now Playing</h3>
-        <%- partial("nowplaying") %>
+        <%- partial("nowplaying", party.nowPlaying) %>
         <div class="controls">
             <%
             if (guest && party.hasGuest(guest)) {
@@ -23,8 +23,15 @@
         </div>
         <div class="guests">
             <h3>Guests</h3>
-            <ul id="guestlist" data-role="listview" data-inset="true">
-                <%- partial("guests") %> 
+            <ul id="guestlist">
+                <%
+                if (guests.length == 0) {
+                    %>
+                    <li>No one</li>
+                    <%
+                }
+                %>
+                <%- partial("guest", guests) %>
             </ul>
         </div>
     </div>

@@ -1,0 +1,12 @@
+<li class="guest">
+    <%
+    if (guest.user && guest.user.image[1]["#text"]) {
+        %>
+        <img src="<%= guest.user.image[1]["#text"] %>" />
+        <%
+    }
+    %>
+    <div class="name">
+        <a href="http://www.last.fm/user/<%=guest.session.user%>"><%= guest.session.user %></a>
+    </div>
+</li>

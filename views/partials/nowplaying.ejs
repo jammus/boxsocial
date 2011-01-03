@@ -1,17 +1,17 @@
 <div id="nowPlaying" class="trackDetails nowPlaying">
     <%
-    if (party.nowPlaying) {
-        if (party.nowPlaying.image[2]["#text"]) {
+    if (nowplaying) {
+        if (nowplaying.image[2]["#text"]) {
             %>
-            <img src="<%= party.nowPlaying.image[2]["#text"] %>" />
+            <img src="<%= nowplaying.image[2]["#text"] %>" />
             <%
         }
         %>
         <div class="name">
-            <%= party.nowPlaying.name %>
+            <%= nowplaying.name %>
         </div>
         <div class="artist">
-            <%= party.nowPlaying.artist["#text"] %>
+            <%= nowplaying.artist["#text"] %>
         </div>
         <%
     }

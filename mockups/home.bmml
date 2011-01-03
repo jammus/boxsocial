@@ -122,7 +122,7 @@
         <text>Now%20playing</text>
       </controlProperties>
     </control>
-    <control controlID="86" controlTypeID="com.balsamiq.mockups::Button" x="396" y="259" w="256" h="46" measuredW="139" measuredH="34" zOrder="21" locked="false" isInGroup="-1">
+    <control controlID="86" controlTypeID="com.balsamiq.mockups::Button" x="396" y="564" w="256" h="46" measuredW="139" measuredH="34" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
         <size>20</size>
         <text>Join%20a%20Party</text>
@@ -278,72 +278,85 @@
         <text/>
       </controlProperties>
     </control>
-    <control controlID="114" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="346" w="-1" h="-1" measuredW="34" measuredH="40" zOrder="46" locked="false" isInGroup="-1">
+    <control controlID="114" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="248" w="-1" h="-1" measuredW="34" measuredH="40" zOrder="46" locked="false" isInGroup="-1">
       <controlProperties>
         <text>1</text>
       </controlProperties>
     </control>
-    <control controlID="115" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="447" w="-1" h="-1" measuredW="37" measuredH="40" zOrder="47" locked="false" isInGroup="-1">
+    <control controlID="115" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="349" w="-1" h="-1" measuredW="37" measuredH="40" zOrder="47" locked="false" isInGroup="-1">
       <controlProperties>
         <text>2</text>
       </controlProperties>
     </control>
-    <control controlID="116" controlTypeID="com.balsamiq.mockups::Link" x="711" y="263" w="-1" h="-1" measuredW="150" measuredH="27" zOrder="48" locked="false" isInGroup="-1">
+    <control controlID="116" controlTypeID="com.balsamiq.mockups::Link" x="697" y="573" w="-1" h="-1" measuredW="150" measuredH="27" zOrder="48" locked="false" isInGroup="-1">
       <controlProperties>
         <size>16</size>
         <text>Log%20in%20using%20Last.fm</text>
       </controlProperties>
     </control>
-    <control controlID="117" controlTypeID="com.balsamiq.mockups::Label" x="673" y="265" w="-1" h="-1" measuredW="17" measuredH="23" zOrder="49" locked="false" isInGroup="-1">
+    <control controlID="117" controlTypeID="com.balsamiq.mockups::Label" x="659" y="575" w="-1" h="-1" measuredW="17" measuredH="23" zOrder="49" locked="false" isInGroup="-1">
       <controlProperties>
         <text>or</text>
       </controlProperties>
     </control>
-    <control controlID="118" controlTypeID="com.balsamiq.mockups::Label" x="396" y="317" w="-1" h="-1" measuredW="100" measuredH="27" zOrder="50" locked="false" isInGroup="-1">
+    <control controlID="118" controlTypeID="com.balsamiq.mockups::Label" x="396" y="219" w="-1" h="-1" measuredW="100" measuredH="27" zOrder="50" locked="false" isInGroup="-1">
       <controlProperties>
         <color>13421772</color>
         <size>16</size>
         <text>How%20it%20works</text>
       </controlProperties>
     </control>
-    <control controlID="119" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="347" w="-1" h="-1" measuredW="221" measuredH="37" zOrder="51" locked="false" isInGroup="-1">
+    <control controlID="119" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="249" w="-1" h="-1" measuredW="190" measuredH="32" zOrder="51" locked="false" isInGroup="-1">
       <controlProperties>
+        <size>20</size>
         <text>Log%20in%20using%20Last.fm</text>
       </controlProperties>
     </control>
-    <control controlID="120" controlTypeID="com.balsamiq.mockups::Paragraph" x="442" y="383" w="316" h="60" measuredW="200" measuredH="140" zOrder="52" locked="false" isInGroup="-1">
+    <control controlID="120" controlTypeID="com.balsamiq.mockups::Paragraph" x="442" y="279" w="316" h="60" measuredW="200" measuredH="140" zOrder="52" locked="false" isInGroup="-1">
       <controlProperties>
         <text>You%20might%20be%20asked%20your%20username%20and%20password.%20We%20never%20see%20this%20so%20your%20details%20are%20kept%20safe.</text>
       </controlProperties>
     </control>
-    <control controlID="121" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="448" w="-1" h="-1" measuredW="393" measuredH="37" zOrder="53" locked="false" isInGroup="-1">
+    <control controlID="121" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="350" w="-1" h="-1" measuredW="336" measuredH="32" zOrder="53" locked="false" isInGroup="-1">
       <controlProperties>
+        <size>20</size>
         <text>Enter%20your%20host%27s%20Last.fm%20username</text>
       </controlProperties>
     </control>
-    <control controlID="122" controlTypeID="com.balsamiq.mockups::Image" x="773" y="377" w="132" h="74" measuredW="77" measuredH="79" zOrder="54" locked="false" isInGroup="-1">
+    <control controlID="122" controlTypeID="com.balsamiq.mockups::Image" x="773" y="279" w="132" h="74" measuredW="77" measuredH="79" zOrder="54" locked="false" isInGroup="-1">
       <controlProperties>
         <text/>
       </controlProperties>
     </control>
-    <control controlID="123" controlTypeID="com.balsamiq.mockups::Paragraph" x="442" y="493" w="316" h="60" measuredW="200" measuredH="140" zOrder="55" locked="false" isInGroup="-1">
+    <control controlID="123" controlTypeID="com.balsamiq.mockups::Paragraph" x="442" y="383" w="316" h="60" measuredW="200" measuredH="140" zOrder="55" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Check%20that%20the%20host%20is%20scrobbling%20their%20plays%20and%20find%20out%20their%20username.%20Enter%20their%20username%20to%20join%20or%20create%20a%20new%20party.</text>
       </controlProperties>
     </control>
-    <control controlID="124" controlTypeID="com.balsamiq.mockups::Image" x="773" y="487" w="132" h="74" measuredW="77" measuredH="79" zOrder="56" locked="false" isInGroup="-1">
+    <control controlID="124" controlTypeID="com.balsamiq.mockups::Image" x="773" y="383" w="132" h="74" measuredW="77" measuredH="79" zOrder="56" locked="false" isInGroup="-1">
       <controlProperties>
         <text/>
       </controlProperties>
     </control>
-    <control controlID="125" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="561" w="-1" h="-1" measuredW="36" measuredH="45" zOrder="57" locked="false" isInGroup="-1">
+    <control controlID="125" controlTypeID="com.balsamiq.mockups::CallOut" x="396" y="457" w="-1" h="-1" measuredW="36" measuredH="45" zOrder="57" locked="false" isInGroup="-1">
       <controlProperties>
         <text>3</text>
       </controlProperties>
     </control>
-    <control controlID="126" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="562" w="-1" h="-1" measuredW="64" measuredH="37" zOrder="58" locked="false" isInGroup="-1">
+    <control controlID="126" controlTypeID="com.balsamiq.mockups::SubTitle" x="442" y="456" w="-1" h="-1" measuredW="55" measuredH="32" zOrder="58" locked="false" isInGroup="-1">
       <controlProperties>
+        <size>20</size>
         <text>Enjoy</text>
+      </controlProperties>
+    </control>
+    <control controlID="127" controlTypeID="com.balsamiq.mockups::Paragraph" x="442" y="490" w="316" h="60" measuredW="200" measuredH="140" zOrder="59" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>All%20the%20tracks%20your%20host%20plays%20will%20appear%20in%20your%20own%20Last.fm%20timeline.%20When%20you%20want%20to%20stop%20just%20click%20%27Leave%20Party%27.</text>
+      </controlProperties>
+    </control>
+    <control controlID="128" controlTypeID="com.balsamiq.mockups::Image" x="773" y="490" w="132" h="74" measuredW="77" measuredH="79" zOrder="60" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
       </controlProperties>
     </control>
   </controls>
