@@ -3,11 +3,7 @@ $(document).ready(function() {
     var guestsTpl = new EJS({ url:"/ejs/guest.ejs" });
     var trackTpl = new EJS({ url:"/ejs/track.ejs" });
 
-    var handleGuestlist = function(guests) {
-        if (guests.length == 0) {
-            location.href = "/party/" + host;
-            return;
-        }
+    var updateGuestlist = function(guests) {
         var html = "";
         for (var guestIndex in guests) {
             html += guestsTpl.render({guest: guests[guestIndex]});
@@ -17,9 +13,18 @@ $(document).ready(function() {
         list.append(html);
     }
 
-    var handleNowPlaying = function(track) {
+    var updateNowPlaying = function(track) {
         var html = trackTpl.render({track: track });
         $("#nowPlaying").html(html);
+    };
+
+    var updateRecentPlays = function(recentplays) {
+        var list = $("#recentplays");
+        list.find("li").remove();
+        for (var index in recentplays) {
+            var li = $("<li />").html(trackTpl.render({track: recentplays[index]}));
+            list.append(li);
+        }
     };
 
     var socket = new io.Socket();
@@ -28,10 +33,19 @@ $(document).ready(function() {
     });
     socket.on("message", function(data) {
         if (data.nowPlaying) {
-            handleNowPlaying(data.nowPlaying.track);
+            updateNowPlaying(data.nowPlaying.track);
         }
+
+        if (data.recentPlays && data.recentPlays.length > 0) {
+            updateRecentPlays(data.recentPlays);
+        }
+
         if (data.guestlist) {
-            handleGuestlist(data.guestlist);
+            if (guests.length == 0) {
+                location.href = "/party/" + host;
+                return;
+            }
+            updateGuestlist(data.guestlist);
         }
     });
     socket.connect();

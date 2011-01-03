@@ -67,8 +67,10 @@ h4 {
     border:1px solid #ddd;
     background:#fff;
     padding:1px;
+    margin-left:5px;
 }
 
+li.guest .name a,
 .track .name {
     color:#d51007;
 }
@@ -96,7 +98,6 @@ h4 {
 }
 
 .nowPlaying .artist {
-    font-family: Georgia, serif;
     font-size:24px;
 }
 
@@ -104,7 +105,6 @@ h4 {
     width:160px;
 }
 
-li.guest .name a,
 .track .nothing,
 .track .artist {
     color:#d5534e;
@@ -173,9 +173,38 @@ button {
 /* Layout for mobile version */
 
 @media handheld, only screen and (max-width: 767px) {
+
+a.button,
+button {
+    width:160px;
+}
+
+.nowPlaying .name,
+.nowPlaying .nothing {
+    font-size:24px;
+    margin-bottom:5px;
+}
+
+.nowPlaying .artist {
+    font-size:20px;
+}
     
 .nowPlaying img {
     width:90px;
+    margin-right:50px;
+}
+
+.recentplays img {
+    width:50px;
+    margin-right:50px;
+}
+
+li.guest .name a {
+    font-size:20px;
+}
+
+.controls {
+    margin-top:5px;
 }
 
 #header .navigation,
