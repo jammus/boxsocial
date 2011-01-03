@@ -1,4 +1,4 @@
-require("underscore");
+var _ = require("underscore");
 
 module.exports = function(lastfm, boxsocial, config) {
     return {
