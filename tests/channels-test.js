@@ -87,4 +87,14 @@ describe("boxsocial event")
         });
         boxsocial.emit("trackUpdated", party);
     });
+
+    it("trackUpdated sends recent recent plays to channel", function() {
+        var recentPlays = [FakeTracks.RunToYourGrave];
+        party.recentPlays = recentPlays;
+        gently.expect(channel, "publish", function(message) {
+            assert.ok(message.recentPlays);
+            assert.equal(recentPlays, message.recentPlays);
+        });
+        boxsocial.emit("recentPlaysUpdated", party, recentPlays);
+    });
 })();

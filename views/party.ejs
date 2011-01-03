@@ -6,7 +6,7 @@
 <div class="row">
     <div class="eightcol">
         <h3>Now Playing</h3>
-        <div id="nowPlaying" class="track nowPlaying">
+        <div id="nowPlaying" class="nowPlaying">
             <%- partial("track", party.nowPlaying) %>
         </div>
         <div class="controls">
@@ -32,7 +32,7 @@
     </div>
     <div class="fourcol last">
         <h3>Recent Plays</h3>
-        <ul class="recentplays">
+        <ul id="recentplays" class="recentplays">
             <%- partial("recentplays") %>
         </ul>
     </div>

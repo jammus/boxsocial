@@ -201,6 +201,16 @@ describe("boxsocial events")
         party.emit("trackUpdated", FakeTracks.RunToYourGrave)
     });
 
+    it("bubbles up recentPlaysUpdated events", function() {
+        var party = boxsocial.attend("host", guestOne);
+        gently.expect(boxsocial, "emit", function(event, party, tracks) {
+            assert.equal("recentPlaysUpdated", event);
+            assert.equal("host", party.host);
+            assert.equal("Run To Your Grave", tracks[0].name);
+        });
+        party.emit("recentPlaysUpdated", [FakeTracks.RunToYourGrave])
+    });
+
     it("bubbles up guestsUpdated events", function() {
         var party = boxsocial.attend("host", guestOne);
         gently.expect(boxsocial, "emit", function(event, party, guests) {
