@@ -170,6 +170,15 @@ button {
     color:#000;
 }
 
+#footer h3 {
+    color:#000;
+}
+
+#footer a {
+    color:#333;
+    font-weight:lighter;
+}
+
 /* Layout for mobile version */
 
 @media handheld, only screen and (max-width: 767px) {
@@ -177,6 +186,8 @@ button {
 a.button,
 button {
     width:160px;
+    padding:4px 5px;
+    font-size:14px;
 }
 
 .nowPlaying .name,
@@ -190,13 +201,11 @@ button {
 }
     
 .nowPlaying img {
-    width:90px;
-    margin-right:50px;
+    width:100px;
 }
 
 .recentplays img {
     width:50px;
-    margin-right:50px;
 }
 
 li.guest .name a {
@@ -209,6 +218,10 @@ li.guest .name a {
 
 #header .navigation,
 h1 span.subheader {
+    display:none;
+}
+
+#footer .moreinfo {
     display:none;
 }
 
