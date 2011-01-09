@@ -1,21 +1,19 @@
-<div data-role="page">
-    <%- partial("header-refresh") %>
-    <div data-role="content">
+<div class="row">
+    <div class="twelvecol">
         <%
         if (guest && guest.session.user == host) {
             %>
-            <h2>Waiting for guests to arrive.</h2>
+            <h1>Waiting for guests to arrive.</h1>
             <p>This is your party. Once guests arrive they'll appear here.</p>
             <%
         }
         else {
             %>
-            <h2>The party's over</h2>
+            <h1>The party's over</h1>
             <p>Either that or you're the first one here.</p>
-            <a href="/join/<%= host %>" rel="external" data-role="button" data-icon="add">Start Party</a>
+            <a href="/join/<%= host %>" class="button">Start Party</a>
             <%
         }
         %>
     </div>
-    <%- partial("footer") %>
 </div>
