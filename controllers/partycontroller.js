@@ -6,7 +6,7 @@ module.exports = function(lastfm, boxsocial, config) {
         index: {
             get: function(req, res) {
                 var parties = this._boxsocial.parties;
-                res.render("parties", { locals: { parties: parties } } );
+                res.render("parties", { locals: { guest: req.session.guest, parties: parties } } );
             }
         },
 
@@ -38,7 +38,7 @@ module.exports = function(lastfm, boxsocial, config) {
             get: function(req, res) {
                 var host = req.params.host;
                 cutils.checkLoggedIn(req, res, "/join/" + host);
-                res.render("join_confirm", { locals: { host: host } } );
+                res.render("join_confirm", { locals: { host: host, guest: req.session.guest } } );
             },
 
             post: function(req, res) {

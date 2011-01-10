@@ -22,7 +22,11 @@ module.exports = function(lastfm, boxsocial, config) {
 
         content: {
             get: function(req, res) {
-                res.render(req.params.page);
+                res.render(req.params.page, {
+                    locals: {
+                        guest: req.session.guest
+                    }
+                });
             }
         }
     }

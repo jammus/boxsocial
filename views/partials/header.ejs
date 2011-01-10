@@ -3,8 +3,22 @@
         <div class="sevencol logo">
             <a href="/">boxsocial</a> <span class="subheader">party mode for Last.fm</span>
         </div>
-        <div class="fivecol last">
-            <a href="/login" class="login" title="Log in with Last.fm">Log In</a>
+        <div class="last">
+            <%
+            if (!guest) {
+                %>
+                <a href="/login" class="login" title="Log in with Last.fm">Log In</a>
+                <%
+            }
+            else {
+                %>
+                <form action="/logout" method="post">
+                    <input type="submit" value="Log out" class="logout" />
+                    <input type="hidden" name="logout" value="true" />
+                </form>
+                <%
+            }
+            %>
             <div class="navigation">
                 <a href="/">Home</a>
                 |

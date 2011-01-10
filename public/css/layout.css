@@ -54,11 +54,9 @@ span.subheader {
 }
 
 #header .navigation {
-    position:relative;
-    top:20px;
-    left:-10px;
+    margin-top:20px;
     text-align:right;
-    margin-right:15px;
+    margin-right:90px;
 }
 
 #header .navigation a {
@@ -212,7 +210,8 @@ input[type=submit] {
     padding:4px 9px;
 }
 
-a.login {
+a.login,
+input.logout {
     display:block;
     background: #111;
     background: -moz-linear-gradient(0% 100% 90deg, #FFFFFF, #000000,
@@ -242,7 +241,7 @@ a.login {
     width: 80px;
     float:right;
     position:relative;
-    top:15px;
+    top:-5px;
 }
 
 #footer {
@@ -283,7 +282,8 @@ label {
     display:block;
 }
 
-a.login {
+a.login,
+input.logout {
     position:absolute;
     top:11px;
     right:20px;
