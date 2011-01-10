@@ -70,6 +70,7 @@ h1 {
 }
 
 h3,
+.privacy h2,
 .currentparties h4 {
     color:#aaa;
     margin-bottom:0px;
@@ -86,6 +87,12 @@ h4 {
 
 a.readmore {
     display:none;
+}
+
+.siteintro strong {
+    font-size:110%;
+    color:#B51700;
+    font-weight:bold;
 }
 
 #howitworks h4 {
@@ -256,6 +263,18 @@ input.logout {
 #footer a {
     color:#333;
     font-weight:lighter;
+}
+
+#footer li {
+    margin-bottom:3px;
+    line-height:22px;
+}
+
+#footer img {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-bottom:5px;
 }
 
 /* Layout for mobile version */
