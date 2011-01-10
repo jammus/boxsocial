@@ -71,6 +71,7 @@ h1 {
 
 h3,
 .privacy h2,
+.glossary h2,
 .currentparties h4 {
     color:#aaa;
     margin-bottom:0px;
@@ -151,6 +152,7 @@ li.guest .name a,
 #main {
     background-color:#fff8dc;
     padding-bottom:15px;
+    min-height:400px;
 }
 
 .controls {
@@ -310,6 +312,10 @@ input.logout {
 
 a.readmore {
     display:inline;
+}
+
+#main {
+    min-height:150px;
 }
 
 .nowPlaying .name,
