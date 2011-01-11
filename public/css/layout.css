@@ -299,6 +299,10 @@ input[type=submit] {
     width:80px;
 }
 
+input[type=text] {
+    width:220px;
+}
+
 label {
     display:block;
 }
