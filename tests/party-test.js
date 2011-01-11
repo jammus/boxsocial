@@ -268,6 +268,8 @@ describe("Party events")
         firstGuest = createGuest(lastfm, "alice");
         party.addGuest(firstGuest);
         gently = new Gently();
+        lastfm.info = function() {};
+        lastfm.update = function() {};
     });
 
     it("emits guestsUpdated when guest arrives", function() {
@@ -291,8 +293,6 @@ describe("Party events")
     });
 
     it("emits trackUpdated when stream's nowPlaying updates", function() {
-        lastfm.info = function() {};
-        lastfm.update = function() {};
         gently.expect(party, "emit", function(event, track) {
             assert.equal("trackUpdated", event);
             assert.equal("Run To Your Grave", track.name);
@@ -301,13 +301,19 @@ describe("Party events")
     });
 
     it("emits trackUpdated when stream stops playing", function() {
-        lastfm.info = function() {};
-        lastfm.update = function() {};
         gently.expect(party, "emit", function(event, track) {
             assert.equal("trackUpdated", event);
             assert.ok(!track);
         });
         stream.emit("stoppedPlaying");
+    });
+
+    it("emits recentPlaysUpdated when track is scrobbled", function() {
+        gently.expect(party, "emit", function(event, tracks) {
+            assert.equal("recentPlaysUpdated", event);
+            assert.equal("Run To Your Grave", tracks[0].name);
+        });
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
     });
 
     it("removes stream listeners when party is finished", function() {
@@ -383,12 +389,8 @@ describe("recent plays")
     });
 
     it("keeps a maximum of 5 recent plays", function() {
-        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        for (var i = 0; i < 10; i++)
+            stream.emit("scrobbled", FakeTracks.RunToYourGrave);
         assert.equal(5, party.recentPlays.length);
     });
 

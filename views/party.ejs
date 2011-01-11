@@ -1,29 +1,40 @@
-<div data-role="page">
-    <%- partial("header-refresh") %>
-    <div data-role="content">
-        <h2><%= party.host %>'s party.</h2>
-        <div class="host" data-host="<%= host %>">
-            <%- partial("nowplaying") %>
-            <div class="toolbar">
-                <%
-                if (guest && party.hasGuest(guest)) {
-                    %>
-                    <a href="/leave" data-role="button" data-icon="delete">Leave Party</a>
-                    <%
-                }
-                else if (!guest || (guest && guest.session.user != host)) {
-                    %>
-                    <a href="/join/<%= host %>" rel="external" data-role="button" data-icon="add">Join Party</a>
-                    <%
-                }
-                %>
-            </div>
+<div class="row">
+    <div class="twelvecol host" data-host="<%= host %>">
+        <h1><%= party.host %>'s party</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="eightcol">
+        <h3>Now Playing</h3>
+        <div id="nowPlaying" class="nowPlaying">
+            <%- partial("track", party.nowPlaying) %>
         </div>
-        <ul id="guestlist" data-role="listview" data-inset="true">
-            <li class="header" data-role="list-divider">Guests</li>
-            <%- partial("guests") %> 
+        <div class="controls">
+            <%
+            if (guest && party.hasGuest(guest)) {
+                %>
+                <a href="/leave" class="button">Leave Party</a>
+                <%
+            }
+            else if (!guest || (guest && guest.session.user != host)) {
+                %>
+                <a href="/join/<%= host %>" class="button">Join Party</a>
+                <%
+            }
+            %>
+        </div>
+        <div class="guests">
+            <h3>Guests</h3>
+            <ul id="guestlist">
+                <%- partial("guest", guests) %>
+            </ul>
+        </div>
+    </div>
+    <div class="fourcol last">
+        <h3>Recent Plays</h3>
+        <ul id="recentplays" class="recentplays">
+            <%- partial("recentplays") %>
         </ul>
     </div>
-    <%- partial("footer") %>
-    <script type="text/javascript" src="/js/party.js"></script>
 </div>
+<script type="text/javascript" src="/js/party.js"></script>

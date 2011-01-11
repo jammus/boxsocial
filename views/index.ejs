@@ -1,13 +1,19 @@
-<div data-role="page">
-    <%- partial("header") %>
-    <div data-role="content">
-        <h2>boxsocial - party mode for Last.fm.</h2>
-        <p>Whether you're at a party, a bar or hanging out with friends you can scrobble your host's plays to your own profile in real-time. <a href="/about">Learn more...</a></p>
+<div class="row">
+    <div class="twelvecol">
+        <h1>boxsocial <span class="subheader">- party mode for Last.fm.</span></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="eightcol siteintro">
+        <p>
+            If you're listening to music at a party, a bar or while hanging out with a friend, boxsocial lets you <strong>copy scrobbles to your Last.fm profile</strong> in real-time.
+            <a href="/about" class="readmore">Read more...</a>
+        </p>
         <%
         if (!party) {
             %>
-            <div id="get_started">
-                <a href="/join" data-role="button" data-icon="add" rel="external">Join a Party</a>
+            <div class="controls">
+                <a href="/join" class="button">Join a Party</a>
             </div>
             <%
         }
@@ -19,7 +25,13 @@
             <%
         }
         %>
+        <%- partial("howitworks") %>
     </div>
-    <%- partial("footer") %>
+    <div class="fourcol last">
+        <h3>Partying now</h3>
+        <ul class="currentparties">
+            <%- partial("currentparties") %>
+        </ul>
+    </div>
 </div>
 

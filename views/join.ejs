@@ -1,14 +1,20 @@
-<div data-role="page">
-    <%- partial("header") %>
-    <div data-role="content">
-        <% 
-        if (guest) {
+<div class="row">
+    <div class="twelvecol">
+        <h1>Join a Party</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="twelvecol">
+        <p>
+            <% 
+            if (guest) {
+                %>
+                Hello <b><%= guest.session.user %></b>.
+                <%
+            }
             %>
-            <p>Hello <b><%= guest.session.user %></b>.</p>
-            <%
-        }
-        %>
-        <p>To join a party please enter your <a href="/glossary#host">host</a>'s Last.fm username.</p>
+            To join a party please enter your <a href="/glossary#host">host</a>'s Last.fm username.
+        </p>
         <form action="/join" method="post">
             <fieldset>
                 <label for="host">Host's username:</label>
@@ -17,5 +23,4 @@
             </fieldset>
         </form>
     </div>
-    <%- partial("footer") %>
 </div>

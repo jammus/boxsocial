@@ -1,13 +1,19 @@
-<div data-role="page">
-    <%- partial("header") %>
-    <div data-role="content">
-        Are you sure you want to join <b><a href="http://www.last.fm/user/<%= host %>"><%= host %></a>'s</b> party?
+<div class="row">
+    <div class="twelvecol">
+        <h1>Join <%= host %>'s party?</h1>
+        <p>
+            Are you sure you want to join <b><%= host %>'s</b> party?
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="twelvecol">
         <form action="/join/<%= host %>" method="post">
             <fieldset>
                 <input type="submit" value="Yes"i data-icon="check" />
+                or
                 <a href="/join" data-role="button" data-icon="delete">No</a>
             </fieldset>
         </form>
     </div>
-    <%- partial("footer") %>
 </div>

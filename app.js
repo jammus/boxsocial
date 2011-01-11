@@ -35,6 +35,7 @@ routes.register(app, [
     ["/", homecontroller.index],
     ["/login", logincontroller.index],
     ["/callback", logincontroller.callback],
+    ["/logout", logincontroller.logout],
     ["/parties", partycontroller.index],
     ["/join", partycontroller.chose],
     ["/join/:host", partycontroller.join],

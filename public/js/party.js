@@ -1,23 +1,30 @@
 $(document).ready(function() {
     var host = $("div.host").data("host");
-    var guestsTpl = new EJS({ url:"/ejs/guests.ejs" });
-    var nowplayingTpl = new EJS({ url:"/ejs/nowplaying.ejs" });
+    var guestsTpl = new EJS({ url:"/ejs/guest.ejs" });
+    var trackTpl = new EJS({ url:"/ejs/track.ejs" });
 
-    var handleGuestlist = function(guests) {
-        if (guests.length == 0) {
-            location.href = "/party/" + host;
-            return;
+    var updateGuestlist = function(guests) {
+        var html = "";
+        for (var guestIndex in guests) {
+            html += guestsTpl.render({guest: guests[guestIndex]});
         }
-        var html = guestsTpl.render({guests: guests});
         var list = $("#guestlist");
-        list.find("li").not(".header").remove();
+        list.find("li").remove();
         list.append(html);
-        list.listview("refresh");
     }
 
-    var handleNowPlaying = function(track) {
-        var html = nowplayingTpl.render({party: {nowPlaying: track }});
+    var updateNowPlaying = function(track) {
+        var html = trackTpl.render({track: track });
         $("#nowPlaying").html(html);
+    };
+
+    var updateRecentPlays = function(recentplays) {
+        var list = $("#recentplays");
+        list.find("li").remove();
+        for (var index in recentplays) {
+            var li = $("<li />").html(trackTpl.render({track: recentplays[index]}));
+            list.append(li);
+        }
     };
 
     var socket = new io.Socket();
@@ -26,10 +33,19 @@ $(document).ready(function() {
     });
     socket.on("message", function(data) {
         if (data.nowPlaying) {
-            handleNowPlaying(data.nowPlaying.track);
+            updateNowPlaying(data.nowPlaying.track);
         }
+
+        if (data.recentPlays && data.recentPlays.length > 0) {
+            updateRecentPlays(data.recentPlays);
+        }
+
         if (data.guestlist) {
-            handleGuestlist(data.guestlist);
+            if (data.guestlist.length == 0) {
+                location.href = "/party/" + host;
+                return;
+            }
+            updateGuestlist(data.guestlist);
         }
     });
     socket.connect();

@@ -1,0 +1,18 @@
+<%
+if (recentPlays.length == 0) {
+    %>
+    <li>
+        <div class="nothing">
+            Nothing yet.
+        </div>
+    </li>
+    <%
+}
+for (trackIndex in recentPlays) {
+    %>
+    <li>
+        <%- partial("track", recentPlays[trackIndex]) %>
+    </li>
+    <%
+}
+%>

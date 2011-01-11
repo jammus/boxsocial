@@ -1,0 +1,18 @@
+<%
+if (parties.length == 0) {
+    %>
+    <li class="partyDetails">
+        <div class="nothing">
+            No one.
+        </div>
+    </li>
+    <%
+}
+else {
+    %>
+    <li class="party">
+        <%- partial("party", parties) %>
+    </li>
+    <%
+}
+%>

@@ -4,17 +4,6 @@ var Mocks = require("./Mocks");
 var Guest = require("../lib/guest").Guest;
 var FakeTracks = require('./TestData').FakeTracks;
 
-function cleanup(boxsocial) {
-    while(boxsocial.parties.length > 0) {
-        var party = boxsocial.parties[0];
-        party.finish();
-    }
-}
-
-function createGuest(lastfm, user, key) {
-    return new Guest(lastfm, new LastFmSession(lastfm, user, key));
-}
-
 (function() {
 describe("a new boxsocial")
     var lastfm, boxsocial;
@@ -33,43 +22,43 @@ describe("a new boxsocial")
     });
 
     it("attending a new party increases party count", function() {
-        var guest = createGuest(lastfm, "guest");
+        var guest = Mocks.createGuest(lastfm, "guest");
         boxsocial.attend("hostuser", guest);
         assert.equal(1, boxsocial.partyCount());    
     });
 
     it("attending a party returns party", function() {
-        var guest = createGuest(lastfm, "guest");
+        var guest = Mocks.createGuest(lastfm, "guest");
         var party = boxsocial.attend("host", guest);
         assert.equal("host", party.host);
     });
 
     it("attending an existing party does not increase party count", function() {
-        var guestOne = createGuest(lastfm, "guestOne", "one");
-        var guestTwo = createGuest(lastfm, "guestTwo", "two");
+        var guestOne = Mocks.createGuest(lastfm, "guestOne", "one");
+        var guestTwo = Mocks.createGuest(lastfm, "guestTwo", "two");
         boxsocial.attend("hostuser", guestOne);
         boxsocial.attend("hostuser", guestTwo);
         assert.equal(1, boxsocial.partyCount());
     });
 
     it("party hosts are case insensitive", function() {
-        var guestOne = createGuest(lastfm, "guestOne", "one");
-        var guestTwo = createGuest(lastfm, "guestTwo", "two");
+        var guestOne = Mocks.createGuest(lastfm, "guestOne", "one");
+        var guestTwo = Mocks.createGuest(lastfm, "guestTwo", "two");
         boxsocial.attend("hostuser", guestOne);
         boxsocial.attend("hosTuSEr", guestTwo);
         assert.equal(1, boxsocial.partyCount());
     });
 
     it("a user joining their own party does not create party", function() {
-        var host = createGuest(lastfm, "host", "skhost");
+        var host = Mocks.createGuest(lastfm, "host", "skhost");
         boxsocial.attend("host", host);
         assert.equal(0, boxsocial.partyCount());
     });
 
     it("removes party from list when it finished", function() {
-        var guestOne = createGuest(lastfm, "guestOne", "sk1");
-        var guestTwo = createGuest(lastfm, "guestTwo", "sk2");
-        var guestThree = createGuest(lastfm, "guestThree", "sk3");
+        var guestOne = Mocks.createGuest(lastfm, "guestOne", "sk1");
+        var guestTwo = Mocks.createGuest(lastfm, "guestTwo", "sk2");
+        var guestThree = Mocks.createGuest(lastfm, "guestThree", "sk3");
 
         boxsocial.attend("hostOne", guestOne);
         boxsocial.attend("hostTwo", guestTwo);
@@ -91,7 +80,7 @@ describe("a boxsocial with one party")
     before(function() {
         lastfm = new Mocks.MockLastFm();
         boxsocial = new BoxSocial(lastfm);
-        guestOne = createGuest(lastfm, "guestOne", "sk1");
+        guestOne = Mocks.createGuest(lastfm, "guestOne", "sk1");
         boxsocial.attend("host", guestOne);
     });
 
@@ -116,7 +105,7 @@ describe("a boxsocial with one party")
     });
 
     it("returns nothing when searching for unknown guest", function() {
-        var unknown = createGuest(lastfm, "unknownguest", "huh");
+        var unknown = Mocks.createGuest(lastfm, "unknownguest", "huh");
         var party = boxsocial.findParty({ guest: unknown});
         assert.ok(!party);
     });
@@ -141,8 +130,8 @@ describe("Party rules")
     before(function() {
         lastfm = new Mocks.MockLastFm();
         boxsocial = new BoxSocial(lastfm);
-        guestOne = createGuest(lastfm, "guestOne", "auth1");
-        guestTwo = createGuest(lastfm, "guestTwo", "auth2");
+        guestOne = Mocks.createGuest(lastfm, "guestOne", "auth1");
+        guestTwo = Mocks.createGuest(lastfm, "guestTwo", "auth2");
         boxsocial.attend("host", guestOne);
     });
 
@@ -163,14 +152,14 @@ describe("Party rules")
     });
 
     it("hosts can't be guests", function() {
-        var host = createGuest(lastfm, "host", "skhost");
+        var host = Mocks.createGuest(lastfm, "host", "skhost");
         boxsocial.attend("newhost", host); 
         var party = boxsocial.findParty({ guest: host });
         assert.ok(!party);
     });
 
     it("users can't join their own party", function() {
-        var host = createGuest(lastfm, "host", "skhost");
+        var host = Mocks.createGuest(lastfm, "host", "skhost");
         boxsocial.attend("host", host); 
         var party = boxsocial.findParty({ guest: host });
         assert.ok(!party);
@@ -194,7 +183,7 @@ describe("boxsocial events")
     before(function() {
         var lastfm = new Mocks.MockLastFm();
         boxsocial = new BoxSocial(lastfm);
-        guestOne = createGuest(lastfm, "guestOne", "auth");
+        guestOne = Mocks.createGuest(lastfm, "guestOne", "auth");
         gently = new Gently();
     });
 
@@ -210,6 +199,16 @@ describe("boxsocial events")
             assert.equal("Run To Your Grave", track.name);
         });
         party.emit("trackUpdated", FakeTracks.RunToYourGrave)
+    });
+
+    it("bubbles up recentPlaysUpdated events", function() {
+        var party = boxsocial.attend("host", guestOne);
+        gently.expect(boxsocial, "emit", function(event, party, tracks) {
+            assert.equal("recentPlaysUpdated", event);
+            assert.equal("host", party.host);
+            assert.equal("Run To Your Grave", tracks[0].name);
+        });
+        party.emit("recentPlaysUpdated", [FakeTracks.RunToYourGrave])
     });
 
     it("bubbles up guestsUpdated events", function() {
