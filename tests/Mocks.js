@@ -56,3 +56,17 @@ exports.MockClient = MockClient;
 exports.createGuest = function(lastfm, user, key) {
     return new Guest(lastfm, new LastFmSession(lastfm, user, key));
 }
+
+exports.MockRequest = function() {
+    return {
+        session: {
+             destroy: function() {}
+        }
+    };
+}
+
+exports.MockResponse = function() {
+    return {
+        redirect: function() {}
+    };
+};

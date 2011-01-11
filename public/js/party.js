@@ -41,7 +41,7 @@ $(document).ready(function() {
         }
 
         if (data.guestlist) {
-            if (guests.length == 0) {
+            if (data.guestlist.length == 0) {
                 location.href = "/party/" + host;
                 return;
             }

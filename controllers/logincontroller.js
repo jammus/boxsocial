@@ -36,6 +36,14 @@ module.exports = function(lastfm, boxsocial, config) {
 
                 fmsession.authorise(token);
             }
+        },
+
+        logout: {
+            post: function(req, res) {
+                boxsocial.leave(req.session.guest);
+                req.session.destroy();
+                res.redirect("/");
+            }
         }
     }
 };
