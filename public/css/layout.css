@@ -300,7 +300,7 @@ input[type=submit] {
 }
 
 input[type=text] {
-    width:220px;
+    width:65%;
 }
 
 label {
