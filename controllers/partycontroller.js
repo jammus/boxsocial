@@ -14,9 +14,16 @@ module.exports = function(lastfm, boxsocial, config) {
             get: function(req, res) {
                 var host = req.params.host;
                 var party = boxsocial.findParty({host: host});    
-
                 if (party) {
-                    res.render("party", { locals: { guest: req.session.guest, party: party, host: host, guests: party.guests, recentPlays: party.recentPlays } } );
+                    res.render("party", { 
+                        locals: {
+                            guest: req.session.guest,
+                            party: party, host: host,
+                            guests: party.guests,
+                            recentPlays: party.recentPlays
+                        }
+                    });
+                    return;
                 }
                 res.render("noparty", { locals: { guest: req.session.guest, host: host } });
             }

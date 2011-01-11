@@ -155,6 +155,10 @@ li.guest .name a,
     min-height:400px;
 }
 
+.actions {
+    margin-top:8px;
+}
+
 .controls {
     margin:20px 0px;
 }

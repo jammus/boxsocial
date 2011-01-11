@@ -61,7 +61,8 @@ exports.MockRequest = function() {
     return {
         session: {
              destroy: function() {}
-        }
+        },
+        params: {}
     };
 }
 
