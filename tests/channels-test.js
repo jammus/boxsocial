@@ -97,4 +97,11 @@ describe("boxsocial event")
         });
         boxsocial.emit("recentPlaysUpdated", party, recentPlays);
     });
+
+    it("partyFinished sends party over to channel", function() {
+        gently.expect(channel, "publish", function(message) {
+            assert.ok(message.partyOver);
+        });
+        boxsocial.emit("partyFinished", party);
+    });
 })();

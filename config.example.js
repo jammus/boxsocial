@@ -3,6 +3,7 @@ module.exports = {
     port: 8088,
     env: "development",
     api_key: "",
-    secret: ""
+    secret: "",
+    partyTimeout: 60 * 60 * 1000 // in milliseconds
 };
 

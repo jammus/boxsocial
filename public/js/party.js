@@ -41,11 +41,11 @@ $(document).ready(function() {
         }
 
         if (data.guestlist) {
-            if (data.guestlist.length == 0) {
-                location.href = "/party/" + host;
-                return;
-            }
             updateGuestlist(data.guestlist);
+        }
+
+        if (data.partyOver) {
+            location.href = "/party/" + host;
         }
     });
     socket.connect();

@@ -174,6 +174,16 @@ describe("Party rules")
         
         assert.ok(!partyOne.hasGuest(guestOne));
     });
+
+    it("parties get removed after period of inactivity", function() {
+        var delay = 1000;
+        var boxsocial = new BoxSocial(lastfm, delay);
+        boxsocial.attend("host", guestOne);
+        assert.equal(1, boxsocial.parties.length);
+        var timeout = setTimeout(function() {
+            assert.equal(0, boxsocial.parties.length);
+        }, delay);
+    });
 })();
 
 (function() {
@@ -197,6 +207,7 @@ describe("boxsocial events")
             assert.equal("trackUpdated", event);
             assert.equal("host", party.host);
             assert.equal("Run To Your Grave", track.name);
+            gently.restore(boxsocial, "emit");
         });
         party.emit("trackUpdated", FakeTracks.RunToYourGrave)
     });
@@ -207,6 +218,7 @@ describe("boxsocial events")
             assert.equal("recentPlaysUpdated", event);
             assert.equal("host", party.host);
             assert.equal("Run To Your Grave", tracks[0].name);
+            gently.restore(boxsocial, "emit");
         });
         party.emit("recentPlaysUpdated", [FakeTracks.RunToYourGrave])
     });
@@ -217,8 +229,17 @@ describe("boxsocial events")
             assert.equal("guestsUpdated", event);
             assert.equal("host", party.host);
             assert.equal("guestOne", guests[0].session.user);
+            gently.restore(boxsocial, "emit");
         });
         party.emit("guestsUpdated", party.guests)
+    });
+
+    it("bubbles up finished events", function() {
+        var party = boxsocial.attend("host", guestOne);
+        gently.expect(boxsocial, "emit", function(event, party) {
+            assert.equal("partyFinished", event);
+            assert.equal("host", party.host);
+        });
     });
 
     it("bubbles up error events", function() {
@@ -227,6 +248,7 @@ describe("boxsocial events")
         gently.expect(boxsocial, "emit", function(event, error) {
             assert.equal("error", event);
             assert.equal(message, error.message);
+            gently.restore(boxsocial, "emit");
         });
         party.emit("error", new Error(message));
     });

@@ -20,7 +20,7 @@ var lastfm = new LastFmNode({
   secret: config.secret
 });
 
-var boxsocial = new BoxSocial(lastfm);
+var boxsocial = new BoxSocial(lastfm, config.partyTimeout);
 boxsocial.on("error", function(error) {
     console.log("Error: " + error.message);
 });
