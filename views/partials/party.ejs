@@ -2,5 +2,16 @@
     <a href="/party/<%= party.host %>"><%= party.host %>'s party</a>
 </div>
 <div class="track">
-    <%- partial("track", party.nowPlaying) %>
+    <%
+    if (party.nowPlaying) {
+        %>
+        <%- partial("track", party.nowPlaying) %>
+        <%
+    }
+    else {
+        %>
+        <%- partial("nothing") %>
+        <%
+    }
+    %>
 </div>
