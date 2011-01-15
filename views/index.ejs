@@ -10,7 +10,7 @@
             <a href="/about" class="readmore">Read more...</a>
         </p>
         <%
-        if (!party) {
+        if (!currentParty) {
             %>
             <div class="controls">
                 <a href="/join" class="button">Join a Party</a>
@@ -20,7 +20,7 @@
         else {
             %>
             <div id="current_party">
-                You are at <a href="/party/<%= party.host %>"><%= party.host %>'s party</a>.
+                You are at <a href="/party/<%= currentParty.host %>"><%= currentParty.host %>'s party</a>.
             </div>
             <%
         }

@@ -13,7 +13,7 @@ module.exports = function(lastfm, boxsocial, config) {
                 res.render("index", {
                     locals: {
                         guest: req.session.guest,
-                        party: party,
+                        currentParty: party,
                         parties: _.first(boxsocial.parties, 5)
                     }
                 });
