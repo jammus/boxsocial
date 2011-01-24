@@ -1,7 +1,7 @@
 require("./common.js");
 var Party = require('../lib/party').Party;
-var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStream;
-var LastFmSession = require('lastfm/lastfm-session').LastFmSession;
+var RecentTracksStream = require('lastfm/recenttracks-stream');
+var LastFmSession = require('lastfm/lastfm-session');
 var FakeTracks = require('./TestData').FakeTracks;
 var Guest = require('../lib/guest').Guest;
 

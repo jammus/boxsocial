@@ -1,14 +1,22 @@
 var LastFmNode = require('lastfm').LastFmNode;
-var RecentTracksStream = require('lastfm/recenttracks-stream').RecentTracksStream;
+var LastFmRequest = require('lastfm/lastfm-request');
+var RecentTracksStream = require('lastfm/recenttracks-stream');
 var EventEmitter = require("events").EventEmitter;
 var Guest = require("../lib/guest").Guest;
+var fakes = require("./fakes");
 
 var MockLastFm = function(){
     this.readRequests = 0;
 };
 
-MockLastFm.prototype.writeRequest = function(){};
-MockLastFm.prototype.readRequest = function(){ this.readRequests++; };
+MockLastFm.prototype.write = function() {
+    return new fakes.LastFmRequest();
+};
+
+MockLastFm.prototype.read = function() {
+    this.readRequests++;
+    return new fakes.LastFmRequest();
+};
 
 MockLastFm.prototype.stream = function(host) {
     return new RecentTracksStream(this, host);
