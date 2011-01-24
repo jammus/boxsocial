@@ -9,8 +9,11 @@
         }
         else {
             %>
-            <h1>The party's over</h1>
-            <p>Either that or you're the first one here.</p>
+            <h1><%= host %>'s party</h1>
+            <p>
+                <strong>The party's over.</strong>
+                Either that or you're the first one here.
+            </p>
             <a href="/join/<%= host %>" class="button">Start Party</a>
             <%
         }
