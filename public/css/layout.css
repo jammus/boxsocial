@@ -30,77 +30,83 @@ ul {
     box-shadow: 0px 0px 15px #000;
 }
 
-h1, h2, h3, h4, h5, h6,
-#header .logo {
+h1, h2, h3, h4, h5, h6
+{
     font-family: "ChunkFiveRegular", Georgia, serif;
 }
 
+#header .logo {
+    font-family: "Copse";
+}
+
 #header .logo a {
-color:#800;
-text-shadow:1px 1px 1px rgba(219, 112, 92, 1);
-visible:hidden;
+    color:#f0f0f0;
+    text-shadow:1px 1px 1px rgba(219, 112, 92, 1);
+    visible:hidden;
 }
 
 #header .logo {
-line-height:36px;
+    line-height:36px;
 }
 
 
 #header .logo .subheader {
-text-shadow:none;
-font-weight:lighter;
+    text-shadow:none;
+    font-weight:lighter;
 }
+
 #header .logo,
 h1 {
-font-size:28px;
-margin:10px 0px;
+    font-size:28px;
+    margin:10px 0px;
 }
 
 h1 a {
-color:#f0f0f0;
-font-weight:lighter;
+    color:#f0f0f0;
+    font-weight:lighter;
 }
 
 span.subheader {
-font-size:50%;
+    font-size:50%;
 }
 
 #header .navigation {
-margin-top:20px;
-text-align:right;
-margin-right:90px;
+    margin-top:20px;
+    text-align:right;
+    margin-right:90px;
 }
 
 #header .navigation a {
-color:#fff8dc;
-font-weight:lighter;
+    color:#fff8dc;
+    font-weight:lighter;
 }
 
 h1 {
-margin:10px 0px;
-margin-top:20px;
-font-size:36px;
+    margin:10px 0px;
+    margin-top:20px;
+    font-size:36px;
 }
 
 h3,
 .privacy h2,
 .glossary h2,
 .currentparties h4 {
-color:#aaa;
-margin-bottom:0px;
-font-weight:lighter;
+    color:#aaa;
+    margin-bottom:0px;
+    font-weight:lighter;
 }
 
-h1,
-h2,
-h3,
-h4 {
-text-shadow: 0 1px 1px #fff;
-font-weight:lighter;
+h1, h2, h3, h4 {
+    text-shadow: 0 1px 1px #fff;
+    font-weight:lighter;
 }
 
 a.readmore {
-display:none;
+    display:none;
+}
+
+#youarehere {
+    margin-bottom:15px;
 }
 
 .siteintro strong {
@@ -186,13 +192,12 @@ height:50px;
 }
 
 li.guest img {
-float:left;
-margin-right:15px;
-width:64px;
+    float:left;
+    margin-right:15px;
+    width:96px;
 }
 
 li.guest .name a {
-font-weight:lighter;
 font-size:24px;
 margin-bottom:5px;
 }
@@ -365,6 +370,14 @@ a.readmore {
 
 li.guest .name a {
     font-size:20px;
+}
+
+li.guest img {
+    width:64px;
+}
+
+.recentplays {
+    clear:both;
 }
 
 .siteintro #howitworks {
