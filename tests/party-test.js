@@ -322,7 +322,14 @@ describe("Party events")
             assert.equal(0, stream.listeners("scrobbled").length);
             assert.equal(0, stream.listeners("nowPlaying").length);
             assert.equal(0, stream.listeners("stoppedPlaying").length);
-            assert.equal(0, stream.listeners("error").length);
+        });
+        party.finish();
+    });
+
+    it("retains error listener when party is finished", function() {
+        gently.expect(party, "emit", function(event) {
+            assert.equal("finished", event);
+            assert.equal(1, stream.listeners("error").length);
         });
         party.finish();
     });
