@@ -33,9 +33,10 @@ var DefaultController = require("../controllers/defaultcontroller");
         }));
     }
 
-    function expectRedirectTo(expectedUrl) {
-        gently.expect(response, "redirect", function(actualUrl) {
+    function expect301RedirectTo(expectedUrl) {
+        gently.expect(response, "redirect", function(actualUrl, statusCode) {
             assert.equal(expectedUrl, actualUrl);
+            assert.equal(301, statusCode);
         });
         var controller = new DefaultController(config);
         controller.default.all(request, response);
@@ -48,18 +49,18 @@ var DefaultController = require("../controllers/defaultcontroller");
 
     it("redirects to the correct host if request does not match configuration", function() {
         whenRequestHostIs("www.boxsocial.fm");
-        expectRedirectTo("http://boxsocial.fm/somepath?key=value");
+        expect301RedirectTo("http://boxsocial.fm/somepath?key=value");
     });
 
     it("includes port in redirect if specified", function() {
         whenRequestHostIs("www.boxsocial.fm");
         andPortIs("8080");
-        expectRedirectTo("http://boxsocial.fm:8080/somepath?key=value");
+        expect301RedirectTo("http://boxsocial.fm:8080/somepath?key=value");
     });
 
     it("does not include port if port 80", function() {
         whenRequestHostIs("www.boxsocial.fm");
         andPortIs("80");
-        expectRedirectTo("http://boxsocial.fm/somepath?key=value");
+        expect301RedirectTo("http://boxsocial.fm/somepath?key=value");
     });
 })();

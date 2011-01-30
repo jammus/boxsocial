@@ -9,7 +9,7 @@ module.exports = function(config) {
                         url += ":" + config.port;
                     }
                     url += req.originalUrl;
-                    res.redirect(url);;
+                    res.redirect(url, 301);;
                     return;
                 }
                 next();
