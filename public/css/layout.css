@@ -394,11 +394,10 @@ a.readmore {
 }
 
 .affiliate {
-    margin-bottom:4px;
 }
 
 .actions {
-    clear:both;
+    padding-top:4px;
 }
 
 #main {
