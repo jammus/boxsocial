@@ -13,7 +13,7 @@ var DefaultController = require("./controllers/defaultcontroller");
 
 var app = express.createServer();
 app.use(express.cookieDecoder());
-app.use(express.session());
+app.use(express.session({secret:config.secret}));
 app.use(express.staticProvider(__dirname + "/public"));
 app.use(express.bodyDecoder());
 app.set("views", __dirname + "/views");
