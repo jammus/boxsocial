@@ -106,76 +106,110 @@ a.readmore {
 }
 
 #youarehere {
-    margin-bottom:15px;
+    margin-bottom:25px;
 }
 
 .siteintro strong {
-font-size:110%;
-color:#B51700;
-font-weight:bold;
+    font-size:110%;
+    color:#B51700;
+    font-weight:bold;
 }
 
 #howitworks h4 {
-font-size:20px;
-margin:10px 0px;
+    font-size:20px;
+    margin:10px 0px;
 }
 
 .track img {
-float:right;
-border:1px solid #ddd;
-background:#fff;
-padding:1px;
-margin-left:5px;
-margin-bottom:5px;
+    float:right;
+    border:1px solid #ddd;
+    background:#fff;
+    padding:1px;
+    margin-left:5px;
+    margin-bottom:5px;
 }
 
 li.guest .name a,
 .track .name {
-color:#d51007;
+    color:#d51007;
 }
 
 .recentplays .name {
-line-height:20px;
-font-size:18px;
-padding-right:70px;
+    line-height:20px;
+    font-size:18px;
+    padding-right:70px;
 }
 
 .recentplays li {
-clear:both;
-margin-bottom:5px;
-height:70px;
+    clear:both;
+    margin-bottom:5px;
+    height:70px;
 }
 
-.recentplays img {
-width:64px;
+.recentplays .track img {
+    width:64px;
 }
 
 .nowPlaying .name,
 .nowPlaying .nothing {
-font-size:28px;
-margin-bottom:5px;
+    font-size:28px;
+    margin-bottom:5px;
 }
 
 .nowPlaying .artist {
-font-size:24px;
+    font-size:24px;
 }
 
-.nowPlaying img {
-width:160px;
+.nowPlaying .track img {
+    width:160px;
+}
+
+.nowPlaying .affiliate {
+    margin-top:6px;
 }
 
 .track .nothing,
 .track .artist {
-color:#d5534e;
+    color:#d5534e;
 }
 
 #main {
-padding-bottom:15px;
-min-height:400px;
+    padding-bottom:15px;
+    min-height:400px;
 }
 
 .actions {
-margin-top:8px;
+    margin-top:8px;
+}
+
+a.affiliate {
+    display:block;
+    border:1px solid #ddf;
+    float:left;
+    margin-right:3px;
+    border-radius:3px;
+    -moz-border-radius:3px;
+}
+
+a.amazoncouk {
+    background-color:#fff;
+}
+
+a.amazoncom {
+    background-color:#000;
+    border:1px solid #003;
+}
+
+.affiliate img {
+    padding:1px;
+    margin:0px;
+    height:16px;
+}
+
+
+.currentparties .affiliate img,
+.recentplays .affiliate img {
+    height:12px;
 }
 
 .controls {
@@ -202,8 +236,17 @@ font-size:24px;
 margin-bottom:5px;
 }
 
+.currentparties li.party {
+    clear:both;
+    margin-bottom:35px;
+}
+
 .currentparties .track img {
 height:50px;
+}
+
+ul#recentplays li {
+    margin-bottom:10px;
 }
 
 a.button,
@@ -360,11 +403,11 @@ a.readmore {
     font-size:20px;
 }
     
-.nowPlaying img {
+.nowPlaying .track img {
     width:100px;
 }
 
-.recentplays img {
+.recentplays .track img {
     width:50px;
 }
 

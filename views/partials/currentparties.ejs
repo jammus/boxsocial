@@ -9,10 +9,12 @@ if (parties.length == 0) {
     <%
 }
 else {
-    %>
-    <li class="party">
-        <%- partial("party", parties) %>
-    </li>
-    <%
+    for (partyIndex in parties) {
+        %>
+        <li class="party">
+            <%- partial("party", parties[partyIndex]) %>
+        </li>
+        <%
+    }
 }
 %>
