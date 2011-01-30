@@ -8,7 +8,7 @@
 }
 
 body {
-    background-color:#fff1c7;
+    background-color:#bdbb95;
     font-family: "Lato", "helvetica neue", helvetica, arial, sans-serif;
     font-size: 14px;
     line-height: 24px;		/* Changing this will break the baseline grid. */
@@ -25,9 +25,7 @@ ul {
     background: #ba0c00;
     border-bottom:2px solid #800;
     border-top:1px solid rgba(219, 112, 92, 0.9);
-    -moz-box-shadow: 0px 0px 15px #000;
-    -webkit-box-shadow: 0px 0px 15px #000;
-    box-shadow: 0px 0px 15px #000;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.9);
 }
 
 h1, h2, h3, h4, h5, h6
@@ -176,6 +174,7 @@ li.guest .name a,
 #main {
     padding-bottom:15px;
     min-height:400px;
+    background-color:#fff1c7;
 }
 
 .actions {
@@ -261,6 +260,7 @@ border-radius: 3px;
 -moz-box-shadow: inset 0 0 1px 1px #f6f6f6;
 -webkit-box-shadow: inset 0 0 1px 1px #f6f6f6;
 box-shadow: inset 0 0 1px 1px #f6f6f6;
+z-index:100;
 color: #333;
 font-size: 18px;
 font-weight: bold;
@@ -319,7 +319,6 @@ top:-5px;
 }
 
 #footer {
-    background-color:#bdbb95;
     margin-top:5px;
     padding-top:10px;
     color:#000;
