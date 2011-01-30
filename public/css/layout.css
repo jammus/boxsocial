@@ -34,17 +34,17 @@ h1, h2, h3, h4, h5, h6
 }
 
 #header .logo {
-    font-family: "Copse";
+    font-family: "ChunkFiveRegular", "Copse", Georgia, serif;
 }
 
 #header .logo a {
-    color:#f0f0f0;
+    color:#600;
     text-shadow:1px 1px 1px rgba(219, 112, 92, 1);
-    visible:hidden;
+    font-weight:lighter;
 }
 
 #header .logo {
-    line-height:36px;
+    line-height:40px;
 }
 
 
@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6
 
 #header .logo,
 h1 {
-    font-size:28px;
+    font-size:32px;
     margin:10px 0px;
 }
 
@@ -443,6 +443,10 @@ li.guest img {
 
 .controls {
     margin-top:5px;
+}
+
+#header .logo {
+    font-size:28px;
 }
 
 #header .navigation,
