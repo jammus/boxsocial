@@ -178,10 +178,6 @@ li.guest .name a,
     min-height:400px;
 }
 
-.actions {
-    margin-top:8px;
-}
-
 a.affiliate {
     display:block;
     border:1px solid #ddf;
@@ -189,6 +185,7 @@ a.affiliate {
     margin-right:3px;
     border-radius:3px;
     -moz-border-radius:3px;
+    margin-bottom:4px;
 }
 
 a.amazoncouk {
@@ -214,6 +211,10 @@ a.amazoncom {
 
 .controls {
 margin:20px 0px;
+}
+
+.actions {
+    clear:both;
 }
 
 .guests {
@@ -409,6 +410,10 @@ a.readmore {
 
 .recentplays .track img {
     width:50px;
+}
+
+.affiliate img {
+    padding:4px 4px;
 }
 
 li.guest .name a {
