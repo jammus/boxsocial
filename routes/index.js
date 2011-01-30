@@ -5,7 +5,7 @@ module.exports = {
             var url = route[0];
             var controller = route[1];
 
-            ["get", "post", "put", "delete"].forEach(function(verb) {
+            ["all", "get", "post", "put", "delete"].forEach(function(verb) {
                 var handler = controller[verb];
                 if (handler) app[verb](url, handler);
             });

@@ -5,6 +5,11 @@ var BoxSocial = require("./lib/boxsocial").BoxSocial;
 var LastFmNode = require("lastfm").LastFmNode;
 var Channels = require("./lib/channels").Channels;
 var ejs = require("ejs");
+var HomeController = require("./controllers/homecontroller");
+var LoginController = require("./controllers/logincontroller");
+var PartyController = require("./controllers/partycontroller");
+var ErrorController = require("./controllers/errorcontroller");
+var DefaultController = require("./controllers/defaultcontroller");
 
 var app = express.createServer();
 app.use(express.cookieDecoder());
@@ -25,13 +30,15 @@ boxsocial.on("error", function(error) {
     console.log("Error: " + error.message);
 });
 
-var homecontroller = require("./controllers/homecontroller")(lastfm, boxsocial, config);
-var logincontroller = require("./controllers/logincontroller")(lastfm, boxsocial, config);
-var partycontroller = require("./controllers/partycontroller")(lastfm, boxsocial, config);
-var errorcontroller = require("./controllers/errorcontroller")();
+var homecontroller = new HomeController(lastfm, boxsocial, config);
+var logincontroller = new LoginController(lastfm, boxsocial, config);
+var partycontroller = new PartyController(lastfm, boxsocial, config);
+var errorcontroller = new ErrorController();
+var defaultcontroller = new DefaultController(config);
 
 var routes = require("./routes");
 routes.register(app, [
+    ["*", defaultcontroller.default],
     ["/", homecontroller.index],
     ["/login", logincontroller.index],
     ["/callback", logincontroller.callback],
@@ -41,8 +48,7 @@ routes.register(app, [
     ["/join/:host", partycontroller.join],
     ["/party/:host", partycontroller.view],
     ["/leave", partycontroller.leave],
-    ["/:page", homecontroller.content],
-    ["", errorcontroller]
+    ["/:page", homecontroller.content]
 ]);
 
 var channels = new Channels(boxsocial);

@@ -7,3 +7,4 @@ require("./routes-test.js");
 require("./homecontroller-test.js");
 require("./logincontroller-test.js");
 require("./partymonitor-test.js");
+require("./defaultcontroller-test.js");

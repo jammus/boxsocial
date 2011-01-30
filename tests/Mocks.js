@@ -70,7 +70,8 @@ exports.MockRequest = function() {
         session: {
              destroy: function() {}
         },
-        params: {}
+        params: {},
+        headers: function(key) {}
     };
 }
 
