@@ -48,7 +48,8 @@ routes.register(app, [
     ["/join/:host", partycontroller.join],
     ["/party/:host", partycontroller.view],
     ["/leave", partycontroller.leave],
-    ["/:page", homecontroller.content]
+    ["/:page", homecontroller.content],
+    ["", errorcontroller]
 ]);
 
 var channels = new Channels(boxsocial);
