@@ -6,11 +6,12 @@ var FakeTracks = require('./TestData').FakeTracks;
 
 (function() {
 describe("a new boxsocial")
-    var lastfm, boxsocial;
+    var lastfm, boxsocial, gently;
 
     before(function() {
         lastfm = new Fakes.LastFm();
         boxsocial = new BoxSocial(lastfm);
+        gently = new Gently();
     });
 
     after(function() {
@@ -32,6 +33,16 @@ describe("a new boxsocial")
         var party = boxsocial.attend("host", guest);
         assert.equal("host", party.host);
     });
+
+    it("attending a new party emits new party event", function() {
+        var guest = createGuest(lastfm, "guest");
+        gently.expect(boxsocial, "emit", function(event, party) {
+            assert.equal("newParty", event);
+            gently.restore(this, "emit");
+        });
+        boxsocial.attend("hostuser", guest);
+    });
+    
 
     it("attending an existing party does not increase party count", function() {
         var guestOne = createGuest(lastfm, "guestOne", "one");

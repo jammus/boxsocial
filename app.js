@@ -4,6 +4,7 @@ var express = require("express"),
     BoxSocial = require("./lib/boxsocial").BoxSocial,
     LastFmNode = require("lastfm").LastFmNode,
     Channels = require("./lib/channels").Channels,
+    Monitor = require("./lib/monitor"),
     ejs = require("ejs");
 
 var app = express.createServer();
@@ -32,5 +33,7 @@ socket.on("clientMessage", function(message, client) {
         channels.subscribe(message.subscribe, client);
     }
 });
+
+var monitor = new Monitor(boxsocial);
 
 module.exports = app;
