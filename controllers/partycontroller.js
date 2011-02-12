@@ -1,12 +1,16 @@
-var sys = require("sys");
 var cutils = require("./cutils");
 
 module.exports = function(lastfm, boxsocial, config) {
     return {
         index: {
             get: function(req, res) {
-                var parties = this._boxsocial.parties;
-                res.render("parties", { locals: { guest: req.session.guest, parties: parties } } );
+                var parties = boxsocial.parties;
+                res.render("parties", { 
+                    locals: {
+                        guest: req.session.guest,
+                        parties: parties
+                    }
+                });
             }
         },
 
@@ -73,7 +77,6 @@ module.exports = function(lastfm, boxsocial, config) {
                 var party = boxsocial.findParty({guest: guest});
                 if (party) {
                     host = party.host;
-                    sys.puts(guest.session.user + " has joined " + party.host + "'s party");
                 }
                 res.redirect("/party/" + host);
             }
@@ -84,7 +87,6 @@ module.exports = function(lastfm, boxsocial, config) {
                 var guest = req.session.guest;
                 if (guest) {
                     boxsocial.leave(guest);
-                    sys.puts(guest.session.user + " has left the party.");
                 }
                 res.redirect("/");
             }
