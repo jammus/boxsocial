@@ -76,7 +76,7 @@ span.subheader {
 
 #header .navigation a {
     color:#fff8dc;
-    font-weight:lighter;
+    font-weight:normal;
 }
 
 h1 {
@@ -307,7 +307,7 @@ border-radius: 4px;
 box-shadow: inset 1px 1px 1px 0px rgba(135, 135, 135, 0.1), inset -1px -1px 1px 0px rgba(135, 135, 135, 0.1);
 color: #fff;
 font-size: 16px;
-font-weight: lighter;
+font-weight: normal;
 line-height: 1;
 padding: 8px 0;
 text-shadow: 0px -1px 1px rgba(0, 0, 0, .8), 0 1px 1px rgba(255, 255, 255, 0.3);
@@ -330,7 +330,7 @@ top:-5px;
 
 #footer a {
     color:#333;
-    font-weight:lighter;
+    font-weight:normal;
 }
 
 #footer li {
