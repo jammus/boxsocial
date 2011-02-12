@@ -1,5 +1,5 @@
 require("./common");
-var Mocks = require("./Mocks");
+var Fakes = require("./Fakes");
 var Channel = require("../lib/channel").Channel;
 
 (function() {
@@ -19,7 +19,7 @@ describe("A new channel")
     });
 
     it("adding a client increases count by one", function() {
-        var client = new Mocks.MockClient({ sessionId: "1234" });
+        var client = new Fakes.Client({ sessionId: "1234" });
         channel.addClient(client);
         assert.equal(1, channel.clients.length);
     });
@@ -31,8 +31,8 @@ describe("A channel with two clients")
 
     before(function() {
         channel = new Channel("channelname");
-        clientOne = new Mocks.MockClient({ sessionId: "1234" });
-        clientTwo = new Mocks.MockClient({ sessionId: "5678" });
+        clientOne = new Fakes.Client({ sessionId: "1234" });
+        clientTwo = new Fakes.Client({ sessionId: "5678" });
         channel.addClient(clientOne);
         channel.addClient(clientTwo);
     });

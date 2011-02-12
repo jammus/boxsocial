@@ -16,3 +16,8 @@ global.cleanup = function(boxsocial) {
         party.finish();
     }
 };
+
+var Guest = require("../lib/guest").Guest;
+global.createGuest = function(lastfm, user, key) {
+    return new Guest(lastfm, new LastFmSession(lastfm, user, key));
+}

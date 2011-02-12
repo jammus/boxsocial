@@ -1,5 +1,5 @@
 require("./common");
-var Mocks = require("./Mocks");
+var Fakes = require("./Fakes");
 var DefaultController = require("../controllers/defaultcontroller");
 
 (function() {
@@ -11,9 +11,9 @@ var DefaultController = require("../controllers/defaultcontroller");
         config = {
             host: configuredHost
         };
-        request = new Mocks.MockRequest();
+        request = new Fakes.Request();
         gently = new Gently();
-        response = new Mocks.MockResponse();
+        response = new Fakes.Response();
         request.originalUrl = "/somepath?key=value";
     });
 

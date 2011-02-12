@@ -2,7 +2,7 @@ require("./common.js");
 var BoxSocial = require("../lib/boxsocial").BoxSocial;
 var Channels = require("../lib/channels").Channels;
 var FakeTracks = require("./TestData").FakeTracks;
-var Mocks = require("./Mocks");
+var Fakes = require("./Fakes");
 
 (function() {
 describe("a new channels instance")
@@ -11,8 +11,8 @@ describe("a new channels instance")
     before(function() {
         boxsocial = new BoxSocial();
         channels = new Channels(boxsocial);
-        clientOne = new Mocks.MockClient({sessionId: "1234"});
-        clientTwo = new Mocks.MockClient({sessionId: "5678"});
+        clientOne = new Fakes.Client({sessionId: "1234"});
+        clientTwo = new Fakes.Client({sessionId: "5678"});
     });
 
     it("has no channels", function() {
@@ -58,7 +58,7 @@ describe("boxsocial event")
     before(function() {
         boxsocial = new BoxSocial();
         channels = new Channels(boxsocial);
-        clientOne = new Mocks.MockClient({sessionId: "1234"});
+        clientOne = new Fakes.Client({sessionId: "1234"});
         channel = channels.subscribe("hostname", clientOne);
         gently = new Gently();
         party = { host: "hostname" };

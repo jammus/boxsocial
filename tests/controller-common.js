@@ -1,5 +1,5 @@
 require("./common");
-var Mocks = require("./Mocks");
+var Fakes = require("./Fakes");
 var BoxSocial = require("../lib/boxsocial").BoxSocial;
 var config = require("../config");
 
@@ -15,10 +15,10 @@ function performAction() {
 
 global.controllerSetup = function(controllerName) {
     gently = new Gently();
-    lastfm = new Mocks.MockLastFm();
+    lastfm = new Fakes.LastFm();
     boxsocial = new BoxSocial(lastfm);
-    req = new Mocks.MockRequest();
-    res = new Mocks.MockResponse();
+    req = new Fakes.Request();
+    res = new Fakes.Response();
     err = null;
     controller = require("../controllers/" + controllerName)(lastfm, boxsocial, config);
 }
@@ -45,13 +45,13 @@ global.expect = function(expectation) {
 
 global.givenTheresAnActiveParty = function(host, guests) {
     for(var guest in guests) {
-        party = boxsocial.attend(host, Mocks.createGuest(lastfm, guests[guest], guests[guest] + "auth"));
+        party = boxsocial.attend(host, createGuest(lastfm, guests[guest], guests[guest] + "auth"));
     }
 }
 
 global.givenThereAreActiveParties = function(count) {
     for(var i = 0; i < count; i++) {
-        boxsocial.attend("party" + i, Mocks.createGuest(lastfm, "guest" + i, "auth" + i));
+        boxsocial.attend("party" + i, createGuest(lastfm, "guest" + i, "auth" + i));
     }
 }
 
@@ -63,7 +63,7 @@ global.thePageTitleShouldBe = function(title) {
 
 global.whenError = function(code) {
     verb = "error";
-    err = new Mocks.MockError(code);
+    err = new Fakes.Error(code);
 }
 
 global.sessionIsDestroyed = function() {
@@ -79,7 +79,7 @@ global.expectRedirectTo = function(expectedUrl) {
 }
 
 global.andUserIsLoggedInAs = function(username) {
-    var guest = Mocks.createGuest(lastfm, username, username + "auth");
+    var guest = createGuest(lastfm, username, username + "auth");
     req.session.guest = guest;
 }
 

@@ -1,42 +1,39 @@
-var LastFmNode = require('lastfm').LastFmNode;
-var LastFmRequest = require('lastfm/lastfm-request');
 var RecentTracksStream = require('lastfm/recenttracks-stream');
 var EventEmitter = require("events").EventEmitter;
-var Guest = require("../lib/guest").Guest;
 var fakes = require("./fakes");
 
-var MockLastFm = function(){
+var LastFm = function(){
     this.readRequests = 0;
 };
 
-MockLastFm.prototype.write = function() {
+LastFm.prototype.write = function() {
     return new fakes.LastFmRequest();
 };
 
-MockLastFm.prototype.read = function() {
+LastFm.prototype.read = function() {
     this.readRequests++;
     return new fakes.LastFmRequest();
 };
 
-MockLastFm.prototype.stream = function(host) {
+LastFm.prototype.stream = function(host) {
     return new RecentTracksStream(this, host);
 };
 
-MockLastFm.prototype.info = function() {};
+LastFm.prototype.info = function() {};
 
 
-exports.MockLastFm = MockLastFm;
+exports.LastFm = LastFm;
 
-var MockLastFmSession = function(lastfm, user, key){
+var LastFmSession = function(lastfm, user, key){
     this.nowPlayingCalls = 0;
     this.nowPlaying = null;
     this.scrobbleCalls = 0;
-    this.latsScrobbled = null;
+    this.lastScrobbled = null;
     this.user = user;
     this.key = key;
 };
 
-MockLastFmSession.prototype.update = function(method, track) {
+LastFmSession.prototype.update = function(method, track) {
     if (method == "nowplaying") {
         this.nowPlayingCalls++;
         this.nowPlaying = track;
@@ -47,9 +44,9 @@ MockLastFmSession.prototype.update = function(method, track) {
     }
 }
 
-exports.MockLastFmSession = MockLastFmSession;
+exports.LastFmSession = LastFmSession;
 
-var MockClient = function(options) {
+var Client = function(options) {
     var that = this;
     EventEmitter.call(this);
     Object.keys(options).forEach(function(key) {
@@ -57,15 +54,11 @@ var MockClient = function(options) {
     });
 }
 
-MockClient.prototype = Object.create(EventEmitter.prototype);
+Client.prototype = Object.create(EventEmitter.prototype);
 
-exports.MockClient = MockClient;
+exports.Client = Client;
 
-exports.createGuest = function(lastfm, user, key) {
-    return new Guest(lastfm, new LastFmSession(lastfm, user, key));
-}
-
-exports.MockRequest = function() {
+exports.Request = function() {
     return {
         session: {
              destroy: function() {}
@@ -75,13 +68,13 @@ exports.MockRequest = function() {
     };
 }
 
-exports.MockResponse = function() {
+exports.Response = function() {
     return {
         redirect: function() {}
     };
 };
 
-exports.MockError = function(code) {
+exports.Error = function(code) {
     return {
         message: code == "404" ? "ENOENT" : ""
     }
