@@ -8,3 +8,5 @@ require("./homecontroller-test.js");
 require("./logincontroller-test.js");
 require("./partymonitor-test.js");
 require("./defaultcontroller-test.js");
+require("./partycontroller-test.js");
+require("./errorcontroller-test.js");

@@ -80,3 +80,9 @@ exports.MockResponse = function() {
         redirect: function() {}
     };
 };
+
+exports.MockError = function(code) {
+    return {
+        message: code == "404" ? "ENOENT" : ""
+    }
+}

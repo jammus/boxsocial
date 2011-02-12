@@ -1,49 +1,50 @@
-require("./common");
-var Mocks = require("./Mocks");
-var BoxSocial = require("../lib/boxsocial").BoxSocial;
+require("./controller-common");
+var config = require("../config");
 
 (function() {
-    describe("The homepage")
-        var gently, lastfm, boxsocial, req, res, homecontroller;
-
+    describe("The home controller")
         before(function() {
-            gently = new Gently();
-            lastfm = new Mocks.MockLastFm();
-            boxsocial = new BoxSocial(lastfm);
-            req = { session:{} };
-            res = {};
-            homecontroller = require("../controllers/homecontroller")(lastfm, boxsocial);
+            controllerSetup("homecontroller");
         });
 
         after(function() {
-            cleanup(boxsocial);
+            controllerTearDown();
         });
 
-        it("shows no parties when none are active", function() {
-            gently.expect(res, "render", function(view, options) {
+        it("index shows no parties when none are active", function() {
+            whenViewing("index");
+            expect(function(view, options) {
                 var parties = options.locals.parties;
                 assert.equal(0, parties.length);
             });
-            homecontroller.index.get(req, res);
         });
 
-        it("shows active parties", function() {
-            boxsocial.attend("party", Mocks.createGuest(lastfm, "guest", "auth"));
-            gently.expect(res, "render", function(view, options) {
+        it("index shows active parties", function() {
+            givenThereAreActiveParties(1);
+            whenViewing("index");
+            expect(function(view, options) {
                 var parties = options.locals.parties;
                 assert.equal(1, parties.length);
-                assert.equal("party", parties[0].host);
+                assert.equal("party0", parties[0].host);
             });
-            homecontroller.index.get(req, res);
         });
 
-        it("shows a maximum of 5 parties", function() {
-            for(var i = 0; i < 10; i++)
-                boxsocial.attend("party" + i, Mocks.createGuest(lastfm, "guest" + i, "auth" + i));
-            gently.expect(res, "render", function(view, options) {
+        it("index shows a maximum of 5 parties", function() {
+            givenThereAreActiveParties(10);
+            whenViewing("index");
+            expect(function(view, options) {
                 var parties = options.locals.parties;
                 assert.equal(5, parties.length);
             });
-            homecontroller.index.get(req, res);
+        });
+
+        it("index uses default long title as page title", function() {
+            whenViewing("index");
+            thePageTitleShouldBe(config.longTitle);
+        });
+
+        it("content pages use content name and short title as page title", function() {
+            whenViewing("content", { page: "about" });
+            thePageTitleShouldBe("About: " + config.shortTitle);
         });
 })();

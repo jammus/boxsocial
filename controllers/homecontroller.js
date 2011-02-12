@@ -1,6 +1,13 @@
 var _ = require("underscore");
+var cutils = require("./cutils");
 
 module.exports = function(lastfm, boxsocial, config) {
+    function properCase(text) {
+        return text.replace(/\w\S*/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
     return {
         index: {
             get: function(req, res) {
@@ -14,7 +21,8 @@ module.exports = function(lastfm, boxsocial, config) {
                     locals: {
                         guest: req.session.guest,
                         currentParty: party,
-                        parties: _.first(boxsocial.parties, 5)
+                        parties: _(boxsocial.parties).first(5),
+                        title: config.longTitle
                     }
                 });
             }
@@ -24,7 +32,8 @@ module.exports = function(lastfm, boxsocial, config) {
             get: function(req, res) {
                 res.render(req.params.page, {
                     locals: {
-                        guest: req.session.guest
+                        guest: req.session.guest,
+                        title: cutils.title(properCase(req.params.page), config.shortTitle)
                     }
                 });
             }

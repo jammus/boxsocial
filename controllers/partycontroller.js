@@ -17,6 +17,7 @@ module.exports = function(lastfm, boxsocial, config) {
                 if (party) {
                     res.render("party", { 
                         locals: {
+                            title: cutils.title(host + "'s party", config.shortTitle),
                             guest: req.session.guest,
                             party: party, host: host,
                             guests: party.guests,
@@ -25,14 +26,24 @@ module.exports = function(lastfm, boxsocial, config) {
                     });
                     return;
                 }
-                res.render("noparty", { locals: { guest: req.session.guest, host: host } });
+                res.render("noparty", {
+                    locals: {
+                        title: cutils.title(host + "'s party", config.shortTitle),
+                        guest: req.session.guest, host: host
+                    }
+                });
             }
         },
 
         chose: {
             get: function(req, res) {
                 cutils.checkLoggedIn(req, res, "/join");
-                res.render("join", { locals: { guest: req.session.guest } });        
+                res.render("join", {
+                    locals: {
+                        title: cutils.title("Join a Party", config.shortTitle),
+                        guest: req.session.guest
+                    }
+                });        
             },
             post: function(req, res) {
                 var host = req.param("host");
@@ -45,7 +56,13 @@ module.exports = function(lastfm, boxsocial, config) {
             get: function(req, res) {
                 var host = req.params.host;
                 cutils.checkLoggedIn(req, res, "/join/" + host);
-                res.render("join_confirm", { locals: { host: host, guest: req.session.guest } } );
+                res.render("join_confirm", {
+                    locals: {
+                        title: cutils.title("Join a Party", config.shortTitle),
+                        host: host,
+                        guest: req.session.guest
+                    }
+                });
             },
 
             post: function(req, res) {

@@ -33,7 +33,7 @@ boxsocial.on("error", function(error) {
 var homecontroller = new HomeController(lastfm, boxsocial, config);
 var logincontroller = new LoginController(lastfm, boxsocial, config);
 var partycontroller = new PartyController(lastfm, boxsocial, config);
-var errorcontroller = new ErrorController();
+var errorcontroller = new ErrorController(lastfm, boxsocial, config);
 var defaultcontroller = new DefaultController(config);
 
 var routes = require("./routes");
