@@ -55,6 +55,12 @@ describe("a new boxsocial")
         assert.equal(0, boxsocial.partyCount());
     });
 
+    it("a user joining their own party does not create party even if case is different", function() {
+        var host = Mocks.createGuest(lastfm, "host", "skhost");
+        boxsocial.attend("HOST", host);
+        assert.equal(0, boxsocial.partyCount());
+    });
+
     it("removes party from list when it finished", function() {
         var guestOne = Mocks.createGuest(lastfm, "guestOne", "sk1");
         var guestTwo = Mocks.createGuest(lastfm, "guestTwo", "sk2");
