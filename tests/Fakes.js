@@ -1,18 +1,17 @@
 var RecentTracksStream = require('lastfm/recenttracks-stream');
 var EventEmitter = require("events").EventEmitter;
-var fakes = require("./fakes");
 
 var LastFm = function(){
     this.readRequests = 0;
 };
 
 LastFm.prototype.write = function() {
-    return new fakes.LastFmRequest();
+    return new LastFmRequest();
 };
 
 LastFm.prototype.read = function() {
     this.readRequests++;
-    return new fakes.LastFmRequest();
+    return new LastFmRequest();
 };
 
 LastFm.prototype.stream = function(host) {
@@ -45,6 +44,12 @@ LastFmSession.prototype.update = function(method, track) {
 }
 
 exports.LastFmSession = LastFmSession;
+
+var LastFmRequest = exports.LastFmRequest = function() {
+  EventEmitter.call(this);
+};
+
+LastFmRequest.prototype = Object.create(EventEmitter.prototype);
 
 var Client = function(options) {
     var that = this;
