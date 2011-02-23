@@ -1,13 +1,22 @@
 require("./common");
+var BoxSocial = require("../lib/boxsocial").BoxSocial;
 var Fakes = require("./Fakes");
 var Channel = require("../lib/channel").Channel;
 
 (function() {
 describe("A new channel")
-    var channel;
+    var channel, boxsocial;
 
     before(function() {
-        channel = new Channel("channelname");
+        var lastfm = new Fakes.LastFm();
+        boxsocial = new BoxSocial(lastfm);
+        var guest = createGuest(lastfm, "guest", "auth");
+        var party = boxsocial.attend("channelname", guest);
+        channel = new Channel(party);
+    });
+
+    after(function() {
+        cleanup(boxsocial);
     });
 
     it("has name configured", function() {

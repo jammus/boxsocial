@@ -6,7 +6,7 @@ var Fakes = require("./Fakes");
 
 (function() {
 describe("a new channels instance")
-    var boxsocial, channels, clientOne, clientTwo, gently, lastfm;
+    var boxsocial, channels, clientOne, clientTwo, gently, lastfm, party;
 
     before(function() {
         lastfm = new Fakes.LastFm();
@@ -14,6 +14,8 @@ describe("a new channels instance")
         channels = new Channels(boxsocial);
         clientOne = new Fakes.Client({sessionId: "1234"});
         clientTwo = new Fakes.Client({sessionId: "5678"});
+        var guest = createGuest(lastfm, "guesto", "besto");
+        party = boxsocial.attend("hostname", guest);
         gently = new Gently();
     });
 
@@ -70,12 +72,19 @@ describe("boxsocial event")
     var boxsocial, channels, clientOne, channel, gently, party;
 
     before(function() {
-        boxsocial = new BoxSocial();
+        var lastfm = new Fakes.LastFm();
+        boxsocial = new BoxSocial(lastfm);
         channels = new Channels(boxsocial);
         clientOne = new Fakes.Client({sessionId: "1234"});
-        channel = channels.subscribe("hostname", clientOne);
         gently = new Gently();
-        party = { host: "hostname" };
+        var guest = createGuest(lastfm, "guesto", "besto");
+        party = boxsocial.attend("hostname", guest);
+        channel = channels.subscribe("hostname", clientOne);
+    });
+
+    after(function() {
+        gently.restore(channel, "publish");
+        cleanup(boxsocial);
     });
 
     it("guestsUpdated sends guestlist to channel", function() {
@@ -118,5 +127,4 @@ describe("boxsocial event")
         });
         boxsocial.emit("partyFinished", party);
     });
-
 })();
