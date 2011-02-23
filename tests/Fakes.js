@@ -57,6 +57,8 @@ var Client = function(options) {
     Object.keys(options).forEach(function(key) {
         that[key] = options[key];
     });
+
+    this.send = function() { };
 }
 
 Client.prototype = Object.create(EventEmitter.prototype);

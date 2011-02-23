@@ -1,7 +1,6 @@
 require("./common.js");
 var BoxSocial = require("../lib/boxsocial").BoxSocial;
 var Fakes = require("./Fakes");
-var Guest = require("../lib/guest").Guest;
 var FakeTracks = require('./TestData').FakeTracks;
 
 (function() {

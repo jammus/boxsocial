@@ -6,13 +6,19 @@ var Fakes = require("./Fakes");
 
 (function() {
 describe("a new channels instance")
-    var boxsocial, channels, clientOne, clientTwo;
+    var boxsocial, channels, clientOne, clientTwo, gently, lastfm;
 
     before(function() {
-        boxsocial = new BoxSocial();
+        lastfm = new Fakes.LastFm();
+        boxsocial = new BoxSocial(lastfm);
         channels = new Channels(boxsocial);
         clientOne = new Fakes.Client({sessionId: "1234"});
         clientTwo = new Fakes.Client({sessionId: "5678"});
+        gently = new Gently();
+    });
+
+    after(function() {
+        cleanup(boxsocial);
     });
 
     it("has no channels", function() {
@@ -48,6 +54,18 @@ describe("a new channels instance")
     it("a subscription adds client to channel", function() {
         var channel = channels.subscribe("hostname", clientOne);
         assert.equal(1, channel.clients.length);
+    });
+
+    it("subscribing to channel sends current nowPlaying to client", function() {
+        gently.expect(clientOne, "send", function(message) {
+            assert.ok(message.nowPlaying);
+            assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
+            gently.restore(this, "send");
+        });
+        var guest = createGuest(lastfm, "guest", "auth");
+        var party = boxsocial.attend("host", guest);
+        party.nowPlaying = FakeTracks.RunToYourGrave;
+        channels.subscribe("host", clientOne);
     });
 })();
 
@@ -104,4 +122,5 @@ describe("boxsocial event")
         });
         boxsocial.emit("partyFinished", party);
     });
+
 })();
