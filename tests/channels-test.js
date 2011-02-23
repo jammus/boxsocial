@@ -25,10 +25,6 @@ describe("a new channels instance")
         assert.equal(0, channels.count());
     });
 
-    it("configures boxsocial", function() {
-        assert.equal(boxsocial, channels.boxsocial);
-    });
-
     it("new subscription increases channel count", function() {
         channels.subscribe("hostname", clientOne);
         assert.equal(1, channels.count());
