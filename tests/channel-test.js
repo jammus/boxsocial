@@ -2,6 +2,7 @@ require("./common");
 var BoxSocial = require("../lib/boxsocial").BoxSocial;
 var Fakes = require("./Fakes");
 var Channel = require("../lib/channel").Channel;
+var FakeTracks = require("./TestData").FakeTracks;
 
 (function() {
 describe("A new channel")
@@ -36,14 +37,22 @@ describe("A new channel")
 
 (function() {
 describe("A channel with two clients")
-    var channel, clientOne, clientTwo;
+    var boxsocial, channel, clientOne, clientTwo;
 
     before(function() {
-        channel = new Channel("channelname");
+        var lastfm = new Fakes.LastFm();
+        boxsocial = new BoxSocial(lastfm);
+        var guest = createGuest(lastfm, "guest", "auth");
+        var party = boxsocial.attend("channelname", guest);
+        channel = new Channel(party);
         clientOne = new Fakes.Client({ sessionId: "1234" });
         clientTwo = new Fakes.Client({ sessionId: "5678" });
         channel.addClient(clientOne);
         channel.addClient(clientTwo);
+    });
+
+    after(function() {
+        cleanup(boxsocial);
     });
 
     it("removing a client reduces count by one", function() {
@@ -63,10 +72,75 @@ describe("A channel with two clients")
         var message = "message";
         gently.expect(clientOne, "send", function(m) {
             assert.equal(message, m);
+            gently.restore(this, "send");
         });
         gently.expect(clientTwo, "send", function(m) {
             assert.equal(message, m);
+            gently.restore(this, "send");
         });
         channel.publish(message);
+    });
+})();
+
+(function() {
+    var clientOne, gently, party, channel, boxsocial;
+
+    before(function() {
+        var lastfm = new Fakes.LastFm();
+        var guest = createGuest(lastfm, "guesto", "besto");
+        boxsocial = new BoxSocial(lastfm);
+        clientOne = new Fakes.Client({sessionId: "1234"});
+        gently = new Gently();
+        party = boxsocial.attend("hostname", guest);
+        channel = new Channel(party);
+        channel.addClient(clientOne);
+    });
+
+    after(function() {
+        cleanup(boxsocial);
+    });
+
+    it("guestsUpdated sends guestlist to channel", function() {
+        gently.expect(channel, "publish", function(message) {
+            assert.ok(message.guestlist);
+            assert.equal(2, message.guestlist.length);
+            gently.restore(channel, "publish");
+        });
+        party.emit("guestsUpdated", [{name: "guestone"}, {name: "guesttwo" }]);
+    });
+
+    it("trackUpdated sends track to channel", function() {
+        gently.expect(channel, "publish", function(message) {
+            assert.ok(message.nowPlaying);
+            assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
+            gently.restore(channel, "publish");
+        });
+        party.emit("trackUpdated", FakeTracks.RunToYourGrave);
+    });
+
+    it("trackUpdated can send null track to channel", function() {
+        gently.expect(channel, "publish", function(message) {
+            assert.ok(message.nowPlaying);
+            assert.ok(!message.nowPlaying.track);
+            gently.restore(channel, "publish");
+        });
+        party.emit("trackUpdated");
+    });
+
+    it("trackUpdated sends recent recent plays to channel", function() {
+        var recentPlays = [FakeTracks.RunToYourGrave];
+        party.recentPlays = recentPlays;
+        gently.expect(channel, "publish", function(message) {
+            assert.ok(message.recentPlays);
+            assert.equal(recentPlays, message.recentPlays);
+            gently.restore(channel, "publish");
+        });
+        party.emit("recentPlaysUpdated", recentPlays);
+    });
+
+    it("finished sends party over to channel", function() {
+        gently.expect(channel, "publish", function(message) {
+            assert.ok(message.partyOver);
+        });
     });
 })();
