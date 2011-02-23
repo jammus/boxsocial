@@ -52,6 +52,13 @@ describe("a new boxsocial")
         assert.equal(1, boxsocial.partyCount());
     });
 
+    it("reattending party has no effect", function() {
+        var guestOne = createGuest(lastfm, "guestOne", "one");
+        boxsocial.attend("hostuser", guestOne);
+        boxsocial.attend("hostuser", guestOne);
+        assert.equal(1, boxsocial.partyCount());
+    });
+
     it("party hosts are case insensitive", function() {
         var guestOne = createGuest(lastfm, "guestOne", "one");
         var guestTwo = createGuest(lastfm, "guestTwo", "two");
