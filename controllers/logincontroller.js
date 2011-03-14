@@ -8,7 +8,7 @@ module.exports = function(lastfm, boxsocial, config) {
                 var callbackUrl = "http://" + config.host + (config.port != "80" ? ":" + config.port : "") + "/callback";
 
                 var params = { 
-                    api_key: lastfm.params.api_key,
+                    api_key: lastfm.api_key,
                     cb: callbackUrl
                 };
 
