@@ -22,7 +22,9 @@ describe("A new party");
     });
 
     after(function() {
-        if (stream.isStreaming) stream.stop();
+        if (stream.isStreaming) {
+            stream.stop();
+        }
     });
 
     it("has no guests", function() {
@@ -66,7 +68,7 @@ describe("A party in full swing");
     before(function() {
         lastfm = new LastFmNode();
         lastfm.info = function(type, options) {
-            if (type == "track") options.success(options.track);
+            if (type == "track") options.handlers.success(options.track);
         };
         stream = new RecentTracksStream(lastfm, "hostuser");
         stream.start = function() {}; // stub start to prevent tests hanging
@@ -234,7 +236,7 @@ describe("Party using extended track info");
         var guestOne = createGuest(lastfm, "guestuser1", "auth1");
         party.addGuest(guestOne);
         gently.expect(lastfm, "info", function(type, options) {
-            options.error();
+            options.handlers.error();
         });
         gently.expect(lastfm, "update", function(method, session, options) {
             assert.equal("nowplaying", method);
@@ -245,7 +247,7 @@ describe("Party using extended track info");
 
     it("includes duration (in seconds) in nowPlaying updates", function() {
         gently.expect(lastfm, "info", function(type, options) {
-            options.success({ name: "Run To Your Grave", duration: 232000 });
+            options.handlers.success({ name: "Run To Your Grave", duration: 232000 });
         });
         gently.expect(lastfm, "update", function(method, session, options) {
             assert.equal(232, options.duration);
@@ -352,10 +354,10 @@ describe("error handling")
         var guest = createGuest(lastfm, "username");
         party.addGuest(guest);
         gently.expect(lastfm, "info", function(type, options) {
-            options.error();
+            options.handlers.error();
         });
         gently.expect(lastfm, "update", function(method, session, options) {
-            options.error();
+            options.handlers.error();
         });
         gently.expect(party, "emit", function(event, error) {
             assert.equal("error", event);

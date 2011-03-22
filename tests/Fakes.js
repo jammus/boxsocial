@@ -5,11 +5,7 @@ var LastFm = function(){
     this.readRequests = 0;
 };
 
-LastFm.prototype.write = function() {
-    return new LastFmRequest();
-};
-
-LastFm.prototype.read = function() {
+LastFm.prototype.request = function() {
     this.readRequests++;
     return new LastFmRequest();
 };
