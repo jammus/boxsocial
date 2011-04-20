@@ -8,7 +8,7 @@ module.exports = function(lastfm, boxsocial, config) {
                 var callbackUrl = "http://" + config.host + (config.port != "80" ? ":" + config.port : "") + "/callback";
 
                 var params = { 
-                    api_key: lastfm.params.api_key,
+                    api_key: lastfm.api_key,
                     cb: callbackUrl
                 };
 
@@ -21,20 +21,20 @@ module.exports = function(lastfm, boxsocial, config) {
             get: function(req, res) {
                 var token = req.param("token");
                 var fmsession = lastfm.session();
-
-                fmsession.on("error", function(error) {
-                    res.send("Error authorising - " + error.message);
+                fmsession.authorise(token, {
+                    handlers: {
+                        authorised: function(session) {
+                            var guest = new Guest(lastfm, session);
+                            req.session.guest = guest;
+                            var redirectUrl = req.session.redirectUrl ? req.session.redirectUrl : "/";
+                            req.session.redirectUrl = null;
+                            res.redirect(redirectUrl);
+                        },
+                        error: function(error) {
+                            res.send("Error authorising - " + error.message);
+                        }
+                    }
                 });
-
-                fmsession.on("authorised", function(session) {
-                    var guest = new Guest(lastfm, session);
-                    req.session.guest = guest;
-                    var redirectUrl = req.session.redirectUrl ? req.session.redirectUrl : "/";
-                    req.session.redirectUrl = null;
-                    res.redirect(redirectUrl);
-                });
-
-                fmsession.authorise(token);
             }
         },
 
