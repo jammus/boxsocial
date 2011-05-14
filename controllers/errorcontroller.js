@@ -8,7 +8,7 @@ module.exports = function(lastfm, boxsocial, config) {
                     status: 404,
                     locals: {
                         title: cutils.title("Page not found", config.shortTitle),
-                        guest: req.session.guest
+                        guest: req.session ? req.session.guest : undefined
                     }
                 });
             else
@@ -16,7 +16,7 @@ module.exports = function(lastfm, boxsocial, config) {
                     status: 500,
                     locals: {
                         title: cutils.title("Error", config.shortTitle),
-                        guest: req.session.guest
+                        guest: req.session ? req.session.guest : undefined
                     }
                 });
         }

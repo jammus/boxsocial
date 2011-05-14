@@ -58,7 +58,6 @@ describe("a new channels instance")
         gently.expect(clientOne, "send", function(message) {
             assert.ok(message.nowPlaying);
             assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
-            gently.restore(this, "send");
         });
         var guest = createGuest(lastfm, "guest", "auth");
         var party = boxsocial.attend("host", guest);

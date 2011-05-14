@@ -24,7 +24,7 @@ module.exports = {
             ["/party/:host", partycontroller.view],
             ["/leave", partycontroller.leave],
             ["/:page", homecontroller.content],
-            ["", errorcontroller]
+    //        ["", errorcontroller]
         ];
     }
 };

@@ -24,7 +24,7 @@ module.exports = function(lastfm, boxsocial, config) {
                 fmsession.authorise(token, {
                     handlers: {
                         authorised: function(session) {
-                            var guest = new Guest(lastfm, session);
+                            var guest = new Guest(lastfm, fmsession);
                             req.session.guest = guest;
                             var redirectUrl = req.session.redirectUrl ? req.session.redirectUrl : "/";
                             req.session.redirectUrl = null;

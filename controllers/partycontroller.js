@@ -41,43 +41,49 @@ module.exports = function(lastfm, boxsocial, config) {
 
         chose: {
             get: function(req, res) {
-                cutils.checkLoggedIn(req, res, "/join");
-                res.render("join", {
-                    locals: {
-                        title: cutils.title("Join a Party", config.shortTitle),
-                        guest: req.session.guest
-                    }
-                });        
+                cutils.checkLoggedIn(req, res, "/join", function() {
+                    res.render("join", {
+                        locals: {
+                            title: cutils.title("Join a Party", config.shortTitle),
+                            guest: req.session.guest
+                        }
+                    });        
+                });
             },
             post: function(req, res) {
                 var host = req.param("host");
-                cutils.checkLoggedIn(req, res, "/join/" + host);
-                res.redirect("/join/" + host);
+                cutils.checkLoggedIn(req, res, "/join/" + host, function() {
+                    res.redirect("/join/" + host);
+                });
             }
         },
 
         join: {
             get: function(req, res) {
                 var host = req.params.host;
-                cutils.checkLoggedIn(req, res, "/join/" + host);
-                res.render("join_confirm", {
-                    locals: {
-                        title: cutils.title("Join a Party", config.shortTitle),
-                        host: host,
-                        guest: req.session.guest
-                    }
+                cutils.checkLoggedIn(req, res, "/join/" + host, function() {
+                    res.render("join_confirm", {
+                        locals: {
+                            title: cutils.title("Join a Party", config.shortTitle),
+                            host: host,
+                            guest: req.session.guest
+                        }
+                    });
                 });
             },
 
             post: function(req, res) {
                 var host = req.params.host;
-                cutils.checkLoggedIn(req, res, "/join/" + host);
-                var guest = req.session.guest;
-                var party = boxsocial.attend(host, guest);
-                if (party) {
-                    host = party.host;
-                }
-                res.redirect("/party/" + host);
+                cutils.checkLoggedIn(req, res, "/join/" + host, function() {
+                    var guest = req.session.guest;
+                    console.log('in da fin');
+                    console.log(guest.session.constructor.name);
+                    var party = boxsocial.attend(host, guest);
+                    if (party) {
+                        host = party.host;
+                    }
+                    res.redirect("/party/" + host);
+                });
             }
         },
 

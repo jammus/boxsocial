@@ -1,4 +1,4 @@
-var RecentTracksStream = require('lastfm/recenttracks-stream');
+var RecentTracksStream = require('lastfm/lib/lastfm/recenttracks-stream');
 var EventEmitter = require("events").EventEmitter;
 
 var LastFm = function(){

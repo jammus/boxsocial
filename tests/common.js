@@ -7,8 +7,8 @@ global.after = ntest.after;
 global.Gently = require("gently");
 
 global.LastFmNode = require("lastfm").LastFmNode;
-global.LastFmSession = require("lastfm/lastfm-session");
-global.RecentTracksStream = require("lastfm/recenttracks-stream");
+global.LastFmSession = require("lastfm/lib/lastfm/lastfm-session");
+global.RecentTracksStream = require("lastfm/lib/lastfm/recenttracks-stream");
 
 global.cleanup = function(boxsocial) {
     while(boxsocial.parties.length > 0) {
