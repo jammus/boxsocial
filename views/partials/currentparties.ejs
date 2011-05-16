@@ -12,7 +12,7 @@ else {
     for (partyIndex in parties) {
         %>
         <li class="party">
-            <%- partial("party", parties[partyIndex]) %>
+            <%- partial("party", { object: parties[partyIndex] }) %>
         </li>
         <%
     }

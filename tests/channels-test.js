@@ -64,4 +64,12 @@ describe("a new channels instance")
         party.nowPlaying = FakeTracks.RunToYourGrave;
         channels.subscribe("host", clientOne);
     });
+
+    it("when all clients have been removed channel is deleted", function() {
+        channels.subscribe("hostname", clientOne);
+        channels.subscribe("hostname", clientTwo);
+        clientOne.emit("disconnect");
+        clientTwo.emit("disconnect");
+        assert.equal(0, channels.count());
+    });
 })();

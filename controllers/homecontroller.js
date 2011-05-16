@@ -14,16 +14,14 @@ module.exports = function(lastfm, boxsocial, config) {
                 var guest = req.session.guest;
                 var party = null;
                 if (guest) {
-                   party = boxsocial.findParty({guest: guest});
+                   party = boxsocial.findParty({ guest: guest });
                 }
 
                 res.render("index", {
-                    locals: {
-                        guest: req.session.guest,
-                        currentParty: party,
-                        parties: _(boxsocial.parties).first(5),
-                        title: config.longTitle
-                    }
+                    guest: req.session.guest,
+                    currentParty: party,
+                    parties: _(boxsocial.parties).first(5),
+                    title: config.longTitle
                 });
             }
         },
@@ -31,10 +29,8 @@ module.exports = function(lastfm, boxsocial, config) {
         content: {
             get: function(req, res) {
                 res.render(req.params.page, {
-                    locals: {
-                        guest: req.session.guest,
-                        title: cutils.title(properCase(req.params.page), config.shortTitle)
-                    }
+                    guest: req.session ? req.session.guest : null,
+                    title: cutils.title(properCase(req.params.page), config.shortTitle)
                 });
             }
         }

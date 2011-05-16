@@ -26,4 +26,16 @@ require("./controller-common");
             whenPostingTo("logout");
             thereShouldBeActiveParties(0);
         });
+
+    describe("successful log in callback")
+        before(function() {
+            controllerSetup("logincontroller");
+        });
+
+        it("adds user and key to session", function() {
+            whenViewing("callback", { token: "token" });
+            andSessionIsAuthorisedAs("username", "authenticationkey");
+            theSessionShouldContain("user", "username");
+            andTheSessionShouldContain("key", "authenticationkey");
+        });
 })();

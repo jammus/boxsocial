@@ -14,7 +14,7 @@ var config = require("../config");
         it("index shows no parties when none are active", function() {
             whenViewing("index");
             expect(function(view, options) {
-                var parties = options.locals.parties;
+                var parties = options.parties;
                 assert.equal(0, parties.length);
             });
         });
@@ -23,7 +23,7 @@ var config = require("../config");
             givenThereAreActiveParties(1);
             whenViewing("index");
             expect(function(view, options) {
-                var parties = options.locals.parties;
+                var parties = options.parties;
                 assert.equal(1, parties.length);
                 assert.equal("party0", parties[0].host);
             });
@@ -33,7 +33,7 @@ var config = require("../config");
             givenThereAreActiveParties(10);
             whenViewing("index");
             expect(function(view, options) {
-                var parties = options.locals.parties;
+                var parties = options.parties;
                 assert.equal(5, parties.length);
             });
         });
