@@ -57,7 +57,7 @@ global.givenThereAreActiveParties = function(count) {
 
 global.thePageTitleShouldBe = function(title) {
     expect(function(view, options) {
-        assert.equal(title, options.locals.title);
+        assert.equal(title, options.title);
     });
 }
 
@@ -86,4 +86,23 @@ global.andUserIsLoggedInAs = function(username) {
 global.thereShouldBeActiveParties = function(count) {
     performAction();
     assert.equal(count, boxsocial.parties.length);
+}
+
+global.andSessionIsAuthorisedAs = function(user, key) {
+    var session = new Fakes.LastFmSession(lastfm, user, key);
+    session.authorise = function(token, options) {
+        options.handlers.authorised(this);
+    };
+    lastfm.session = function() {
+        return session;
+    };
+}
+
+global.theSessionShouldContain = function(key, value) {
+    performAction();
+    andTheSessionShouldContain(key, value);
+}
+
+global.andTheSessionShouldContain = function(key, value) {
+    assert.equal(req.session[key], value);
 }

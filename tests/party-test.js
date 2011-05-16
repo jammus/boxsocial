@@ -1,7 +1,7 @@
 require("./common.js");
 var Party = require('../lib/party').Party;
-var RecentTracksStream = require('lastfm/recenttracks-stream');
-var LastFmSession = require('lastfm/lastfm-session');
+var RecentTracksStream = require('lastfm/lib/lastfm/recenttracks-stream');
+var LastFmSession = require('lastfm/lib/lastfm/lastfm-session');
 var FakeTracks = require('./TestData').FakeTracks;
 var Guest = require('../lib/guest').Guest;
 
@@ -86,15 +86,12 @@ describe("A party in full swing");
     });
 
     it("shares now playing events with guests", function() {
-        gently.expect(lastfm, "update", function(method, session, options) {
+        var count = 1;
+        gently.expect(lastfm, "update", 2, function(method, session, options) {
           assert.equal("nowplaying", method);
-          assert.equal("guestuser1", session.user);
+          assert.equal("guestuser" + count, session.user);
           assert.equal("Run To Your Grave", options.track.name);
-        });
-        gently.expect(lastfm, "update", function(method, session, options) {
-          assert.equal("nowplaying", method);
-          assert.equal("guestuser2", session.user);
-          assert.equal("Run To Your Grave", options.track.name);
+          count++;
         });
         stream.emit('nowPlaying', FakeTracks.RunToYourGrave);
     });
@@ -112,15 +109,12 @@ describe("A party in full swing");
     });
 
     it("shares scrobbles with guests", function() {
-        gently.expect(lastfm, "update", function(method, session, options) {
+        count = 1;
+        gently.expect(lastfm, "update", 2, function(method, session, options) {
           assert.equal("scrobble", method);
-          assert.equal("guestuser1", session.user);
+          assert.equal("guestuser" + count, session.user);
           assert.equal("Run To Your Grave", options.track.name);
-        });
-        gently.expect(lastfm, "update", function(method, session, options) {
-          assert.equal("scrobble", method);
-          assert.equal("guestuser2", session.user);
-          assert.equal("Run To Your Grave", options.track.name);
+          count++;
         });
         stream.emit("scrobbled", FakeTracks.RunToYourGrave);
     });
@@ -289,7 +283,6 @@ describe("Party events")
         gently.expect(party, "emit", function(event, guests) {
             assert.equal("guestsUpdated", event);
             assert.equal(0, guests.length);
-            gently.restore(this, "emit");
         });
         party.removeGuest(firstGuest);
     });
@@ -362,7 +355,6 @@ describe("error handling")
         gently.expect(party, "emit", function(event, error) {
             assert.equal("error", event);
             assert.equal("Error updating nowplaying for username", error.message);
-            gently.restore(this, "emit");
         });
         stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });

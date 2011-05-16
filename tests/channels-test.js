@@ -58,11 +58,18 @@ describe("a new channels instance")
         gently.expect(clientOne, "send", function(message) {
             assert.ok(message.nowPlaying);
             assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
-            gently.restore(this, "send");
         });
         var guest = createGuest(lastfm, "guest", "auth");
         var party = boxsocial.attend("host", guest);
         party.nowPlaying = FakeTracks.RunToYourGrave;
         channels.subscribe("host", clientOne);
+    });
+
+    it("when all clients have been removed channel is deleted", function() {
+        channels.subscribe("hostname", clientOne);
+        channels.subscribe("hostname", clientTwo);
+        clientOne.emit("disconnect");
+        clientTwo.emit("disconnect");
+        assert.equal(0, channels.count());
     });
 })();

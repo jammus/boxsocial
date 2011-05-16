@@ -8,10 +8,10 @@ var express = require("express"),
     ejs = require("ejs");
 
 var app = express.createServer();
-app.use(express.cookieDecoder());
-app.use(express.session({secret:config.secret}));
-app.use(express.staticProvider(__dirname + "/public"));
-app.use(express.bodyDecoder());
+app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(express.session({ secret:config.secret }));
+app.use(express.static(__dirname + "/public"));
 app.set("views", __dirname + "/views");
 app.get("root", __dirname);
 app.set("view engine", "ejs");
