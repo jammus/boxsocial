@@ -12,6 +12,7 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({ secret:config.secret }));
 app.use(express.static(__dirname + "/public"));
+app.use(express.favicon(__dirname + "/public/img/favicon.ico"));
 app.set("views", __dirname + "/views");
 app.get("root", __dirname);
 app.set("view engine", "ejs");

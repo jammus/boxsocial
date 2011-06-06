@@ -1,19 +1,12 @@
 /* Layout for desktop version */
-@font-face {
-    font-family: 'ChunkFiveRegular';
-    src: url('../fonts/Chunkfive-webfont.eot');
-    src: url('../fonts/Chunkfive-webfont.woff') format('woff'), url('../fonts/Chunkfive-webfont.ttf') format('truetype'), url('../fonts/Chunkfive-webfont.svg#webfont90E2uSjN') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
 body {
     background-color:#bdbb95;
-    font-family: "Lato", "helvetica neue", helvetica, arial, sans-serif;
+    font-family: Arial;
     font-size: 14px;
     line-height: 24px;		/* Changing this will break the baseline grid. */
     -webkit-text-size-adjust: none;		/* Stops the iPhone scalling type up */
-    color:#222;
+    color:#485664;
+    background-image:url('/img/footer_bg.png');
 }
 
 ul {
@@ -23,28 +16,31 @@ ul {
 #header {
     color:#f0f0f0;
     background: #ba0c00;
-    border-bottom:2px solid #800;
-    border-top:1px solid rgba(219, 112, 92, 0.9);
+    background-image: url('/img/header.png');
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.9);
+    border-bottom:10px solid rgba(219, 112, 92, 0.3)
 }
 
 h1, h2, h3, h4, h5, h6
 {
-    font-family: "ChunkFiveRegular", Georgia, serif;
+    font-family:"Folio Condensed Medium", 'Helvetica Neue Condensed Bold', Impact, Arial Narrow, Arial, Helvetica, sans-serif;
+    font-size-adjust:0.48;
+    color:#a75750;
+    font-weight:bold;
 }
 
 #header .logo {
-    font-family: "ChunkFiveRegular", "Copse", Georgia, serif;
+    font-family: 'Lobster', serif;
+    font-size: 56px;
+    font-weight: 400;
 }
 
 #header .logo a {
-    color:#600;
-    text-shadow:1px 1px 1px rgba(219, 112, 92, 1);
-    font-weight:lighter;
+    color:rgba(255, 255, 255, 0.5);
 }
 
 #header .logo {
-    line-height:40px;
+    line-height:60px;
 }
 
 
@@ -55,13 +51,11 @@ h1, h2, h3, h4, h5, h6
 
 #header .logo,
 h1 {
-    font-size:32px;
     margin:10px 0px;
 }
 
 h1 a {
     color:#f0f0f0;
-    font-weight:lighter;
 }
 
 span.subheader {
@@ -69,7 +63,7 @@ span.subheader {
 }
 
 #header .navigation {
-    margin-top:20px;
+    margin-top:30px;
     text-align:right;
     margin-right:90px;
 }
@@ -89,14 +83,12 @@ h3,
 .privacy h2,
 .glossary h2,
 .currentparties h4 {
-    color:#aaa;
+    color:#9e9c9c;
     margin-bottom:0px;
     font-weight:lighter;
 }
 
 h1, h2, h3, h4 {
-    text-shadow: 0 1px 1px #fff;
-    font-weight:lighter;
 }
 
 a.readmore {
@@ -109,7 +101,7 @@ a.readmore {
 
 .siteintro strong {
     font-size:110%;
-    color:#B51700;
+    color:#a75750;
     font-weight:bold;
 }
 
@@ -120,16 +112,15 @@ a.readmore {
 
 .track img {
     float:right;
-    border:1px solid #ddd;
     background:#fff;
-    padding:1px;
+    padding:4px;
     margin-left:5px;
     margin-bottom:5px;
 }
 
 li.guest .name a,
 .track .name {
-    color:#d51007;
+    color:#a75750;
 }
 
 .recentplays .name {
@@ -168,13 +159,14 @@ li.guest .name a,
 
 .track .nothing,
 .track .artist {
-    color:#d5534e;
+    color:#a75750;
 }
 
 #main {
     padding-bottom:15px;
     min-height:400px;
     background-color:#fff1c7;
+    background-image:url('/img/background.png');
 }
 
 .actions {
@@ -319,18 +311,23 @@ top:-5px;
 }
 
 #footer {
-    margin-top:5px;
-    padding-top:10px;
-    color:#000;
+    padding-top:20px;
+    color:#9e9c9c;
+    background-image:url('/img/footer_border.png');
+    background-repeat:repeat-x;
 }
 
 #footer h3 {
-    color:#000;
+    color:#eee;
 }
 
 #footer a {
-    color:#333;
+    color:#9e9c9c;
     font-weight:normal;
+}
+
+#footer a:hover {
+    color:#ccc;
 }
 
 #footer li {
@@ -447,6 +444,7 @@ li.guest img {
 
 #header .logo {
     font-size:28px;
+    line-height:36px;
 }
 
 #header .navigation,
