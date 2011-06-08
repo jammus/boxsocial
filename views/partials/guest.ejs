@@ -2,7 +2,7 @@
     <%
     if (guest.user && guest.user.image[2]["#text"]) {
         %>
-        <img src="<%= guest.user.image[2]["#text"] %>" />
+        <a href="http://www.last.fm/user/<%=guest.session.user%>"><img src="<%= guest.user.image[2]["#text"] %>" /></a>
         <%
     }
     %>
