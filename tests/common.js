@@ -1,3 +1,6 @@
+if (process.setMaxListeners) {
+    process.setMaxListeners(900);
+}
 global.assert = require("assert");
 global.ntest = require("ntest");
 global.it = ntest.it;
