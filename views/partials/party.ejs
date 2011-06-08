@@ -4,7 +4,7 @@
 <%
 if (party.nowPlaying) {
     %>
-    <%- partial("track", party.nowPlaying) %>
+    <%- partial("track", { object: party.nowPlaying }) %>
     <%
 }
 else {

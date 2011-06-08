@@ -37,7 +37,6 @@ describe("a new boxsocial")
         var guest = createGuest(lastfm, "guest");
         gently.expect(boxsocial, "emit", function(event, party) {
             assert.equal("newParty", event);
-            gently.restore(this, "emit");
         });
         boxsocial.attend("hostuser", guest);
     });
@@ -230,7 +229,6 @@ describe("boxsocial events")
             assert.equal("trackUpdated", event);
             assert.equal("host", party.host);
             assert.equal("Run To Your Grave", track.name);
-            gently.restore(boxsocial, "emit");
         });
         party.emit("trackUpdated", FakeTracks.RunToYourGrave)
     });
@@ -241,7 +239,6 @@ describe("boxsocial events")
             assert.equal("recentPlaysUpdated", event);
             assert.equal("host", party.host);
             assert.equal("Run To Your Grave", tracks[0].name);
-            gently.restore(boxsocial, "emit");
         });
         party.emit("recentPlaysUpdated", [FakeTracks.RunToYourGrave])
     });
@@ -252,7 +249,6 @@ describe("boxsocial events")
             assert.equal("guestsUpdated", event);
             assert.equal("host", party.host);
             assert.equal("guestOne", guests[0].session.user);
-            gently.restore(boxsocial, "emit");
         });
         party.emit("guestsUpdated", party.guests)
     });
@@ -271,7 +267,6 @@ describe("boxsocial events")
         gently.expect(boxsocial, "emit", function(event, error) {
             assert.equal("error", event);
             assert.equal(message, error.message);
-            gently.restore(boxsocial, "emit");
         });
         party.emit("error", new Error(message));
     });

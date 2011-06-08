@@ -25,11 +25,13 @@ var config = require("../config");
 
         it("title is set when joining a party", function() {
             whenViewing("chose");
+            andUserIsLoggedInAs("anyuser");
             thePageTitleShouldBe("Join a Party: " + config.shortTitle);
         });
 
         it("title is set when confirming joining a party", function() {
             whenViewing("join", { host: "jammus" });
+            andUserIsLoggedInAs("anyuser");
             thePageTitleShouldBe("Join a Party: " + config.shortTitle);
         });
 })();

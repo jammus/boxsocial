@@ -66,7 +66,9 @@ describe("A guest created with an unauthorised session")
     });
 
     it("does not get extended info", function() {
-        gently.expect(lastfm, "info", 0);
+        lastfm.info = function() {
+            assert.ok(false);
+        };
         new Guest(lastfm, session);
     });
 

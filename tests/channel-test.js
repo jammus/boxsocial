@@ -72,11 +72,9 @@ describe("A channel with two clients")
         var message = "message";
         gently.expect(clientOne, "send", function(m) {
             assert.equal(message, m);
-            gently.restore(this, "send");
         });
         gently.expect(clientTwo, "send", function(m) {
             assert.equal(message, m);
-            gently.restore(this, "send");
         });
         channel.publish(message);
     });
@@ -104,7 +102,6 @@ describe("A channel with two clients")
         gently.expect(channel, "publish", function(message) {
             assert.ok(message.guestlist);
             assert.equal(2, message.guestlist.length);
-            gently.restore(channel, "publish");
         });
         party.emit("guestsUpdated", [{name: "guestone"}, {name: "guesttwo" }]);
     });
@@ -113,7 +110,6 @@ describe("A channel with two clients")
         gently.expect(channel, "publish", function(message) {
             assert.ok(message.nowPlaying);
             assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
-            gently.restore(channel, "publish");
         });
         party.emit("trackUpdated", FakeTracks.RunToYourGrave);
     });
@@ -122,7 +118,6 @@ describe("A channel with two clients")
         gently.expect(channel, "publish", function(message) {
             assert.ok(message.nowPlaying);
             assert.ok(!message.nowPlaying.track);
-            gently.restore(channel, "publish");
         });
         party.emit("trackUpdated");
     });
@@ -133,7 +128,6 @@ describe("A channel with two clients")
         gently.expect(channel, "publish", function(message) {
             assert.ok(message.recentPlays);
             assert.equal(recentPlays, message.recentPlays);
-            gently.restore(channel, "publish");
         });
         party.emit("recentPlaysUpdated", recentPlays);
     });

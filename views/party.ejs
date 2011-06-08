@@ -7,7 +7,7 @@
     <div class="eightcol">
         <h3>Now Playing</h3>
         <div id="nowPlaying" class="nowPlaying">
-            <%- partial("track", party.nowPlaying) %>
+            <%- partial("partials/track", { object: party.nowPlaying }) %>
         </div>
         <div class="actions">
             <a href="http://twitter.com/share" class="twitter-share-button" data-text="Listening to music with <%= host %> #boxsocial" data-count="none" data-related="boxsocialfm">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
@@ -30,14 +30,18 @@
         <div class="guests">
             <h3>Guests</h3>
             <ul id="guestlist">
-                <%- partial("guest", guests) %>
+                <%- partial("partials/guest", { collection: guests }) %>
             </ul>
         </div>
     </div>
     <div class="recentplays fourcol last">
         <h3>Recent Plays</h3>
         <ul id="recentplays" class="recentplays">
-            <%- partial("recentplays") %>
+            <% if (recentPlays.length > 0) { %>
+                <%- partial("partials/recentplays", { collection: recentPlays, as: "track" }) %>
+            <% } else { %>
+                <li><div class="nothing">Nothing yet.</div></li>
+            <% } %>
         </ul>
     </div>
 </div>
