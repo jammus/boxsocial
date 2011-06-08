@@ -7,7 +7,7 @@ body {
     -webkit-text-size-adjust: none;		/* Stops the iPhone scalling type up */
     color:#485664;
     background-image:url('/img/footer_bg.jpg');
-    background-position:0px 500px;
+    background-position:0px 100px;
     margin-bottom:0px;
 }
 
@@ -121,7 +121,6 @@ a.readmore {
     margin-bottom:5px;
 }
 
-li.guest .name a,
 .track .name {
     color:#a75750;
 }
@@ -170,6 +169,16 @@ li.guest .name a,
     min-height:500px;
     background-color:#f2ebdf;
     background-image:url('/img/background.png');
+}
+
+a {
+    color:#4d8db3;
+    font-weight:normal;
+}
+
+a:hover {
+    color:#7999ab;
+    color:#4d8db3;
 }
 
 .actions {
@@ -226,8 +235,9 @@ li.guest img {
 }
 
 li.guest .name a {
-font-size:24px;
-margin-bottom:5px;
+    font-size:24px;
+    margin-bottom:5px;
+    font-weight:normal;
 }
 
 .currentparties li.party {
@@ -244,33 +254,33 @@ ul#recentplays li {
 }
 
 a.button,
-input[type=submit],
-button {
-display:block;
-background: #e0e0e0;
-border: 1px solid #ccc;
--moz-border-radius: 3px;
--webkit-border-radius: 3px;
-border-radius: 3px;
--moz-box-shadow: inset 0 0 1px 1px #f6f6f6;
--webkit-box-shadow: inset 0 0 1px 1px #f6f6f6;
-box-shadow: inset 0 0 1px 1px #f6f6f6;
-z-index:100;
-color: #333;
-font-size: 18px;
-font-weight: bold;
-padding: 8px 9px;
-text-align: center;
-text-shadow: 0 1px 0px #fff;
-width: 250px;
+    input[type=submit],
+    button {
+    display:block;
+    background: #e0e0e0;
+    border: 1px solid #ccc;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: inset 0 0 1px 1px #f6f6f6;
+    -webkit-box-shadow: inset 0 0 1px 1px #f6f6f6;
+    box-shadow: inset 0 0 1px 1px #f6f6f6;
+    z-index:100;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 9px;
+    text-align: center;
+    text-shadow: 0 1px 0px #fff;
+    width: 250px;
 }
 
 input[type=text] {
-padding:2px 4px;
-width:240px;
-font-size:18px;
-font-weight:bold;
-color:#333;
+    padding:2px 4px;
+    width:240px;
+    font-size:18px;
+    font-weight:bold;
+    color:#333;
 }
 
 input[type=submit] {
