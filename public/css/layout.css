@@ -359,6 +359,10 @@ top:-5px;
 
 @media handheld, only screen and (max-width: 767px) {
 
+body {
+    background-position:-250px 100px;
+}
+
 h1 {
     font-size:28px;
 }
@@ -472,7 +476,6 @@ li.guest img {
 .examplecontainer {
 
 body {
-
 }
 
 }
