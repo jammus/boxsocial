@@ -45,6 +45,11 @@ h1, h2, h3, h4, h5, h6
     line-height:47px;
 }
 
+#header .logo .fm {
+    font-size:60%;
+}
+
+
 
 #header .logo .subheader {
     text-shadow:none;
@@ -460,13 +465,17 @@ li.guest img {
 }
 
 #header .logo {
-    font-size:28px;
+    font-size:36px;
     line-height:36px;
 }
 
 #header .navigation,
 #header span.subheader {
     display:none;
+}
+
+#header .logo .fm {
+    font-size:65%;
 }
 
 #footer .moreinfo {
