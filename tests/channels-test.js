@@ -72,4 +72,9 @@ describe("a new channels instance")
         clientTwo.emit("disconnect");
         assert.equal(0, channels.count());
     });
+
+    it("subscribing to a non-existant party does nothing", function() {
+        channels.subscribe("mrnonhost", clientOne);
+        assert.equal(0, channels.count());
+    });
 })();
