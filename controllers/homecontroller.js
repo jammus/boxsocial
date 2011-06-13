@@ -20,7 +20,7 @@ module.exports = function(lastfm, boxsocial, config) {
                 res.render("index", {
                     guest: req.session.guest,
                     currentParty: party,
-                    parties: _(boxsocial.parties).first(5),
+                    parties: boxsocial.getTopParties(5),
                     title: config.longTitle
                 });
             }
