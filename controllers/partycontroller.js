@@ -83,7 +83,7 @@ module.exports = function(lastfm, boxsocial, config) {
             get: function(req, res) {
                 var guest = req.session.guest;
                 if (guest) {
-                    boxsocial.leave(guest);
+                    boxsocial.leaveParty(guest);
                 }
                 res.redirect("/");
             }

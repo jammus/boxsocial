@@ -139,7 +139,7 @@ describe("a boxsocial with one party")
     });
 
     it("leaving removes guest from their party", function() {
-        boxsocial.leave(guestOne);
+        boxsocial.leaveParty(guestOne);
         var party = boxsocial.findParty({ guest: guestOne });
         assert.ok(!party);
     });

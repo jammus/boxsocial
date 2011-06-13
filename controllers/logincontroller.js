@@ -42,7 +42,7 @@ module.exports = function(lastfm, boxsocial, config) {
 
         logout: {
             post: function(req, res) {
-                boxsocial.leave(req.session.guest);
+                boxsocial.leaveParty(req.session.guest);
                 req.session.destroy();
                 res.redirect("/");
             }
