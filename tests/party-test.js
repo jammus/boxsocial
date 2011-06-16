@@ -63,12 +63,13 @@ describe("A new party");
         assert.equal(0, party.guests.length);
     });
     
-    it("doesn't start streaming until guests arrive", function() {
-        assert.ok(!stream.isStreaming);
-        var gently = new Gently();
-        gently.expect(stream, "start");
-        var guest = createGuest(lastfm, "guestuser1");
-        party.addGuest(guest);
+    it("stream starts at beginning of party", function() {
+        gently.expect(lastfm, "stream", function(host, options) {
+            assert.equal(host, "mrhost");
+            assert.ok(options.autostart);
+            return stream;
+        });
+        var party = new Party(lastfm, "mrhost");
     });
 })();
 
@@ -112,8 +113,8 @@ describe("A party in full swing");
     });
 
     it("shares now playing with new guests", function() {
-        party.nowPlaying = FakeTracks.RunToYourGrave;
-        party.nowPlayingInfo = FakeTracks.RunToYourGrave;
+        gently.expect(lastfm, "update", 2);
+        stream.emit('nowPlaying', FakeTracks.RunToYourGrave);
         gently.expect(lastfm, "update", function(method, session, options) {
           assert.equal("nowplaying", method);
           assert.equal("guestthree", session.user);
@@ -229,7 +230,7 @@ describe("Party using extended track info");
         lastfm.stream = function() {
             return stream;
         };
-        stream.start = function() {}; // stub start to prevent tests hanging
+        RecentTracksStream.prototype.start = function() {}; // stub start to prevent tests hanging
         party = new Party(lastfm, "hostuser");
 
         gently = new Gently();
@@ -366,8 +367,6 @@ describe("error handling")
     });
 
     it("bubbles update errors", function() {
-        gently.expect(stream, "start");
-
         var guest = createGuest(lastfm, "username");
         party.addGuest(guest);
         gently.expect(lastfm, "info", function(type, options) {
