@@ -2,16 +2,12 @@ require("./common.js");
 var Guest = require("../lib/guest.js").Guest;
 
 (function() {
-describe("A new guest")
+    describe("A new guest")
+
     var lastfm;
 
     before(function() {
         lastfm = new LastFmNode();
-    });
-
-    it("requires a lastfm instance", function() {
-        assert.throws(function() { new Guest(); });
-        new Guest(lastfm);
     });
 
     it("has no user details", function() {
@@ -27,7 +23,8 @@ describe("A new guest")
 })();
 
 (function() {
-describe("A guest created with an authorised session")
+    describe("A guest created with an authorised session")
+
     var lastfm, session, gently;
 
     before(function() {
@@ -56,7 +53,8 @@ describe("A guest created with an authorised session")
 })();
 
 (function() {
-describe("A guest created with an unauthorised session")
+    describe("A guest created with an unauthorised session")
+
     var lastfm, session, gently;
 
     before(function() {
@@ -81,5 +79,61 @@ describe("A guest created with an unauthorised session")
         assert.ok(guest.user.name);
         assert.equal("username", guest.user.name);
         assert.equal("User Name", guest.user.realname);
+    });
+})();
+
+(function() {
+    describe("A guest is the same as another when");
+
+    var before = function() {
+        lastfm = new LastFmNode();
+        lastfm.info = function() { };
+        gently = new Gently();
+    };
+
+    var lastfm, session, gently;
+
+    before(before);
+
+    it("has the same username", function() {
+        var guestOne = new Guest(lastfm, new LastFmSession(lastfm,
+                "user", "key1"));
+        var guestTwo = new Guest(lastfm, new LastFmSession(lastfm,
+                "user", "key2"));
+        assert.ok(guestOne.isSameAs(guestTwo));
+    });
+
+    it("has the same session key", function() {
+        var guestOne = new Guest(lastfm, new LastFmSession(lastfm,
+                "user1", "key"));
+        var guestTwo = new Guest(lastfm, new LastFmSession(lastfm,
+                "user2", "key"));
+        assert.ok(guestOne.isSameAs(guestTwo));
+    });
+
+    it("username matches supplied string", function() {
+        var guestOne = new Guest(lastfm, new LastFmSession(lastfm,
+                "user", "key1"));
+        assert.ok(guestOne.isSameAs("user"));
+    });
+
+    describe("A guest is not the same as another when");
+
+    before(before);
+
+    it("has blank session key", function() {
+        var guestOne = new Guest(lastfm, new LastFmSession(lastfm,
+                "user1", ""));
+        var guestTwo = new Guest(lastfm, new LastFmSession(lastfm,
+                "user2", ""));
+        assert.ok(!guestOne.isSameAs(guestTwo));
+    });
+
+    it("has blank username", function() {
+        var guestOne = new Guest(lastfm, new LastFmSession(lastfm,
+                "", "key1"));
+        var guestTwo = new Guest(lastfm, new LastFmSession(lastfm,
+                "", "key2"));
+        assert.ok(!guestOne.isSameAs(guestTwo));
     });
 })();
