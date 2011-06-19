@@ -1,11 +1,13 @@
 require("./common");
-var BoxSocial = require("../lib/boxsocial").BoxSocial;
-var Fakes = require("./Fakes");
-var Channel = require("../lib/channel").Channel;
-var FakeTracks = require("./TestData").FakeTracks;
+
+var BoxSocial = require("../lib/boxsocial").BoxSocial,
+    Fakes = require("./Fakes"),
+    Channel = require("../lib/channel").Channel,
+    FakeTracks = require("./TestData").FakeTracks;
 
 (function() {
-describe("A new channel")
+    describe("A new channel")
+
     var channel, boxsocial;
 
     before(function() {
@@ -20,24 +22,25 @@ describe("A new channel")
         cleanup(boxsocial);
     });
 
-    it("has name configured", function() {
+    it("takes name from party's host", function() {
         assert.equal("channelname", channel.name);
     });
 })();
 
 (function() {
-describe("A channel with one client")
-    var clientOne, gently, party, channel, boxsocial;
+    describe("Party event:")
+
+    var clientOne, party, channel, boxsocial, gently;
 
     before(function() {
         var lastfm = new Fakes.LastFm();
         var guest = createGuest(lastfm, "guesto", "besto");
         boxsocial = new BoxSocial(lastfm);
         clientOne = new Fakes.Client({sessionId: "1234"});
-        gently = new Gently();
         party = boxsocial.attend("hostname", guest);
         channel = new Channel(party);
         channel.addClient(clientOne);
+        gently = new Gently();
     });
 
     after(function() {
@@ -68,7 +71,7 @@ describe("A channel with one client")
         party.emit("trackUpdated");
     });
 
-    it("trackUpdated sends recent recent plays to client", function() {
+    it("trackUpdated sends recent plays to client", function() {
         var recentPlays = [FakeTracks.RunToYourGrave];
         party.recentPlays = recentPlays;
         gently.expect(clientOne, "send", function(message) {
@@ -83,11 +86,24 @@ describe("A channel with one client")
             assert.ok(message.partyOver);
         });
     });
+
+    it("messages can be sent to multiple clients", function() {
+        var clientTwo = new Fakes.Client({ sessionId: "5678" });
+        channel.addClient(clientTwo);
+        gently.expect(clientOne, "send", receivedNowPlayingMessage);
+        gently.expect(clientTwo, "send", receivedNowPlayingMessage);
+        party.emit("trackUpdated", FakeTracks.RunToYourGrave);
+
+        function receivedNowPlayingMessage(message) {
+            assert.ok(message.nowPlaying);
+            assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
+        }
+    });
 })();
 
 (function() {
-describe("A channel with two clients")
-    var boxsocial, channel, clientOne, clientTwo, party;
+describe("Client removal")
+    var boxsocial, channel, clientOne, clientTwo, party, gently;
 
     before(function() {
         var lastfm = new Fakes.LastFm();
@@ -99,28 +115,14 @@ describe("A channel with two clients")
         clientTwo = new Fakes.Client({ sessionId: "5678" });
         channel.addClient(clientOne);
         channel.addClient(clientTwo);
+        gently = new Gently();
     });
 
     after(function() {
         cleanup(boxsocial);
     });
 
-    it("party events send a messages to both clients", function() {
-        var gently = new Gently();
-        var message = "message";
-        gently.expect(clientOne, "send", function(message) {
-            assert.ok(message.nowPlaying);
-            assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
-        });
-        gently.expect(clientTwo, "send", function(message) {
-            assert.ok(message.nowPlaying);
-            assert.equal(message.nowPlaying.track, FakeTracks.RunToYourGrave);
-        });
-        party.emit("trackUpdated", FakeTracks.RunToYourGrave);
-    });
-
-    it("removing a client stops it from receiving messages", function() {
-        var gently = new Gently();
+    it("stops client from receiving messages", function() {
         channel.removeClient(clientOne);
         clientOne.send = function() {
             assert.ok(false, "Send should not have been called.");
@@ -129,8 +131,7 @@ describe("A channel with two clients")
         party.emit("trackUpdated", FakeTracks.RunToYourGrave);
     });
 
-    it("removes a client onDisconnect", function() {
-        var gently = new Gently();
+    it("client removed on onDisconnect", function() {
         clientTwo.emit("disconnect");
         clientTwo.send = function() {
             assert.ok(false, "Send should not have been called.");

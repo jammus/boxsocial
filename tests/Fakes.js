@@ -1,7 +1,7 @@
-var RecentTracksStream = require('lastfm/lib/lastfm/recenttracks-stream');
-var EventEmitter = require("events").EventEmitter;
-
-var LastFm = function(){
+var RecentTracksStream = require('lastfm/lib/lastfm/recenttracks-stream'),
+    EventEmitter = require("events").EventEmitter;
+    
+var LastFm = function() {
     this.readRequests = 0;
 };
 
@@ -15,7 +15,6 @@ LastFm.prototype.stream = function(host) {
 };
 
 LastFm.prototype.info = function() {};
-
 
 exports.LastFm = LastFm;
 
@@ -40,18 +39,15 @@ LastFmSession.prototype.update = function(method, track) {
     }
 }
 
-LastFmSession.prototype.isAuthorised = function() {
-}
+LastFmSession.prototype.isAuthorised = function() { }
 
-LastFmSession.prototype.on = function() {
-}
+LastFmSession.prototype.on = function() { }
 
 exports.LastFmSession = LastFmSession;
 
 var LastFmRequest = exports.LastFmRequest = function() {
   EventEmitter.call(this);
 };
-
 LastFmRequest.prototype = Object.create(EventEmitter.prototype);
 
 var Client = function(options) {
@@ -60,10 +56,8 @@ var Client = function(options) {
     Object.keys(options).forEach(function(key) {
         that[key] = options[key];
     });
-
     this.send = function() { };
 }
-
 Client.prototype = Object.create(EventEmitter.prototype);
 
 exports.Client = Client;

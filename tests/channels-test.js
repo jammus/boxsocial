@@ -1,12 +1,14 @@
 require("./common.js");
-var BoxSocial = require("../lib/boxsocial").BoxSocial;
-var Channels = require("../lib/channels").Channels;
-var FakeTracks = require("./TestData").FakeTracks;
-var Fakes = require("./Fakes");
+
+var BoxSocial = require("../lib/boxsocial").BoxSocial,
+    Channels = require("../lib/channels").Channels,
+    FakeTracks = require("./TestData").FakeTracks,
+    Fakes = require("./Fakes");
 
 (function() {
-describe("a new channels instance")
-    var boxsocial, channels, clientOne, clientTwo, gently, lastfm, party;
+    describe("a new channels instance")
+
+    var boxsocial, channels, clientOne, clientTwo, lastfm, party, gently;
 
     before(function() {
         lastfm = new Fakes.LastFm();

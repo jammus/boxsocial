@@ -1,16 +1,14 @@
 require("./common.js");
-var Party = require('../lib/party').Party;
-var RecentTracksStream = require('lastfm/lib/lastfm/recenttracks-stream');
-var LastFmSession = require('lastfm/lib/lastfm/lastfm-session');
-var FakeTracks = require('./TestData').FakeTracks;
-var Guest = require('../lib/guest').Guest;
 
-function createGuest(lastfm, user, key) {
-    return new Guest(lastfm, new LastFmSession(lastfm, user, key));
-}
+var Party = require('../lib/party').Party,
+    RecentTracksStream = require('lastfm/lib/lastfm/recenttracks-stream'),
+    LastFmSession = require('lastfm/lib/lastfm/lastfm-session'),
+    FakeTracks = require('./TestData').FakeTracks,
+    Guest = require('../lib/guest').Guest;
 
 (function() {
-describe("A new party");
+    describe("A new party");
+
     var lastfm, stream, party, gently;
 
     before(function() {
@@ -46,8 +44,7 @@ describe("A new party");
     it("can add guests", function() {
         var guest = createGuest(lastfm, "guestuser1");
         party.addGuest(guest);
-        assert.equal(1, party.guests.length);
-        assert.ok(party.guests.indexOf(guest) > -1);
+        assert.ok(party.hasGuest(guest));
     });
 
     it("can't add a guest twice", function() {
@@ -60,7 +57,7 @@ describe("A new party");
     it("can't add host to guest list", function() { 
         var guest = createGuest(lastfm, "hostuser");
         party.addGuest(guest);
-        assert.equal(0, party.guests.length);
+        assert.ok(!party.hasGuest(guest));
     });
     
     it("stream starts at beginning of party", function() {
@@ -155,6 +152,19 @@ describe("A party in full swing");
         assert.equal(null, guestThree.nowPlaying);
     });
 
+    it("stops streaming when last guest leaves", function() {
+        party.removeGuest(guestOne);
+        party.removeGuest(guestTwo);
+        assert.ok(!stream.isStreaming);
+    });
+
+    it("removes all guests when over", function() {
+        party.finish();
+        assert.ok(!party.hasGuest(guestOne));
+        assert.ok(!party.hasGuest(guestTwo));
+        assert.equal(0, party.guests.length);
+    });
+
     it("returns false when checked for unknown guest", function() {
         var guest = createGuest(lastfm, "unknown", "huh");
         assert.ok(!party.hasGuest(guest));     
@@ -178,19 +188,6 @@ describe("A party in full swing");
         party.removeGuest(guestOne);
         assert.notEqual(0, party.guests.length);
         assert.ok(party.hasGuest(guestTwo));
-    });
-
-    it("stops streaming when last guest leaves", function() {
-        party.removeGuest(guestOne);
-        party.removeGuest(guestTwo);
-        assert.ok(!stream.isStreaming);
-    });
-
-    it("removes all guests when over", function() {
-        party.finish();
-        assert.ok(!party.hasGuest(guestOne));
-        assert.ok(!party.hasGuest(guestTwo));
-        assert.equal(0, party.guests.length);
     });
 
     it("emits finished event when all guests leave", function() {
@@ -221,7 +218,8 @@ describe("A party in full swing");
 })();
 
 (function() {
-describe("Party using extended track info");
+    describe("Party using extended track info");
+
     var lastfm, stream, party, gently;
 
     before(function() {
@@ -272,7 +270,8 @@ describe("Party using extended track info");
 })();
 
 (function() {
-describe("Party events")
+    describe("Party events")
+
     var lastfm, stream, party, firstGuest, gently;
 
     before(function() {
@@ -285,9 +284,9 @@ describe("Party events")
         party = new Party(lastfm, stream);
         firstGuest = createGuest(lastfm, "alice");
         party.addGuest(firstGuest);
-        gently = new Gently();
         lastfm.info = function() {};
         lastfm.update = function() {};
+        gently = new Gently();
     });
 
     it("emits guestsUpdated when guest arrives", function() {
@@ -353,17 +352,18 @@ describe("Party events")
 })();
 
 (function() {
-describe("error handling")
-    var gently, lastfm, stream, party;
+    describe("error handling")
+
+    var lastfm, stream, party, gently;
 
     before(function() {
-        gently = new Gently();
         lastfm = new LastFmNode();
         stream = lastfm.stream("someuser");
         lastfm.stream = function() {
             return stream;
         };
         party = new Party(lastfm, stream);
+        gently = new Gently();
     });
 
     it("bubbles update errors", function() {
@@ -393,7 +393,8 @@ describe("error handling")
 })();
 
 (function() {
-describe("recent plays")
+    describe("recent plays")
+
     var lastfm, stream, party;
 
     before(function() {
@@ -416,8 +417,9 @@ describe("recent plays")
     });
 
     it("keeps a maximum of 5 recent plays", function() {
-        for (var i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++) {
             stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+        }
         assert.equal(5, party.recentPlays.length);
     });
 

@@ -1,15 +1,18 @@
 require("./common.js");
-var BoxSocial = require("../lib/boxsocial").BoxSocial;
-var Fakes = require("./Fakes");
-var FakeTracks = require('./TestData').FakeTracks;
+
+var BoxSocial = require("../lib/boxsocial").BoxSocial,
+    Fakes = require("./Fakes"),
+    FakeTracks = require('./TestData').FakeTracks;
 
 (function() {
-describe("a new boxsocial")
-    var lastfm, boxsocial, gently;
+    describe("a new boxsocial")
+
+    var lastfm, boxsocial, guest, gently;
 
     before(function() {
         lastfm = new Fakes.LastFm();
         boxsocial = new BoxSocial(lastfm);
+        guest = createGuest(lastfm, "guest");
         gently = new Gently();
     });
 
@@ -22,19 +25,16 @@ describe("a new boxsocial")
     });
 
     it("attending a new party increases party count", function() {
-        var guest = createGuest(lastfm, "guest");
         boxsocial.attend("hostuser", guest);
         assert.equal(1, boxsocial.partyCount());    
     });
 
     it("attending a party returns party", function() {
-        var guest = createGuest(lastfm, "guest");
         var party = boxsocial.attend("host", guest);
         assert.equal("host", party.host);
     });
 
     it("attending a new party emits new party event", function() {
-        var guest = createGuest(lastfm, "guest");
         gently.expect(boxsocial, "emit", function(event, party) {
             assert.equal("newParty", event);
         });
@@ -43,9 +43,8 @@ describe("a new boxsocial")
     
 
     it("attending an existing party does not increase party count", function() {
-        var guestOne = createGuest(lastfm, "guestOne", "one");
-        var guestTwo = createGuest(lastfm, "guestTwo", "two");
-        boxsocial.attend("hostuser", guestOne);
+        var guestOne = createGuest(lastfm, "guestOne", "one"),
+            guestTwo = createGuest(lastfm, "guestTwo", "two");
         boxsocial.attend("hostuser", guestTwo);
         assert.equal(1, boxsocial.partyCount());
     });
@@ -58,8 +57,8 @@ describe("a new boxsocial")
     });
 
     it("party hosts are case insensitive", function() {
-        var guestOne = createGuest(lastfm, "guestOne", "one");
-        var guestTwo = createGuest(lastfm, "guestTwo", "two");
+        var guestOne = createGuest(lastfm, "guestOne", "one"),
+            guestTwo = createGuest(lastfm, "guestTwo", "two");
         boxsocial.attend("hostuser", guestOne);
         boxsocial.attend("hosTuSEr", guestTwo);
         assert.equal(1, boxsocial.partyCount());
@@ -78,9 +77,9 @@ describe("a new boxsocial")
     });
 
     it("removes party from list when it finished", function() {
-        var guestOne = createGuest(lastfm, "guestOne", "sk1");
-        var guestTwo = createGuest(lastfm, "guestTwo", "sk2");
-        var guestThree = createGuest(lastfm, "guestThree", "sk3");
+        var guestOne = createGuest(lastfm, "guestOne", "sk1"),
+            guestTwo = createGuest(lastfm, "guestTwo", "sk2"),
+            guestThree = createGuest(lastfm, "guestThree", "sk3");
 
         boxsocial.attend("hostOne", guestOne);
         boxsocial.attend("hostTwo", guestTwo);
@@ -96,32 +95,34 @@ describe("a new boxsocial")
 })();
 
 (function() {
-describe("a boxsocial with one party")
+    describe("boxsocial party search")
+
     var lastfm, boxsocial, guestOne;
 
     before(function() {
         lastfm = new Fakes.LastFm();
         boxsocial = new BoxSocial(lastfm);
         guestOne = createGuest(lastfm, "guestOne", "sk1");
-        boxsocial.attend("host", guestOne);
     });
 
     after(function() {
         cleanup(boxsocial);
     });
-
+    
     it("returns nothing when searched for unknown host", function() {
         var party = boxsocial.findParty({ host: "unknownhost" });
         assert.ok(!party);
     });
 
     it("returns party when searched by host", function() {
+        boxsocial.attend("host", guestOne);
         var party = boxsocial.findParty({ host: "host" });
         assert.ok(party);
         assert.equal("host", party.host);
     });
 
     it("host search is case insensitive", function() {
+        boxsocial.attend("host", guestOne);
         var party = boxsocial.findParty({ host: "hOSt" });
         assert.equal("host", party.host);
     });
@@ -133,9 +134,27 @@ describe("a boxsocial with one party")
     });
 
     it("returns party when searching for known guest", function() {
+        boxsocial.attend("host", guestOne);
         var party = boxsocial.findParty({ guest: guestOne });
         assert.ok(party);
         assert.equal("host", party.host);
+    });
+})();
+
+(function() {
+    describe("a boxsocial with one party")
+
+    var lastfm, boxsocial, guestOne;
+
+    before(function() {
+        lastfm = new Fakes.LastFm();
+        boxsocial = new BoxSocial(lastfm);
+        guestOne = createGuest(lastfm, "guestOne", "sk1");
+        boxsocial.attend("host", guestOne);
+    });
+
+    after(function() {
+        cleanup(boxsocial);
     });
 
     it("leaving removes guest from their party", function() {
@@ -152,7 +171,8 @@ describe("a boxsocial with one party")
 })();
 
 (function() {
-describe("a boxsocial with seven parties")
+    describe("a boxsocial with seven parties")
+
     var lastfm, boxsocial, guestOne;
 
     before(function() {
@@ -171,7 +191,7 @@ describe("a boxsocial with seven parties")
         cleanup(boxsocial);
     });
 
-    it("returns most recent parties when top five are requested", function() {
+    it("returns five most recent parties when top five are requested", function() {
         var parties = boxsocial.getTopParties(5);
         assert.equal(5, parties.length);
         assert.equal("host7", parties[0].host);
@@ -181,7 +201,8 @@ describe("a boxsocial with seven parties")
 
 
 (function() {
-describe("Party rules")
+    describe("Party rules")
+
     var lastfm, boxsocial, guestOne, guestTwo;
 
     before(function() {
@@ -196,14 +217,9 @@ describe("Party rules")
         cleanup(boxsocial);
     });
 
-    it("guests can't be hosts", function() {
-        boxsocial.attend(guestOne.session.user, guestTwo);
-        var party = boxsocial.findParty({host: guestOne.session.user});
-        assert.ok(!party);
-    });
-
-    it("trying to join a guest's party instead joins the original host's", function() {
-        boxsocial.attend(guestOne.session.user, guestTwo);
+    it("trying to join a guest's party joins the original host's", function() {
+        var guestname = guestOne.session.user;
+        boxsocial.attend(guestname, guestTwo);
         var party = boxsocial.findParty({host: "host"});
         assert.ok(party.hasGuest(guestTwo));
     });
@@ -222,7 +238,7 @@ describe("Party rules")
         assert.ok(!party);
     });
 
-    it("guest is removed from first party when they join a second", function() {
+    it("guest can only be at one party", function() {
         boxsocial.attend("host", guestTwo);
         boxsocial.attend("hostTwo", guestOne);
 
@@ -245,12 +261,13 @@ describe("Party rules")
 
 (function() {
 describe("boxsocial events")
-    var boxsocial, guestOne, gently;
+    var boxsocial, guestOne, party, gently;
 
     before(function() {
         var lastfm = new Fakes.LastFm();
         boxsocial = new BoxSocial(lastfm);
         guestOne = createGuest(lastfm, "guestOne", "auth");
+        party = boxsocial.attend("host", guestOne);
         gently = new Gently();
     });
 
@@ -259,7 +276,6 @@ describe("boxsocial events")
     });
 
     it("bubbles up trackUpdated events", function() {
-        var party = boxsocial.attend("host", guestOne);
         gently.expect(boxsocial, "emit", function(event, party, track) {
             assert.equal("trackUpdated", event);
             assert.equal("host", party.host);
@@ -269,7 +285,6 @@ describe("boxsocial events")
     });
 
     it("bubbles up recentPlaysUpdated events", function() {
-        var party = boxsocial.attend("host", guestOne);
         gently.expect(boxsocial, "emit", function(event, party, tracks) {
             assert.equal("recentPlaysUpdated", event);
             assert.equal("host", party.host);
@@ -279,7 +294,6 @@ describe("boxsocial events")
     });
 
     it("bubbles up guestsUpdated events", function() {
-        var party = boxsocial.attend("host", guestOne);
         gently.expect(boxsocial, "emit", function(event, party, guests) {
             assert.equal("guestsUpdated", event);
             assert.equal("host", party.host);
@@ -289,7 +303,6 @@ describe("boxsocial events")
     });
 
     it("bubbles up finished events", function() {
-        var party = boxsocial.attend("host", guestOne);
         gently.expect(boxsocial, "emit", function(event, party) {
             assert.equal("partyFinished", event);
             assert.equal("host", party.host);
@@ -297,7 +310,6 @@ describe("boxsocial events")
     });
 
     it("bubbles up error events", function() {
-        var party = boxsocial.attend("host", guestOne);
         var message = "Party error message";
         gently.expect(boxsocial, "emit", function(event, error) {
             assert.equal("error", event);
