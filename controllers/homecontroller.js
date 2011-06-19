@@ -1,5 +1,5 @@
-var _ = require("underscore");
-var cutils = require("./cutils");
+var _ = require("underscore"),
+    cutils = require("./cutils");
 
 module.exports = function(lastfm, boxsocial, config) {
     function properCase(text) {
@@ -11,11 +11,8 @@ module.exports = function(lastfm, boxsocial, config) {
     return {
         index: {
             get: function(req, res) {
-                var guest = req.session.guest;
-                var party = null;
-                if (guest) {
-                   party = boxsocial.findParty({ guest: guest });
-                }
+                var guest = req.session.guest,
+                    party = guest ? boxsocial.findParty({ guest: guest }) : null;
 
                 res.render("index", {
                     guest: req.session.guest,
@@ -30,7 +27,8 @@ module.exports = function(lastfm, boxsocial, config) {
             get: function(req, res) {
                 res.render(req.params.page, {
                     guest: req.session ? req.session.guest : null,
-                    title: cutils.title(properCase(req.params.page), config.shortTitle)
+                    title: cutils.title(properCase(req.params.page),
+                        config.shortTitle)
                 });
             }
         }
