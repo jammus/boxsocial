@@ -67,7 +67,7 @@ module.exports = function(lastfm, boxsocial, config) {
             post: function(req, res) {
                 var host = req.params.host;
                 cutils.checkLoggedIn(req, res, "/join/" + host, function() {
-                    var fmsession = lastfm.session(req.session.user, req.session.key),
+                    var fmsession = lastfm.session(req.session.user, req.session.key);
                     var guest = new Guest(lastfm, fmsession);
                     req.session.guest = guest;
                     var party = boxsocial.attend(host, guest);
