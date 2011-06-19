@@ -5,7 +5,7 @@ module.exports = function(lastfm, boxsocial, config) {
     return {
         index: {
             get: function(req, res) {
-                var parties = boxsocial.parties;
+                var parties = boxsocial.getTopParties(100);
                 res.render("parties", { 
                     guest: req.session.guest,
                     parties: parties
