@@ -1,5 +1,5 @@
-var querystring = require("querystring");
-var Guest = require("../lib/guest").Guest;
+var querystring = require("querystring"),
+    Guest = require("../lib/guest").Guest;
 
 module.exports = function(lastfm, boxsocial, config) {
     return {
@@ -19,8 +19,9 @@ module.exports = function(lastfm, boxsocial, config) {
 
         callback: {
             get: function(req, res) {
-                var token = req.param("token");
-                var fmsession = lastfm.session();
+                var token = req.param("token"),
+                    fmsession = lastfm.session();
+
                 fmsession.authorise(token, {
                     handlers: {
                         authorised: function(session) {

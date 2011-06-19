@@ -15,9 +15,12 @@ describe("A new party");
 
     before(function() {
         lastfm = new LastFmNode();
-        stream = new RecentTracksStream(lastfm, "hostuser");
+        stream = new RecentTracksStream(lastfm, "hostuser")
+        lastfm.stream = function(host) {
+            return stream;
+        };
         stream.start = function() {}; // stub start to prevent tests hanging
-        party = new Party(lastfm, stream);
+        party = new Party(lastfm, "hostuser");
         gently = new Gently();
     });
 
@@ -25,6 +28,15 @@ describe("A new party");
         if (stream.isStreaming) {
             stream.stop();
         }
+    });
+
+    it("creates a stream for the host", function() {
+        var partyHost = "partyhost";
+        gently.expect(lastfm, "stream", function(host) {
+            assert.equal(partyHost, host);
+            return new RecentTracksStream(lastfm, host);
+        });
+        var party = new Party(lastfm, partyHost);
     });
 
     it("has no guests", function() {
@@ -51,12 +63,13 @@ describe("A new party");
         assert.equal(0, party.guests.length);
     });
     
-    it("doesn't start streaming until guests arrive", function() {
-        assert.ok(!stream.isStreaming);
-        var gently = new Gently();
-        gently.expect(stream, "start");
-        var guest = createGuest(lastfm, "guestuser1");
-        party.addGuest(guest);
+    it("stream starts at beginning of party", function() {
+        gently.expect(lastfm, "stream", function(host, options) {
+            assert.equal(host, "mrhost");
+            assert.ok(options.autostart);
+            return stream;
+        });
+        var party = new Party(lastfm, "mrhost");
     });
 })();
 
@@ -71,8 +84,11 @@ describe("A party in full swing");
             if (type == "track") options.handlers.success(options.track);
         };
         stream = new RecentTracksStream(lastfm, "hostuser");
+        lastfm.stream = function() {
+            return stream;
+        }
         stream.start = function() {}; // stub start to prevent tests hanging
-        party = new Party(lastfm, stream);
+        party = new Party(lastfm, "hostuser");
         guestOne = createGuest(lastfm, "guestuser1", "auth1");
         guestTwo = createGuest(lastfm, "guestuser2", "auth2");
         guestThree = createGuest(lastfm, "guestthree", "auth3");
@@ -97,8 +113,8 @@ describe("A party in full swing");
     });
 
     it("shares now playing with new guests", function() {
-        party.nowPlaying = FakeTracks.RunToYourGrave;
-        party.nowPlayingInfo = FakeTracks.RunToYourGrave;
+        gently.expect(lastfm, "update", 2);
+        stream.emit('nowPlaying', FakeTracks.RunToYourGrave);
         gently.expect(lastfm, "update", function(method, session, options) {
           assert.equal("nowplaying", method);
           assert.equal("guestthree", session.user);
@@ -211,8 +227,11 @@ describe("Party using extended track info");
     before(function() {
         lastfm = new LastFmNode();
         stream = new RecentTracksStream(lastfm, "hostuser");
-        stream.start = function() {}; // stub start to prevent tests hanging
-        party = new Party(lastfm, stream);
+        lastfm.stream = function() {
+            return stream;
+        };
+        RecentTracksStream.prototype.start = function() {}; // stub start to prevent tests hanging
+        party = new Party(lastfm, "hostuser");
 
         gently = new Gently();
     });
@@ -259,6 +278,9 @@ describe("Party events")
     before(function() {
         lastfm = new LastFmNode();
         stream = new RecentTracksStream(lastfm, "hostuser");
+        lastfm.stream = function() {
+            return stream;
+        };
         stream.start = function() {}; // stub start to prevent tests hanging
         party = new Party(lastfm, stream);
         firstGuest = createGuest(lastfm, "alice");
@@ -338,12 +360,13 @@ describe("error handling")
         gently = new Gently();
         lastfm = new LastFmNode();
         stream = lastfm.stream("someuser");
+        lastfm.stream = function() {
+            return stream;
+        };
         party = new Party(lastfm, stream);
     });
 
     it("bubbles update errors", function() {
-        gently.expect(stream, "start");
-
         var guest = createGuest(lastfm, "username");
         party.addGuest(guest);
         gently.expect(lastfm, "info", function(type, options) {
@@ -376,6 +399,9 @@ describe("recent plays")
     before(function() {
         lastfm = new LastFmNode();
         stream = lastfm.stream("someuser");
+        lastfm.stream = function() {
+            return stream;
+        };
         party = new Party(lastfm, stream);
     });
 

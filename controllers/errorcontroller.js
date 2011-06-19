@@ -3,19 +3,29 @@ var cutils = require("./cutils");
 module.exports = function(lastfm, boxsocial, config) {
     return {
         error: function(err, req, res) {
-            if (err.message.indexOf("ENOENT") > -1)
-                res.render("404", {
-                    status: 404,
-                    title: cutils.title("Page not found", config.shortTitle),
-                    guest: req.session ? req.session.guest : undefined
-                });
-            else
-                res.render("500", {
-                    status: 500,
-                    title: cutils.title("Error", config.shortTitle),
-                    guest: req.session ? req.session.guest : undefined
-                });
+            if (err.message.indexOf("ENOENT") > -1) {
+                display404(req, res);
+            }
+            else {
+                display500(req, res);
+            }
         }
+    };
+
+    function display404(req, res) {
+        displayError(req, res, 404, "Page not found");
+    }
+
+    function display500(req, res) {
+        displayError(req, res, 500, "Error");
+    }
+
+    function displayError(req, res, code, title) {
+        res.render(code, {
+            status: code,
+            title: cutils.title(title, config.shortTitle),
+            guest: req.session ? req.session.guest : undefined
+        });
     }
 };
 

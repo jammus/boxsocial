@@ -89,7 +89,7 @@ describe("a new boxsocial")
         var party = boxsocial.findParty({ host: "hostOne" });
         party.finish();
 
-        assert.equal(2, boxsocial.parties.length);
+        assert.equal(2, boxsocial.partyCount());
         party = boxsocial.findParty({ host: "hostOne" });
         assert.ok(!party);
     });
@@ -143,7 +143,42 @@ describe("a boxsocial with one party")
         var party = boxsocial.findParty({ guest: guestOne });
         assert.ok(!party);
     });
+
+    it("returns party when top 5 are requested", function() {
+        var parties = boxsocial.getTopParties(5);
+        assert.equal(1, parties.length);
+        assert.equal("host", parties[0].host);
+    });
 })();
+
+(function() {
+describe("a boxsocial with seven parties")
+    var lastfm, boxsocial, guestOne;
+
+    before(function() {
+        lastfm = new Fakes.LastFm();
+        boxsocial = new BoxSocial(lastfm);
+        boxsocial.attend("host1", createGuest(lastfm, "guestOne", "sk1"));
+        boxsocial.attend("host2", createGuest(lastfm, "guestTwo", "sk2"));
+        boxsocial.attend("host3", createGuest(lastfm, "guestThree", "sk3"));
+        boxsocial.attend("host4", createGuest(lastfm, "guestFour", "sk4"));
+        boxsocial.attend("host5", createGuest(lastfm, "guestFive", "sk5"));
+        boxsocial.attend("host6", createGuest(lastfm, "guestSix", "sk6"));
+        boxsocial.attend("host7", createGuest(lastfm, "guestSeven", "sk7"));
+    });
+
+    after(function() {
+        cleanup(boxsocial);
+    });
+
+    it("returns most recent parties when top five are requested", function() {
+        var parties = boxsocial.getTopParties(5);
+        assert.equal(5, parties.length);
+        assert.equal("host7", parties[0].host);
+        assert.equal("host3", parties[4].host);
+    });
+})();
+
 
 (function() {
 describe("Party rules")
@@ -201,9 +236,9 @@ describe("Party rules")
         var delay = 1000;
         var boxsocial = new BoxSocial(lastfm, delay);
         boxsocial.attend("host", guestOne);
-        assert.equal(1, boxsocial.parties.length);
+        assert.equal(1, boxsocial.partyCount());
         var timeout = setTimeout(function() {
-            assert.equal(0, boxsocial.parties.length);
+            assert.equal(0, boxsocial.partyCount());
         }, delay);
     });
 })();

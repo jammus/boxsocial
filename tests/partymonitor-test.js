@@ -11,7 +11,7 @@ var PartyMonitor = require("../lib/partymonitor").PartyMonitor;
     before(function() {
         lastfm = new LastFmNode();
         stream = new RecentTracksStream(lastfm, "hostuser");
-        stream.start = function() {}; // stub start to prevent tests hanging
+        RecentTracksStream.prototype.start = function() {}; // stub start to prevent tests hanging
     });
 
     it("stops party after set amount of time", function() {

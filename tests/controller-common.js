@@ -85,7 +85,7 @@ global.andUserIsLoggedInAs = function(username) {
 
 global.thereShouldBeActiveParties = function(count) {
     performAction();
-    assert.equal(count, boxsocial.parties.length);
+    assert.equal(count, boxsocial.partyCount());
 }
 
 global.andSessionIsAuthorisedAs = function(user, key) {

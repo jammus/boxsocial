@@ -49,11 +49,6 @@ describe("a new channels instance")
         assert.equal("hostname", channel.name);
     });
 
-    it("a subscription adds client to channel", function() {
-        var channel = channels.subscribe("hostname", clientOne);
-        assert.equal(1, channel.clients.length);
-    });
-
     it("subscribing to channel sends current nowPlaying to client", function() {
         gently.expect(clientOne, "send", function(message) {
             assert.ok(message.nowPlaying);
