@@ -18,7 +18,7 @@ ul {
 #facebook {
     position:relative;
     top:1px;
-    left:-35px;
+    left:-37px;
 }
 
 #faceparty {
@@ -377,6 +377,17 @@ top:-5px;
 
 body {
     background-position:-250px 100px;
+}
+
+#facebook {
+    position:relative;
+    top:0px;
+    left:0px;
+}
+
+#faceparty {
+    position:relative;
+    left:0px;
 }
 
 h1 {
