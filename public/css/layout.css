@@ -371,6 +371,20 @@ top:-5px;
     margin-bottom:5px;
 }
 
+/* Layout for iPad */
+@media handheld, only screen and (device-width: 768px) {
+#facebook {
+    position:relative;
+    top:0px;
+    left:0px;
+}
+
+#faceparty {
+    position:relative;
+    left:0px;
+}
+}
+
 /* Layout for mobile version */
 
 @media handheld, only screen and (max-width: 767px) {
