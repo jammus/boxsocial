@@ -15,6 +15,17 @@ ul {
     list-style:none;
 }
 
+#facebook {
+    position:relative;
+    top:1px;
+    left:-35px;
+}
+
+#faceparty {
+    position:relative;
+    left:-29px;
+}
+
 #header {
     color:#f0f0f0;
     background: #953329;
