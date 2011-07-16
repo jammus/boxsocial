@@ -41,7 +41,6 @@ var BoxSocial = require("../lib/boxsocial").BoxSocial,
         boxsocial.attend("hostuser", guest);
     });
     
-
     it("attending an existing party does not increase party count", function() {
         var guestOne = createGuest(lastfm, "guestOne", "one"),
             guestTwo = createGuest(lastfm, "guestTwo", "two");
@@ -191,7 +190,7 @@ var BoxSocial = require("../lib/boxsocial").BoxSocial,
         cleanup(boxsocial);
     });
 
-    it("returns five most recent parties when top five are requested", function() {
+    it("returns most recent parties when top five are requested", function() {
         var parties = boxsocial.getTopParties(5);
         assert.equal(5, parties.length);
         assert.equal("host7", parties[0].host);
@@ -249,8 +248,8 @@ var BoxSocial = require("../lib/boxsocial").BoxSocial,
     });
 
     it("parties get removed after period of inactivity", function() {
-        var delay = 1000;
-        var boxsocial = new BoxSocial(lastfm, delay);
+        var delay = 1000,
+            boxsocial = new BoxSocial(lastfm, delay);
         boxsocial.attend("host", guestOne);
         assert.equal(1, boxsocial.partyCount());
         var timeout = setTimeout(function() {

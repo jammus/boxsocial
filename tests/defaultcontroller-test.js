@@ -53,8 +53,7 @@ var Fakes = require("./Fakes"),
 
     function deferControll() {
         var controller = new DefaultController(config);
-        controller.default.all(request, null, gently.expect(function() {
-        }));
+        controller.default.all(request, null, gently.expect(emptyFn));
     }
 
     function expect301RedirectTo(expectedUrl) {

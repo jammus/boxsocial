@@ -97,19 +97,19 @@ var Guest = require("../lib/guest.js").Guest;
     before(before);
 
     it("has the same username", function() {
-        var guestOne = new Guest(lastfm, new LastFmSession(lastfm, "user", "key1"));
-        var guestTwo = new Guest(lastfm, new LastFmSession(lastfm, "user", "key2"));
+        var guestOne = createGuest(lastfm, "user", "key1");
+        var guestTwo = createGuest(lastfm, "user", "key2");
         assert.ok(guestOne.isSameAs(guestTwo));
     });
 
     it("has the same session key", function() {
-        var guestOne = new Guest(lastfm, new LastFmSession(lastfm, "user1", "key"));
-        var guestTwo = new Guest(lastfm, new LastFmSession(lastfm, "user2", "key"));
+        var guestOne = createGuest(lastfm, "user1", "key");
+        var guestTwo = createGuest(lastfm, "user2", "key");
         assert.ok(guestOne.isSameAs(guestTwo));
     });
 
     it("username matches supplied string", function() {
-        var guestOne = new Guest(lastfm, new LastFmSession(lastfm, "user", "key1"));
+        var guestOne = createGuest(lastfm, "user", "key1");
         assert.ok(guestOne.isSameAs("user"));
     });
 
@@ -118,14 +118,14 @@ var Guest = require("../lib/guest.js").Guest;
     before(before);
 
     it("has blank session key", function() {
-        var guestOne = new Guest(lastfm, new LastFmSession(lastfm, "user1", ""));
-        var guestTwo = new Guest(lastfm, new LastFmSession(lastfm, "user2", ""));
+        var guestOne = createGuest(lastfm, "user1", "");
+        var guestTwo = createGuest(lastfm, "user2", "");
         assert.ok(!guestOne.isSameAs(guestTwo));
     });
 
     it("has blank username", function() {
-        var guestOne = new Guest(lastfm, new LastFmSession(lastfm, "", "key1"));
-        var guestTwo = new Guest(lastfm, new LastFmSession(lastfm, "", "key2"));
+        var guestOne = createGuest(lastfm, "", "key1");
+        var guestTwo = createGuest(lastfm, "", "key2");
         assert.ok(!guestOne.isSameAs(guestTwo));
     });
 })();
