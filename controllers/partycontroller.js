@@ -1,5 +1,5 @@
-var cutils = require("./cutils");
-var Guest = require("../lib/guest").Guest;
+var cutils = require("./cutils"),
+    Guest = require("../lib/guest").Guest;
 
 module.exports = function(lastfm, boxsocial, config) {
     return {
