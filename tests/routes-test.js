@@ -1,7 +1,8 @@
 require("./common.js");
 
 (function() {
-describe("a route")
+    describe("a route")
+
     var app, gently;
 
     before(function() {
@@ -22,29 +23,34 @@ describe("a route")
                 }
             }
         };
+
         gently.expect(app, "get", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.get, handler);
         });
+
         gently.expect(app, "post", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.post, handler);
         });
+
         gently.expect(app, "put", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.put, handler);
         });
+
         gently.expect(app, "delete", function(url, handler) {
             assert.equal("/", url);
             assert.equal(controller.index.delete, handler);
         });
+
         var route = ["/", controller.index];
         require("../routes").register(app, route);
     });
 
     it("can register an error handler", function() {
         var controller = {
-            error: function(req, res) {
+            error: function() {
             }
         };
         gently.expect(app, "error", function(handler) {

@@ -14,8 +14,8 @@ global.LastFmSession = require("lastfm/lib/lastfm/lastfm-session");
 global.RecentTracksStream = require("lastfm/lib/lastfm/recenttracks-stream");
 
 global.cleanup = function(boxsocial) {
-    while(boxsocial.parties.length > 0) {
-        var party = boxsocial.parties[0];
+    while(boxsocial.partyCount() > 0) {
+        var party = boxsocial.getTopParties(1)[0];
         party.finish();
     }
 };
@@ -24,3 +24,5 @@ var Guest = require("../lib/guest").Guest;
 global.createGuest = function(lastfm, user, key) {
     return new Guest(lastfm, new LastFmSession(lastfm, user, key));
 }
+
+global.emptyFn = function() { };

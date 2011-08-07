@@ -1,11 +1,11 @@
-var cutils = require("./cutils");
-var Guest = require("../lib/guest").Guest;
+var cutils = require("./cutils"),
+    Guest = require("../lib/guest").Guest;
 
 module.exports = function(lastfm, boxsocial, config) {
     return {
         index: {
             get: function(req, res) {
-                var parties = boxsocial.parties;
+                var parties = boxsocial.getTopParties(100);
                 res.render("parties", { 
                     guest: req.session.guest,
                     parties: parties
@@ -83,7 +83,7 @@ module.exports = function(lastfm, boxsocial, config) {
             get: function(req, res) {
                 var guest = req.session.guest;
                 if (guest) {
-                    boxsocial.leave(guest);
+                    boxsocial.leaveParty(guest);
                 }
                 res.redirect("/");
             }
