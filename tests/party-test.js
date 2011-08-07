@@ -155,7 +155,7 @@ describe("A party in full swing");
     it("stops streaming when last guest leaves", function() {
         party.removeGuest(guestOne);
         party.removeGuest(guestTwo);
-        assert.ok(!stream.isStreaming);
+        assert.ok(!stream.isStreaming());
     });
 
     it("removes all guests when over", function() {
