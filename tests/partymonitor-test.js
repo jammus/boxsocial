@@ -1,5 +1,6 @@
 require("./common");
-var Party = require("../lib/party").Party,
+var Fakes = require("./Fakes"),
+    Party = require("../lib/party").Party,
     PartyMonitor = require("../lib/partymonitor").PartyMonitor;
 
 (function() {
@@ -11,9 +12,8 @@ var Party = require("../lib/party").Party,
         gently;
 
     before(function() {
-        lastfm = new LastFmNode();
+        lastfm = new Fakes.LastFm();
         stream = new RecentTracksStream(lastfm, "hostuser");
-        RecentTracksStream.prototype.start = function() {}; // stub start to prevent tests hanging
         gently = new Gently();
     });
 
