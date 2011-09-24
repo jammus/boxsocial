@@ -390,6 +390,24 @@ describe("A party in full swing");
         });
         stream.emit("error", new Error(message));
     });
+
+    it("includes original error is bubbled error", function() {
+        var guest = createGuest(lastfm, "username");
+        party.addGuest(guest);
+        gently.expect(lastfm, "info", function(type, options) {
+            options.handlers.error();
+        });
+        gently.expect(lastfm, "update", function(method, session, options) {
+            options.handlers.error({
+                message: "Invalid timestamp"
+            });
+        });
+        gently.expect(party, "emit", function(event, error) {
+            assert.equal("error", event);
+            assert.equal("Error updating nowplaying for username. Reason: Invalid timestamp", error.message);
+        });
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+    });
 })();
 
 (function() {
