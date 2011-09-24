@@ -132,6 +132,27 @@ describe("A party in full swing");
         stream.emit("scrobbled", FakeTracks.RunToYourGrave);
     });
 
+    it("takes timestamp from time track started playing", function() {
+        count = 1;
+        gently.expect(lastfm, "info");
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
+        var timestamp = Math.round((new Date).getTime() / 1000);
+        gently.expect(lastfm, "update", 2, function(method, session, options) {
+          assert.equal(timestamp, options.timestamp);
+          count++;
+        });
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+    });
+
+    it("if no nowPlaying update then timestamp is current time", function() {
+        count = 1;
+        var timestamp = Math.round((new Date).getTime() / 1000);
+        gently.expect(lastfm, "update", 2, function(method, session, options) {
+          assert.equal(timestamp, options.timestamp);
+          count++;
+        });
+        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
+    });
     it("doesn't share nowPlaying updates with guests after they leave", function() {
         gently.expect(lastfm, "update", 1);
         party.removeGuest(guestTwo);
@@ -389,6 +410,24 @@ describe("A party in full swing");
             assert.equal(message, error.message);
         });
         stream.emit("error", new Error(message));
+    });
+
+    it("includes original error is bubbled error", function() {
+        var guest = createGuest(lastfm, "username");
+        party.addGuest(guest);
+        gently.expect(lastfm, "info", function(type, options) {
+            options.handlers.error();
+        });
+        gently.expect(lastfm, "update", function(method, session, options) {
+            options.handlers.error({
+                message: "Invalid timestamp"
+            });
+        });
+        gently.expect(party, "emit", function(event, error) {
+            assert.equal("error", event);
+            assert.equal("Error updating nowplaying for username. Reason: Invalid timestamp", error.message);
+        });
+        stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
     });
 })();
 
