@@ -16,6 +16,7 @@ app.use(express.favicon(__dirname + "/public/img/favicon.ico"));
 app.set("views", __dirname + "/views");
 app.get("root", __dirname);
 app.set("view engine", "ejs");
+app.set("view options", { gaAccount: config.gaAccount });
 
 var lastfm = new LastFmNode({
   api_key: config.api_key,

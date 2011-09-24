@@ -4,6 +4,7 @@ module.exports = {
     env: "development",
     api_key: "",
     secret: "",
-    partyTimeout: 60 * 60 * 1000 // in milliseconds
+    partyTimeout: 60 * 60 * 1000, // in milliseconds
+    gaAccount: "UA-XXXXXX-X"
 };
 
