@@ -18,13 +18,14 @@ LastFm.prototype.info = function() {};
 
 exports.LastFm = LastFm;
 
-var LastFmSession = function(lastfm, user, key){
+var LastFmSession = function(lastfm, options){
+    options = options || { };
     this.nowPlayingCalls = 0;
     this.nowPlaying = null;
     this.scrobbleCalls = 0;
     this.lastScrobbled = null;
-    this.user = user;
-    this.key = key;
+    this.user = options.user;
+    this.key = options.key;
     this.isAuthorised = function() { };
 };
 

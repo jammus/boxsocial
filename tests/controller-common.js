@@ -6,7 +6,7 @@ var config = require("../config");
 var lastfm, boxsocial, req, res, action, controller, gently, verb, err;
 
 function performAction() {
-    if (verb != "error") {
+    if (verb !== "error") {
         controller[action][verb](req, res);
         return;
     }
@@ -89,13 +89,13 @@ global.thereShouldBeActiveParties = function(count) {
 }
 
 global.andSessionIsAuthorisedAs = function(user, key) {
-    var session = new Fakes.LastFmSession(lastfm, user, key);
-    session.authorise = function(token, options) {
-        options.handlers.authorised(this);
-    };
-    lastfm.session = function() {
+    lastfm.session = function(options) {
+        var session = new Fakes.LastFmSession();
+        session.user = user;
+        session.key = key;
+        options.handlers.success(session);
         return session;
-    };
+    }
 }
 
 global.theSessionShouldContain = function(key, value) {
