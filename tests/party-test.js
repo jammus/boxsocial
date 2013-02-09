@@ -132,27 +132,17 @@ describe("A party in full swing");
         stream.emit("scrobbled", FakeTracks.RunToYourGrave);
     });
 
-    it("takes timestamp from time track started playing", function() {
+    it("takes timestamp from track", function() {
         count = 1;
         gently.expect(lastfm, "info");
         stream.emit("nowPlaying", FakeTracks.RunToYourGrave);
-        var timestamp = Math.round((new Date).getTime() / 1000);
         gently.expect(lastfm, "update", 2, function(method, session, options) {
-          assert.equal(timestamp, options.timestamp);
+          assert.equal(FakeTracks.RunToYourGrave.date.uts, options.timestamp);
           count++;
         });
         stream.emit("scrobbled", FakeTracks.RunToYourGrave);
     });
 
-    it("if no nowPlaying update then timestamp is current time", function() {
-        count = 1;
-        var timestamp = Math.round((new Date).getTime() / 1000);
-        gently.expect(lastfm, "update", 2, function(method, session, options) {
-          assert.equal(timestamp, options.timestamp);
-          count++;
-        });
-        stream.emit("scrobbled", FakeTracks.RunToYourGrave);
-    });
     it("doesn't share nowPlaying updates with guests after they leave", function() {
         gently.expect(lastfm, "update", 1);
         party.removeGuest(guestTwo);
