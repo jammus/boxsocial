@@ -1,0 +1,24 @@
+{
+    "name": "boxsocial",
+    "description": "Party mode for Last.fm",
+    "version": "0.6.3",
+    "author": "James Scott <jammus@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/jammus/boxsocial.git"
+    },
+    "engine": [
+        "node >= 0.4.10"
+    ],
+    "dependencies": {
+        "ejs": "0.8.x",
+        "express": "2.3.x",
+        "lastfm": "0.8.x",
+        "socket.io": "0.9.x",
+        "underscore": "1.4.x",
+        "zlib": "1.0.5"
+    },
+    "devDependencies": {
+        "gently": "0.9.x"
+    }
+}
