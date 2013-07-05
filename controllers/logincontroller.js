@@ -1,7 +1,9 @@
 var querystring = require("querystring"),
-    Guest = require("../lib/guest").Guest;
+    Guest = require("../lib/guest").Guest,
+    _ = require("underscore");
 
 module.exports = function(lastfm, boxsocial, config) {
+    var bannedUsers = config.bannedUsers || [ ];
     return {
         index: {
             get: function(req, res) {
@@ -23,6 +25,10 @@ module.exports = function(lastfm, boxsocial, config) {
                     token: req.param("token"),
                     handlers: {
                         success: function(session) {
+                            if (_(bannedUsers).contains(session.user.toLowerCase())) {
+                                res.redirect('/banned');
+                                return;
+                            }
                             var guest = new Guest(lastfm, fmsession);
                             req.session.guest = guest;
                             req.session.user = session.user;
