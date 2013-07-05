@@ -5,6 +5,7 @@ module.exports = {
     api_key: "",
     secret: "",
     partyTimeout: 60 * 60 * 1000, // in milliseconds
-    gaAccount: "UA-XXXXXX-X"
+    gaAccount: "UA-XXXXXX-X",
+    bannedUsers: [ "i am a very naughty user" ]
 };
 

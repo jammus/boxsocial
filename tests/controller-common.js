@@ -13,14 +13,14 @@ function performAction() {
     controller.error(err, req, res);
 }
 
-global.controllerSetup = function(controllerName) {
+global.controllerSetup = function(controllerName, customConfig) {
     gently = new Gently();
     lastfm = new Fakes.LastFm();
     boxsocial = new BoxSocial(lastfm);
     req = new Fakes.Request();
     res = new Fakes.Response();
     err = null;
-    controller = require("../controllers/" + controllerName)(lastfm, boxsocial, config);
+    controller = require("../controllers/" + controllerName)(lastfm, boxsocial, customConfig || config);
 }
 
 global.controllerTearDown = function() {
