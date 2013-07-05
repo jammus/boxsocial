@@ -19,12 +19,10 @@ module.exports = function(lastfm, boxsocial, config) {
 
         callback: {
             get: function(req, res) {
-                var token = req.param("token"),
-                    fmsession = lastfm.session();
-
-                fmsession.authorise(token, {
+                var fmsession = lastfm.session({
+                    token: req.param("token"),
                     handlers: {
-                        authorised: function(session) {
+                        success: function(session) {
                             var guest = new Guest(lastfm, fmsession);
                             req.session.guest = guest;
                             req.session.user = session.user;
